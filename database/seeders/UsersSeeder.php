@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class UsersSeeder extends Seeder
 {
@@ -21,49 +22,28 @@ class UsersSeeder extends Seeder
         $user = [
             [
                 'name' => 'Super Admin',
-                'nik' => '123456789',
                 'username' => 'superadmin',
-                'email' => 'admin@mail.com',
-                'password' => bcrypt('admin'),
+                'email' => 'superadmin@gmail.com',
+                'password' => Hash::make('superadmin'),
                 'role' => 'superadmin',
                 'created_at' => Carbon::now(),
             ],
             [
-                'name' => 'Admin',
-                'nik' => '123456789',
+                'name' => 'admin',
                 'username' => 'admin',
-                'email' => 'admin@admin.com',
-                'password' => bcrypt('admin'),
+                'email' => 'admin@gmail.com',
+                'password' => Hash::make('admin'),
                 'role' => 'admin',
                 'created_at' => Carbon::now(),
             ],
             [
-                'name' => 'Member',
-                'nik' => '123456789',
-                'username' => 'member',
-                'email' => 'member@member.com',
-                'password' => bcrypt('member'),
-                'role' => 'member',
+                'name' => 'TPU 1',
+                'username' => 'tpu',
+                'email' => 'tpu@gmail.com',
+                'password' => Hash::make('tpu'),
+                'role' => 'tpu',
                 'created_at' => Carbon::now(),
-            ],
-            [
-                'name' => 'Master Stockist',
-                'nik' => '123456789',
-                'username' => 'stockist',
-                'email' => 'stockist@stockist.com',
-                'password' => bcrypt('stockist'),
-                'role' => 'stockist',
-                'created_at' => Carbon::now(),
-            ],
-            [
-                'name' => 'Fadli Stockist',
-                'nik' => '123456789',
-                'username' => 'fadli',
-                'email' => 'fadli@stockist.com',
-                'password' => bcrypt('stockist'),
-                'role' => 'stockist',
-                'created_at' => Carbon::now(),
-            ],
+            ]
         ];
 
         User::insert($user);

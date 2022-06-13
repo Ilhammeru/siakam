@@ -1,4 +1,7 @@
 <?php
+
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/user', function() {
@@ -46,3 +49,18 @@ Route::get('/password-email', function() {
 Route::get('/password-request', function() {
     return 'password request';
 })->name('password.request');
+
+Route::middleware(['auth', 'role:admin'])->group(function(){
+    // begin::role
+    Route::get('/role/json', [RoleController::class, 'json'])->name('role.json');
+    Route::get('/role/get-all', [RoleController::class, 'getAll'])->name('role.getAll');
+    Route::resource('role', RoleController::class);
+    Route::post('/role/{id}', [RoleController::class, 'update'])->name('role.update');
+    // end::role
+    
+    // begin::user
+    Route::get('/user/json', [UserController::class, 'json'])->name('user.json');
+    Route::resource('user', UserController::class);
+    Route::post('/user/{id}', [UserController::class, 'update'])->name('user.update');
+    // end::user
+});

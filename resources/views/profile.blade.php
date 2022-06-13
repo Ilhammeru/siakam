@@ -179,50 +179,6 @@
     </div>
 </div>
 
-<!--begin::Card-->
-<div class="card mb-5">
-    <div class="card-body">
-        <div class="row">
-            <div class="d-flex justify-content-between">
-                <h3>Akun Payment</h3>
-                <a href="#" class="btn btn-light-primary btn-sm"><i class="fas fa-user-edit"></i>Ubah</a>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <table class="table table-user">
-                <tbody>
-                    <tr>
-                        <td>Payment</td>
-                        <td><b>Cash</b></td>
-                    </tr>
-                    <tr>
-                        <td>Akun Payment</td>
-                        <td><b>143434343434</b></td>
-                    </tr>
-                    <tr>
-                        <td>Nama Pemilik</td>
-                        <td><b>User</b></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<!--end::Card-->
-
-<!--begin::Card-->
-<div class="card mb-5">
-    <div class="card-body">
-        <div class="row">
-            <div class="d-flex justify-content-between">
-                <h3>Keluarga</h3>
-                <a href="" class="btn btn-light-primary btn-sm"><i class="fas fa-user-plus"></i>Tambah</a>
-            </div>
-        </div>
-    </div>
-</div>
-<!--end::Card-->
-
 <div class="modal fade" id="userImageModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
