@@ -119,6 +119,18 @@
                         <span class="menu-title">Dashboard</span>
                     </a>
                 </div>
+                {{-- begin::tpu-master --}}
+                <div class="menu-item">
+                    <a class="menu-link {{ menuActive('tpu.index') }}" href="{{ route('tpu.index') }}">
+                        <span class="menu-icon">
+                            <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
+                            <i class="fas fa-building"></i>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-title">TPU</span>
+                    </a>
+                </div>
+                {{-- end::tpu-master --}}
                 @if (Auth::user()->role == 'admin' || Auth::user()->role == 'superadmin')
                     <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ menuShow(['role.index', 'user.*']) }}">
                         <span class="menu-link">

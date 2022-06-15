@@ -98,7 +98,7 @@ if (!function_exists('formatRupiah')) {
 }
 
 if (!function_exists('sendResponse')) {
-    function sendResponse($data, $message, $status) {
+    function sendResponse($data, $message = 'SUCCESS', $status = 201) {
         $format = [
             'data' => $data,
             'message' => $message

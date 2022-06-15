@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use App\Models\Tpu;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -70,6 +71,7 @@ class UserController extends Controller
             'email' => 'required|unique:users,email',
             'username' => 'required|unique:users,username',
             'password' => 'required',
+            'tpu' => 'required',
             'role' => 'required'
         ];
         $messageRules = [
@@ -78,6 +80,7 @@ class UserController extends Controller
             'email.unique' => "Email $request->email sudah terdapat di database",
             'username.unique' => "Username $request->username sudah terdapat di database",
             'password.required' => 'Password harus diisi',
+            'tpu.required' => 'TPU harus diisi',
             'role.required' => 'Role harus diisi',
         ];
         $validator = Validator::make(
@@ -98,6 +101,7 @@ class UserController extends Controller
         $name = $request->name;
         $email = $request->email;
         $password = Hash::make($request->password);
+        $tpu = $request->tpu;
         $role = $request->role;
         $username = $request->username;
         try {
@@ -106,6 +110,7 @@ class UserController extends Controller
                 'username' => $username,
                 'password' => $password,
                 'email' => $email,
+                'tpu_id' => $tpu,
                 'role' => $role,
                 'created_at' => Carbon::now()
             ];
@@ -135,8 +140,9 @@ class UserController extends Controller
         try {
             $user = User::find($id);
             $roles = Role::get();
+            $tpus = Tpu::all();
             return sendResponse(
-                ['user' => $user, 'roles' => $roles],
+                ['user' => $user, 'roles' => $roles, 'tpus' => $tpus],
                 'SUCCESS',
                 201
             );
@@ -175,6 +181,7 @@ class UserController extends Controller
         $password = Hash::make($request->password);
         $role = $request->role;
         $username = $request->username;
+        $tpu = $request->tpu;
         $currentUser = User::find($id);
 
         // validation
@@ -182,6 +189,7 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required',
             'username' => 'required',
+            'tpu' => 'required',
             'role' => 'required'
         ];
         $messageRules = [
@@ -190,6 +198,7 @@ class UserController extends Controller
             'email.unique' => "Email $request->email sudah terdapat di database",
             'username.unique' => "Username $request->username sudah terdapat di database",
             'password.required' => 'Password harus diisi',
+            'tpu.required' => 'TPU harus diisi',
             'role.required' => 'Role harus diisi',
         ];
         if (strtolower($username) != strtolower($currentUser->username)) {
@@ -212,13 +221,13 @@ class UserController extends Controller
                 500
             );
         }
-
         try {
             $data = [
                 'name' => $name,
                 'username' => $username,
                 'password' => $password,
                 'email' => $email,
+                'tpu_id' => $tpu,
                 'role' => $role,
                 'updated_at' => Carbon::now()
             ];
@@ -230,6 +239,22 @@ class UserController extends Controller
                 $update,
                 'SUCCESS',
                 201
+            );
+        } catch (\Throwable $th) {
+            return sendResponse(
+                ['error' => $th->getMessage()],
+                'FAILED',
+                500
+            );
+        }
+    }
+
+    public function getDataForm() {
+        try {
+            $roles = Role::all();
+            $tpus = Tpu::all();
+            return sendResponse(
+                ['roles' => $roles, 'tpus' => $tpus]
             );
         } catch (\Throwable $th) {
             return sendResponse(

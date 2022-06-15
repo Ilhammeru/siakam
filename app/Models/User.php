@@ -24,6 +24,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'tpu_id',
         'last_login'
     ];
 

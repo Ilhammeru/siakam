@@ -67,6 +67,10 @@
                             <input type="text" class="form-control" id="userUsername" name="username" placeholder="Username Untuk Login">
                         </div>
                         <div class="form-group mb-5 row">
+                            <label for="userTpu" class="col-form-label">TPU</label>
+                            <select name="tpu" id="userTpu" class="form-select form-control"></select>
+                        </div>
+                        <div class="form-group mb-5 row">
                             <label for="userRole" class="col-form-label">Role</label>
                             <select name="role" id="userRole" class="form-select form-control"></select>
                         </div>
@@ -146,15 +150,34 @@
             // get role list
             $.ajax({
                 type: "GET",
-                url: "{{ route('role.getAll') }}",
+                url: "{{ route('user.getDataForm') }}",
                 dataType: "json",
                 success: function(res) {
-                    let data = res.data;
+                    // begin::data-role
+                    let dataRoles = res.data.roles;
                     let option = "<option value=''>- Pilih Role -</option>";
-                    for (let a = 0; a < data.length; a++) {
-                        option += `<option value="${data[a].name}">${data[a].name}</option>`;
+                    for (let a = 0; a < dataRoles.length; a++) {
+                        option += `<option value="${dataRoles[a].name}">${dataRoles[a].name}</option>`;
                     }
                     $('#userRole').html(option);
+                    $('#userRole').select2({
+                        dropdownParent: modal
+                    });
+                    // end::data-role
+
+                    // begin::data-tpu
+                    let dataTpu = res.data.tpus;
+                    let optionTpu = "<option value=''>- Pilih TPU -</option>";
+                    optionTpu += "<option value='0'>Semua TPU</option>";
+                    for (let b = 0; b < dataTpu.length; b++) {
+                        optionTpu += `<option value="${dataTpu[b].id}">${dataTpu[b].name}</option>`;
+                    }
+                    $('#userTpu').html(optionTpu);
+                    $('#userTpu').select2({
+                        dropdownParent: modal
+                    });
+                    // end::data-tpu
+
                     $('#modalTitle').text('Tambah User');
                     form.attr('action', "{{ route('user.store') }}");
                     form.attr('method', 'POST');
@@ -187,6 +210,7 @@
                         elem.text('Menyimpan data ...');
                     },
                     success: function(res) {
+                        console.log(res);
                         elem.attr('disabled', false);
                         elem.text('Simpan');
                         iziToast['success']({
@@ -223,13 +247,42 @@
                     $('#userEmail').val(user.email);
                     $('#userUsername').val(user.username);
 
+                    // begin::data-tpu
+                    let dataTpu = res.data.tpus;
+                    let optionTpu = "<option value=''>- Pilih TPU -</option>";
+                    optionTpu += "<option value='0'>Semua TPU</option>";
+                    let selectedTpu = "";
+                    for (let b = 0; b < dataTpu.length; b++) {
+                        if (dataTpu[b].id == user.tpu_id) {
+                            selectedTpu = 'selected';
+                        } else {
+                            selectedTpu = '';
+                        }
+                        optionTpu += `<option ${selectedTpu} value="${dataTpu[b].id}">${dataTpu[b].name}</option>`;
+                    }
+                    $('#userTpu').html(optionTpu);
+                    $('#userTpu').val(user.tpu_id);
+                    $('#userTpu').select2({
+                        dropdownParent: modal
+                    });
+                    // end::data-tpu
+
                     // manipulate role select option
                     let roles = res.data.roles;
                     let option = `<option value="">- Pilih Role -</option>`;
+                    let selectedRole = "";
                     for (let a = 0; a < roles.length; a++) {
-                        option += `<option value="${roles[a].name}">${roles[a].name}</option>`;
+                        if (roles[a].name.toLowerCase() == user.role.toLowerCase()) {
+                            selectedRole = 'selected';
+                        } else {
+                            selectedRole = '';
+                        }
+                        option += `<option ${selectedRole} value="${roles[a].name}">${roles[a].name}</option>`;
                     }
                     $('#userRole').html(option);
+                    $('#userRole').select2({
+                        dropdownParent: modal
+                    });
                     $('#userRole').val(user.role);
 
                     // manipulate password field
@@ -245,7 +298,7 @@
                     let message = err.responseJSON.message;
                     if (message == 'FAILED') {
                         iziToast['error']({
-                            message: response.responseJSON.data.error,
+                            message: err.responseJSON.data.error,
                             position: "topRight"
                         });
                     } else {
@@ -285,33 +338,6 @@
                     })
                 }
             })
-        }
-
-        function handleError(err, button = "") {
-            if (button != "") {
-                button.attr('disabled', false);
-                button.text('Simpan');
-            }
-            let message = err.responseJSON.message;
-            if (message == 'FAILED') {
-                iziToast['error']({
-                    message: err.responseJSON.data.error,
-                    position: "topRight"
-                });
-            } else if (message == 'VALIDATION_FAILED') {
-                let error = err.responseJSON.data.error;
-                for (let a = 0; a < error.length; a++) {
-                    iziToast['error']({
-                        message: error[a],
-                        position: "topRight"
-                    });
-                }
-            } else {
-                iziToast['error']({
-                    message: message,
-                    position: "topRight"
-                });
-            }
         }
     </script>
 @endpush

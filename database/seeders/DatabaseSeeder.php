@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
             UsersSeeder::class,
+            TpuSeeder::class,
+            TpuGraveSeeder::class
         ]);
     }
 }

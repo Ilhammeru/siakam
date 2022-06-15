@@ -13,15 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('tpu_grave', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->string('name');
-            $table->string('username');
-            $table->string('email');
-            $table->text('password');
-            $table->string('role');
-            $table->integer('tpu_id')->nullable();
-            $table->date('last_login')->nullable();
+            $table->integer('tpu_id');
+            $table->string('grave_block');
+            $table->boolean('is_available')->default(FALSE);
             $table->timestamps();
         });
     }
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('tpu_grave');
     }
 };

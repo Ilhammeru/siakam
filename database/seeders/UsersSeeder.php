@@ -26,6 +26,7 @@ class UsersSeeder extends Seeder
                 'email' => 'superadmin@gmail.com',
                 'password' => Hash::make('superadmin'),
                 'role' => 'superadmin',
+                'tpu_id' => 0,
                 'created_at' => Carbon::now(),
             ],
             [
@@ -34,6 +35,7 @@ class UsersSeeder extends Seeder
                 'email' => 'admin@gmail.com',
                 'password' => Hash::make('admin'),
                 'role' => 'admin',
+                'tpu_id' => 0,
                 'created_at' => Carbon::now(),
             ],
             [
@@ -42,6 +44,16 @@ class UsersSeeder extends Seeder
                 'email' => 'tpu@gmail.com',
                 'password' => Hash::make('tpu'),
                 'role' => 'tpu',
+                'tpu_id' => 1,
+                'created_at' => Carbon::now(),
+            ],
+            [
+                'name' => 'TPU 2',
+                'username' => 'tpu2',
+                'email' => 'tpu2@gmail.com',
+                'password' => Hash::make('tpu2'),
+                'role' => 'tpu',
+                'tpu_id' => 2,
                 'created_at' => Carbon::now(),
             ]
         ];

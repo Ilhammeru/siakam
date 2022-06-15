@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TpuController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -50,17 +51,29 @@ Route::get('/password-request', function() {
     return 'password request';
 })->name('password.request');
 
-Route::middleware(['auth', 'role:admin'])->group(function(){
-    // begin::role
-    Route::get('/role/json', [RoleController::class, 'json'])->name('role.json');
-    Route::get('/role/get-all', [RoleController::class, 'getAll'])->name('role.getAll');
-    Route::resource('role', RoleController::class);
-    Route::post('/role/{id}', [RoleController::class, 'update'])->name('role.update');
-    // end::role
-    
-    // begin::user
-    Route::get('/user/json', [UserController::class, 'json'])->name('user.json');
-    Route::resource('user', UserController::class);
-    Route::post('/user/{id}', [UserController::class, 'update'])->name('user.update');
-    // end::user
+Route::middleware(['auth'])->group(function(){
+    Route::middleware(['role:admin:superadmin'])->group(function() {
+        // begin::role
+        Route::get('/role/json', [RoleController::class, 'json'])->name('role.json');
+        Route::get('/role/get-all', [RoleController::class, 'getAll'])->name('role.getAll');
+        Route::resource('role', RoleController::class);
+        Route::post('/role/{id}', [RoleController::class, 'update'])->name('role.update');
+        // end::role
+        
+        // begin::user
+        Route::get('/user/json', [UserController::class, 'json'])->name('user.json');
+        Route::get('/user/get-data-form', [UserController::class, 'getDataForm'])->name('user.getDataForm');
+        Route::resource('user', UserController::class);
+        Route::post('/user/{id}', [UserController::class, 'update'])->name('user.update');
+        // end::user
+
+    });
+    // begin::tpu
+    Route::get('/tpu/json', [TpuController::class, 'json'])->name('tpu.json');
+    Route::get('/tpu/detail-grave/{id}', [TpuController::class, 'detailGrave'])->name('tpu.detailGrave');
+    Route::post('/tpu/grave', [TpuController::class, 'storeGrave'])->name('tpu.grave.store');
+    Route::get('/tpu/show/{id}', [TpuController::class, 'showTpu'])->name('tpu.indentity.show');
+    Route::post('/tpu/identity/{id}', [TpuController::class, 'storeTpu'])->name('tpu.identity.store');
+    Route::resource('tpu', TpuController::class);
+    // end::tpu
 });

@@ -108,6 +108,33 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+		function handleError(err, button = "") {
+            if (button != "") {
+                button.attr('disabled', false);
+                button.text('Simpan');
+            }
+            let message = err.responseJSON.message;
+            if (message == 'FAILED') {
+                iziToast['error']({
+                    message: err.responseJSON.data.error,
+                    position: "topRight"
+                });
+            } else if (message == 'VALIDATION_FAILED') {
+                let error = err.responseJSON.data.error;
+                for (let a = 0; a < error.length; a++) {
+                    iziToast['error']({
+                        message: error[a],
+                        position: "topRight"
+                    });
+                }
+            } else {
+                iziToast['error']({
+                    message: message,
+                    position: "topRight"
+                });
+            }
+        }
 	</script>
 	@stack('scripts')
     
