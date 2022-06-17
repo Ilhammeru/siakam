@@ -28,7 +28,6 @@
                         <th>Alamat</th>
                         <th>No. Telfon</th>
                         <th>Jumlah Makam</th>
-                        <th>Jumlah Tesedia</th>
                         <th></th>
                     </tr>
                     <!--end::Table row-->
@@ -45,16 +44,16 @@
     </div>
     {{-- end::card-list --}}
 
-    {{-- begin::modal-detail-grave --}}
-    <div class="modal" tabindex="-1" id="modalDetailGrave">
-        <div class="modal-dialog">
+    {{-- begin::modal-detail-tpu --}}
+    <div class="modal" tabindex="-1" id="modalDetailTpu">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalTitle"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modalBody">
-                    <div class="row d-flex align-center justify-content-center" id="targetDetail">
+                    <div class="row" id="targetDetail">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -67,7 +66,69 @@
             </div>
         </div>
     </div>
-    {{-- end::modal-detail-grave --}}
+    {{-- end::modal-detail-tpu --}}
+
+    {{-- begin::modal add tpu --}}
+    <div class="modal fade" tabindex="-1" id="modalAddTpu">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <form action="" id="formTpu">
+                        <div class="form-group row mb-5">
+                            <div class="col">
+                                <label for="tpuName" class="col-form-label">Nama TPU</label>
+                                <input type="text" placeholder="Nama TPU" name="name" class="form-control" id="tpuName">
+                            </div>
+                        </div>
+                        <div class="form-group row mb-5">
+                            <div class="col">
+                                <label for="tpuPhone" class="col-form-label">No. Telfon TPU</label>
+                                <input type="text" placeholder="No. Telfon TPU" name="phone" class="form-control" id="tpuPhone">
+                            </div>
+                        </div>
+                        <div class="form-group row mb-5">
+                            <div class="col">
+                                <label for="tpuPhone" class="col-form-label">No. Telfon TPU</label>
+                                <textarea name="address" id="tpuAddress" cols="3" rows="3" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group mb-5 mt-5 row rowGrave" id="rowGrave1">
+                            <h3 class="text-center">Data Makam</h3>
+                            <div class="col-md-6">
+                                <label for="tpuGraveBlock" class="col-form-label">Nama Blok</label>
+                                <input type="text" name="grave_block[]" class="form-control" id="tpuGraveBlock" placeholder="Nama Block">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="tpuGraveQuota" class="col-form-label">Kuota</label>
+                                <input type="text" name="quota[]" class="form-control" id="tpuGraveQuota" placeholder="Kuota Block">
+                            </div>
+                        </div>
+                        <div class="targetFieldGrave"></div>
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-primary btn-sm" id="btnAddRowGrave">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group row">
+                        <div class="col">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-primary" id="btnSaveTpu">Simpan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- end::modal add tpu --}}
 @endsection
 {{-- begin::end --}}
 
@@ -86,9 +147,7 @@
         },{
             data: "phone"
         },{
-            data: "grave"
-        },{
-            data: "available_grave"
+            data: "quota"
         },{
             data: 'action'
         }];
@@ -103,9 +162,43 @@
         });
 
         // variable
-        let form = $('#formRole');
-        let elem = $('#btnSave');
-        let modal = $('#modalRole');
+        let form = $('#formTpu');
+        let modalTpu = $('#modalAddTpu');
+        let btnSave = $('#btnSaveTpu');
+
+        $('#btnAdd').on('click', function(e) {
+            e.preventDefault();
+            modalTpu.modal('show');
+            form.attr('method', 'POST');
+            form.attr('action', "{{ route('tpu.grave.store') }}"); 
+        });
+
+        $('#btnAddRowGrave').on('click', function(e) {
+            e.preventDefault();
+            let countRow = $('.rowGrave').length;
+            let form = `<div class="form-group mb-5 mt-5 row rowGrave" id="rowGrave${countRow + 1}">
+                            <div class="col-md-6">
+                                <label for="tpuGraveBlock" class="col-form-label">Nama Blok</label>
+                                <input type="text" name="grave_block[]" class="form-control" id="tpuGraveBlock" placeholder="Nama Block">
+                            </div>
+                            <div class="col-md-5">
+                                <label for="tpuGraveQuota" class="col-form-label">Kuota</label>
+                                <input type="text" name="quota[]" class="form-control" id="tpuGraveQuota" placeholder="Kuota Block">
+                            </div>
+                            <div class="col-md-1">
+                                <div class="text-center">
+                                    <label for="tpuGraveQuota" class="col-form-label" style="color: transparent;">data</label>
+                                    <i class="fas fa-times text-danger" style="cursor: pointer;" onclick="deleteRowGrave(${countRow + 1})"></i>
+                                </div>
+                            </div>
+                        </div>`;
+
+            $('.targetFieldGrave').append(form);
+        })
+
+        function deleteRowGrave(idRow) {
+            $('#rowGrave' + idRow).remove();
+        }
 
         function save() {
             // validation
@@ -115,7 +208,7 @@
                     position: "topRight"
                 });
             } else {
-                let data = $('#formRole').serialize();
+                let data = $('#formTpu').serialize();
                 let url = form.attr('action');
                 let method = form.attr('method');
     
@@ -138,7 +231,7 @@
     
                         modal.modal("hide");
                         dataTables.ajax.reload();
-                        document.getElementById('formRole').reset();
+                        document.getElementById('formTpu').reset();
                     },
                     error: function(err) {
                         elem.attr('disabled', false);
@@ -169,7 +262,10 @@
                     console.log(res);
                     $('#modalTitle').text('Detail Makam');
                     $('#targetDetail').html(res.data.view);
-                    $('#modalDetailGrave').modal('show');
+                    $('#modalDetailTpu').modal('show');
+                },
+                error: function(err) {
+                    handleError(err);
                 }
             })
         }
@@ -206,6 +302,109 @@
                             position: "topRight"
                         });
                     }
+                }
+            })
+        }
+
+        function editGrave(graveId, graveBlock, quota) {
+            const button = `<span class="text-info me-4" onclick="saveGrave(${graveId})"><i class="fas fa-check text-success"></i></span>
+                            <span class="text-info" onclick="cancelEditGrave(${graveId})"><i class="fas fa-times text-danger"></i></span>`;
+            let row = $('#editableGrave' + graveId);
+            let blockEditRow = $('#editGraveBlock' + graveId);
+            let quotaEditRow = $('#editGraveQuota' + graveId);
+            let blockViewRow = $('#viewGraveBlock' + graveId);
+            let quotaViewRow = $('#viewGraveQuota' + graveId);
+            let divActionEdit = $('#actionEditGrave' + graveId);
+            let divActionSave = $('#actionSaveGrave' + graveId);
+            blockEditRow.attr('hidden', false);
+            quotaEditRow.attr('hidden', false);
+            blockViewRow.attr('hidden', true);
+            quotaViewRow.attr('hidden', true);
+            divActionEdit.attr('hidden', true);
+            divActionSave.html(button);
+            divActionSave.attr('hidden', false);
+            blockEditRow.val(graveBlock);
+            quotaEditRow.val(quota);
+        }
+
+        function cancelEditGrave(graveId) {
+            let row = $('#editableGrave' + graveId);
+            let blockEditRow = $('#editGraveBlock' + graveId);
+            let quotaEditRow = $('#editGraveQuota' + graveId);
+            let blockViewRow = $('#viewGraveBlock' + graveId);
+            let quotaViewRow = $('#viewGraveQuota' + graveId);
+            let divActionEdit = $('#actionEditGrave' + graveId);
+            let divActionSave = $('#actionSaveGrave' + graveId);
+            blockEditRow.attr('hidden', true);
+            quotaEditRow.attr('hidden', true);
+            blockViewRow.attr('hidden', false);
+            quotaViewRow.attr('hidden', false);
+            divActionEdit.attr('hidden', false);
+            divActionSave.html('');
+            divActionSave.attr('hidden', true);
+        }
+
+        function deleteGrave(graveId) {
+            let row = $('#editableGrave' + graveId);
+            Swal.fire({
+                title: 'Apakah anda yakin ingin menghapus role ini?',
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'Ya! Hapus',
+                denyButtonText: `Batalkan`,
+            }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "{{ url('/tpu/grave') }}" + "/" + graveId,
+                        dataType: "json",
+                        success: function(res) {
+                            iziToast['success']({
+                                message: 'Berhasil menghapus data',
+                                position: "topRight"
+                            });
+                            row.remove();
+                            cancelEditGrave();
+                            dataTables.ajax.reload();
+                        },
+                        error: function(err) {
+                            handleError(err);
+                        }
+                    });
+                }
+            });
+        }
+
+        function saveGrave(graveId) {
+            let blockEditRow = $('#editGraveBlock' + graveId);
+            let quotaEditRow = $('#editGraveQuota' + graveId);
+            let blockViewRow = $('#viewGraveBlock' + graveId);
+            let quotaViewRow = $('#viewGraveQuota' + graveId);
+            let blockVal = blockEditRow.val();
+            let quotaVal = quotaEditRow.val();
+
+            $.ajax({
+                type: "PUT",
+                url: "{{ url('/tpu/grave/') }}" + "/" + graveId,
+                data: {
+                    grave_block: blockVal,
+                    quota: quotaVal
+                },
+                dataType: "json",
+                error: function(err) {
+                    handleError(err);
+                },
+                success: function(res) {
+                    console.log(res);
+                    iziToast['success']({
+                        message: 'Berhasil edit data',
+                        position: "topRight"
+                    });
+                    blockViewRow.text(res.data.grave_block);
+                    quotaViewRow.text(res.data.quota);
+                    dataTables.ajax.reload();
+                    cancelEditGrave(graveId);
                 }
             })
         }

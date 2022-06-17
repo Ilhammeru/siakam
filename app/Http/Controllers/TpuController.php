@@ -63,17 +63,16 @@ class TpuController extends Controller
                 $count = count($data->graves);
                 return $count . ' Makam';
             })
-            ->addColumn('available_grave', function($data) {
+            ->addColumn('quota', function($data) {
                 $graves = collect($data->graves);
-                $avail = $graves->where('is_available', 1)->all();
-                $count = count($avail);
-                return '<span class="text-info" onclick="detailGrave('. $data->id .')" style="color: blue; text-decoration: underline; cursor: pointer;">'. $count .' Tersedia</span>';
+                $sum = $graves->sum('quota');
+                return '<span style="color: #009ef7;" onclick="detailGrave('. $data->id .')">'. $sum .'</span>';
             })
             ->addColumn('action', function($data) {
                 return '<span class="text-info me-3" style="cursor:pointer;" onclick="edit('. $data->id .')"><i class="fa fa-edit"></i></span>
                 <span class="text-info me-3" style="cursor:pointer;" onclick="deleteTpu('. $data->id .')"><i class="fa fa-trash"></i></span>';
             })
-            ->rawColumns(['action', 'grave', 'available_grave'])
+            ->rawColumns(['action', 'grave', 'quota'])
             ->make(true);
     }
 
@@ -85,12 +84,12 @@ class TpuController extends Controller
     public function storeGrave(Request $request) 
     {
         $block = $request->grave_block;
-        $status = $request->status;
+        $quota = $request->quota;
         $tpuId = Auth::user()->tpu_id;
         try {
             $data = [
                 'tpu_id' => $tpuId,
-                'is_available' => $status,
+                'quota' => $quota,
                 'created_at' => Carbon::now()
             ];
             $grave = TpuGrave::updateOrCreate(
@@ -98,6 +97,54 @@ class TpuController extends Controller
                 $data
             );
             return sendResponse($grave);
+        } catch (\Throwable $th) {
+            return sendResponse(
+                ['error' => $th->getMessage()],
+                'FAILED',
+                500
+            );
+        }
+    }
+
+     /**
+     * Function to edit grave's block
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function editGrave(Request $request, $id) 
+    {
+        $block = $request->grave_block;
+        $quota = $request->quota;
+        $tpuGrave = TpuGrave::find($id);
+        try {
+            $tpuGrave->grave_block = $block;
+            $tpuGrave->quota = $quota;
+            $tpuGrave->updated_at = Carbon::now();
+            if (Auth::user()->role == 'tpu') {
+                $tpuGrave->tpu_id = $request->tpu_id;
+            }
+            $tpuGrave->save();
+            return sendResponse($tpuGrave);
+        } catch (\Throwable $th) {
+            return sendResponse(
+                ['error' => $th->getMessage()],
+                'FAILED',
+                500
+            );
+        }
+    }
+
+     /**
+     * Function to dlete grave's block
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteGrave($id) 
+    {
+        try {
+            $delete = TpuGrave::where('id', $id)
+                ->delete();
+            return sendResponse($delete);
         } catch (\Throwable $th) {
             return sendResponse(
                 ['error' => $th->getMessage()],
@@ -176,12 +223,21 @@ class TpuController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function detailGrave($id) {
-        $tpu = Tpu::with(['graves' => function($query) {
-            $query->where('is_available', 1);
-        }])->find($id);
+        $tpu = Tpu::with(['graves'])->find($id);
         $graves = $tpu->graves;
         $view = view('tpu._detail-grave', compact('graves'))->render();
         return sendResponse(['view' => $view]);
+    }
+
+    /**
+     * Get detail TPU's Grave for edit
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function detailTpuGrave($id) {
+        $grave = TpuGrave::find($id);
+
+        return sendResponse($grave);
     }
 
     /**

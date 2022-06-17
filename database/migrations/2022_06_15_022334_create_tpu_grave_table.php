@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('tpu_grave', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->integer('tpu_id');
-            $table->string('grave_block');
-            $table->boolean('is_available')->default(FALSE);
+            $table->string('grave_block')->nullable();
+            $table->integer('quota')->default(0);
             $table->timestamps();
         });
     }

@@ -24,6 +24,6 @@ class TpuGrave extends Model
     protected $fillable = [
         'tpu_id',
         'grave_block',
-        'is_available'
+        'quota'
     ];
 }

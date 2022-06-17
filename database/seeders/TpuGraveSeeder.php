@@ -20,92 +20,32 @@ class TpuGraveSeeder extends Seeder
         $data = [
             [
                 'tpu_id' => 1,
-                'grave_block' => 'B3',
-                'is_available' => TRUE,
+                'grave_block' => 'kenanga',
+                'quota' => 123,
                 'created_at' => Carbon::now()
             ],
             [
                 'tpu_id' => 1,
-                'grave_block' => 'B1',
-                'is_available' => TRUE,
+                'grave_block' => 'mawar',
+                'quota' => 55,
                 'created_at' => Carbon::now()
             ],
             [
                 'tpu_id' => 1,
-                'grave_block' => 'B2',
-                'is_available' => FALSE,
+                'grave_block' => 'melati',
+                'quota' => 80,
                 'created_at' => Carbon::now()
             ],
             [
                 'tpu_id' => 2,
-                'grave_block' => 'A2',
-                'is_available' => FALSE,
-                'created_at' => Carbon::now()
-            ],
-            [
-                'tpu_id' => 1,
-                'grave_block' => 'A3',
-                'is_available' => TRUE,
-                'created_at' => Carbon::now()
-            ],
-            [
-                'tpu_id' => 1,
-                'grave_block' => 'A4',
-                'is_available' => TRUE,
-                'created_at' => Carbon::now()
-            ],
-            [
-                'tpu_id' => 1,
-                'grave_block' => 'A5',
-                'is_available' => TRUE,
-                'created_at' => Carbon::now()
-            ],
-            [
-                'tpu_id' => 1,
-                'grave_block' => 'A6',
-                'is_available' => FALSE,
-                'created_at' => Carbon::now()
-            ],
-            [
-                'tpu_id' => 1,
-                'grave_block' => 'A7',
-                'is_available' => FALSE,
+                'grave_block' => 'kamboja',
+                'quota' => 2,
                 'created_at' => Carbon::now()
             ],
             [
                 'tpu_id' => 2,
-                'grave_block' => 'A1',
-                'is_available' => FALSE,
-                'created_at' => Carbon::now()
-            ],
-            [
-                'tpu_id' => 2,
-                'grave_block' => 'A2',
-                'is_available' => FALSE,
-                'created_at' => Carbon::now()
-            ],
-            [
-                'tpu_id' => 2,
-                'grave_block' => 'A3',
-                'is_available' => TRUE,
-                'created_at' => Carbon::now()
-            ],
-            [
-                'tpu_id' => 2,
-                'grave_block' => 'A4',
-                'is_available' => TRUE,
-                'created_at' => Carbon::now()
-            ],
-            [
-                'tpu_id' => 2,
-                'grave_block' => 'B1',
-                'is_available' => TRUE,
-                'created_at' => Carbon::now()
-            ],
-            [
-                'tpu_id' => 2,
-                'grave_block' => 'B2',
-                'is_available' => TRUE,
+                'grave_block' => 'melati',
+                'quota' => 5,
                 'created_at' => Carbon::now()
             ],
         ];

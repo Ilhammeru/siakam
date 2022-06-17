@@ -38,35 +38,51 @@
                 </div>
             </div>
             <div class="row grave-row" id="targetGrave">
-                @foreach ($tpu->graves as $grave)
-                    @php
-                        if ($grave->is_available == 1) {
-                            $color = 'yellow';
-                        } else {
-                            $color = '#828704';
-                        }
-                    @endphp
-                    <div class="col-md-3 col-xl-3 mb-4">
-                        <div class="grave d-flex align-items-center justify-content-center" style="background: {{ $color }}; border-radius: 12px; height: 100px; width: auto;">
-                            <div>
-                                <p class="text-center mb-0">Blok</p>
-                                <h3 class="text-center mb-0">{{ $grave->grave_block }}</h3>
-                                @if ($grave->is_available == 0)
-                                <p class="text-center">Tidak Tersedia</p>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-                <div class="col-md-3 col-xl-3 mb-4" onclick="addGrave()">
-                    <div class="grave d-flex align-items-center justify-content-center" style="border-radius: 12px; border: 1px solid #A0E4FF; cursor: pointer; height: 100px; width: auto;">
-                        <div>
-                            <h3 class="text-center mb-0">
-                                <i class="fa fa-plus me-4"></i>
-                                Tambah
-                            </h3>
-                        </div>
-                    </div>
+                <div class="col">
+                    <table class="table table-striped">
+                        <thead class="table-primary">
+                            <tr>
+                                <th class="text-center">No.</th>
+                                <th class="text-center" style="width: 150px;">Blok Makam</th>
+                                <th class="text-center" style="width: 150px;">Kuota</th>
+                                <th class="text-center"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                                $graves = $tpu->graves;
+                                $a = 1;
+                            @endphp
+                            @foreach ($graves as $grave)
+                                <tr id="editableGrave{{ $grave->id }}">
+                                    <td class="text-center">{{ $a }}</td>
+                                    <td class="text-center">
+                                        <span id="viewGraveBlock{{ $grave->id }}">
+                                            {{ $grave->grave_block }}
+                                        </span>
+                                        <input type="text" id="editGraveBlock{{ $grave->id }}" class="form-control" hidden value="{{ $grave->grave_block }}">
+                                    </td>
+                                    <td class="text-center">
+                                        <span id="viewGraveQuota{{ $grave->id }}">
+                                            {{ $grave->quota }}
+                                        </span>
+                                        <input type="text" id="editGraveQuota{{ $grave->id }}" hidden class="form-control" value="{{ $grave->quota }}">
+                                    </td>
+                                    <td class="text-center">
+                                        <div id="actionEditGrave{{ $grave->id }}">
+                                            <span class="text-info me-4" onclick="editGrave({{ $grave->id }}, '{{ $grave->grave_block }}', {{ $grave->quota }})"><i class="fas fa-edit"></i></span>
+                                            <span class="text-info" onclick="deleteGrave({{ $grave->id }})"><i class="fas fa-trash"></i></span>
+                                        </div>
+                                        <div id="actionSaveGrave{{ $grave->id }}"></div>
+                                    </td>
+                                </tr>
+            
+                                @php
+                                    $a++;
+                                @endphp
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
