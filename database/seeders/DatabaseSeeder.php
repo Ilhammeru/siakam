@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UsersSeeder::class,
             TpuSeeder::class,
-            TpuGraveSeeder::class
+            TpuGraveSeeder::class,
+            BurialTypeSeeder::class
         ]);
     }
 }
