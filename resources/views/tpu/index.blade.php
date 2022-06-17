@@ -165,6 +165,14 @@
         let form = $('#formTpu');
         let modalTpu = $('#modalAddTpu');
         let btnSave = $('#btnSaveTpu');
+        
+        // begin::modal-event
+        const _modalTpu = document.getElementById('modalAddTpu');
+        _modalTpu.addEventListener('hidden.bs.modal', event => {
+            document.getElementById('formTpu').reset();
+            $('.targetFieldGrave').html('');
+        });
+        // end::modal-event
 
         $('#btnAdd').on('click', function(e) {
             e.preventDefault();
@@ -217,6 +225,7 @@
                     btnSave.text('Menyimpan data ...');
                 },
                 success: function(res) {
+                    console.log(res);
                     btnSave.attr('disabled', false);
                     btnSave.text('Simpan');
                     iziToast['success']({

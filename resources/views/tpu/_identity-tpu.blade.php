@@ -55,38 +55,46 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                $graves = $tpu->graves;
-                                $a = 1;
-                            @endphp
-                            @foreach ($graves as $grave)
-                                <tr id="editableGrave{{ $grave->id }}">
-                                    <td class="text-center">{{ $a }}</td>
-                                    <td class="text-center">
-                                        <span id="viewGraveBlock{{ $grave->id }}">
-                                            {{ $grave->grave_block }}
-                                        </span>
-                                        <input type="text" id="editGraveBlock{{ $grave->id }}" class="form-control" hidden value="{{ $grave->grave_block }}">
-                                    </td>
-                                    <td class="text-center">
-                                        <span id="viewGraveQuota{{ $grave->id }}">
-                                            {{ $grave->quota }}
-                                        </span>
-                                        <input type="text" id="editGraveQuota{{ $grave->id }}" hidden class="form-control" value="{{ $grave->quota }}">
-                                    </td>
-                                    <td class="text-center">
-                                        <div id="actionEditGrave{{ $grave->id }}">
-                                            <span class="text-info me-4" onclick="editGrave({{ $grave->id }}, '{{ $grave->grave_block }}', {{ $grave->quota }})"><i class="fas fa-edit"></i></span>
-                                            <span class="text-info" onclick="deleteGrave({{ $grave->id }})"><i class="fas fa-trash"></i></span>
-                                        </div>
-                                        <div id="actionSaveGrave{{ $grave->id }}"></div>
+                            @if (count($tpu->graves) == 0)
+                                <tr>
+                                    <td colspan="4" class="text-center">
+                                        <span class="text-info">Belum Ada Data</span>
                                     </td>
                                 </tr>
-            
+                            @else
                                 @php
-                                    $a++;
+                                    $graves = $tpu->graves;
+                                    $a = 1;
                                 @endphp
-                            @endforeach
+                                @foreach ($graves as $grave)
+                                    <tr id="editableGrave{{ $grave->id }}">
+                                        <td class="text-center">{{ $a }}</td>
+                                        <td class="text-center">
+                                            <span id="viewGraveBlock{{ $grave->id }}">
+                                                {{ $grave->grave_block }}
+                                            </span>
+                                            <input type="text" id="editGraveBlock{{ $grave->id }}" class="form-control" hidden value="{{ $grave->grave_block }}">
+                                        </td>
+                                        <td class="text-center">
+                                            <span id="viewGraveQuota{{ $grave->id }}">
+                                                {{ $grave->quota }}
+                                            </span>
+                                            <input type="text" id="editGraveQuota{{ $grave->id }}" hidden class="form-control" value="{{ $grave->quota }}">
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="actionEditGrave{{ $grave->id }}">
+                                                <span class="text-info me-4" onclick="editGrave({{ $grave->id }}, '{{ $grave->grave_block }}', {{ $grave->quota }})"><i class="fas fa-edit"></i></span>
+                                                <span class="text-info" onclick="deleteGrave({{ $grave->id }})"><i class="fas fa-trash"></i></span>
+                                            </div>
+                                            <div id="actionSaveGrave{{ $grave->id }}"></div>
+                                        </td>
+                                    </tr>
+                
+                                    @php
+                                        $a++;
+                                    @endphp
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>

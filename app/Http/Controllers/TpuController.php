@@ -90,7 +90,7 @@ class TpuController extends Controller
         $blocks = array_values(array_filter($request->grave_block));
         $quotas = array_values(array_filter($request->quota));
 
-        // validation
+        // begin::validation
         if (Auth::user()->role != 'tpu') {
             $rules = [
                 'name' => 'required|unique:tpu,name',
@@ -101,6 +101,7 @@ class TpuController extends Controller
                 'name.required' => 'Nama TPU Harus Diisi',
                 'address.required' => 'Alamat TPU Harus Diisi',
                 'phone.required' => 'No. Telfon TPU Harus Diisi',
+                'name.unique' => 'Nama sudah terdaftar di database'
             ];
             $validation = Validator::make(
                 $request->all(),
@@ -115,8 +116,9 @@ class TpuController extends Controller
                     500
                 );
             }
-        }
+        } 
 
+        // validation empty field in grave section
         if (count($blocks) != count($quotas)) {
             return sendResponse(
                 ['error' => ['Pastikan Blok Makam dan Quota semua terisi']],
@@ -124,6 +126,37 @@ class TpuController extends Controller
                 500
             );
         }
+
+        // validation for same block name
+        if (Auth::user()->role == 'tpu') {
+            $tpuId = Auth::user()->tpu_id;
+            for ($b = 0; $b < count($blocks); $b++) {
+                $check = TpuGrave::where(["grave_block" => $blocks[$b], 'tpu_id' => $tpuId])->first();
+                if ($check) {
+                    return sendResponse(
+                        ['error' => ['Nama sudah terdaftar di database']],
+                        'VALIDATION_FAILED',
+                        500
+                    );
+                }
+            }
+        }
+
+        $collectGrave = collect($blocks); // set to laravel's collection
+        $blocks = $collectGrave->map(function($item, $key) {
+            return strtolower($item);
+        })->toArray();
+        $counts = array_values(array_count_values($blocks));
+        for ($c = 0; $c < count($counts); $c++) {
+            if ($counts[$c] > 1) {
+                return sendResponse(
+                    ['error' => ['Pastikan tidak ada nama blok yang sama']],
+                    'VALIDATION_FAILED',
+                    500
+                );
+            }
+        }
+        // end::validation
 
         DB::beginTransaction();
         try {
