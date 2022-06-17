@@ -173,7 +173,6 @@ class TpuController extends Controller
             $tpuGrave->grave_block = $block;
             $tpuGrave->quota = $quota;
             $tpuGrave->updated_at = Carbon::now();
-            $tpuGrave->tpu_id = $request->tpu_id ?? Auth::user()->tpu_id;
             $tpuGrave->save();
             return sendResponse($tpuGrave);
         } catch (\Throwable $th) {
