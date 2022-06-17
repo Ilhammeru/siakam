@@ -35,6 +35,12 @@
             <div class="row mb-5">
                 <div class="d-flex justify-content-between">
                     <h3>Makam</h3>
+                    {{-- begin::button-add --}}
+                    <button class="btn btn-light-primary" onclick="addTpu()" id="btnAddTpu" type="button">
+                        <i class="fa fa-plus me-3"></i>
+                        Tambah
+                    </button>
+                    {{-- end::button-add --}}
                 </div>
             </div>
             <div class="row grave-row" id="targetGrave">

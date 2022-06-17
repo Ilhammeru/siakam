@@ -73,7 +73,7 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle"></h5>
+                    <h5 class="modal-title" id="modalTitleTPU"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modalBody">
@@ -92,7 +92,7 @@
                         </div>
                         <div class="form-group row mb-5">
                             <div class="col">
-                                <label for="tpuPhone" class="col-form-label">No. Telfon TPU</label>
+                                <label for="tpuPhone" class="col-form-label">No. Alamat TPU</label>
                                 <textarea name="address" id="tpuAddress" cols="3" rows="3" class="form-control"></textarea>
                             </div>
                         </div>
@@ -110,7 +110,7 @@
                         <div class="targetFieldGrave"></div>
                         <div class="row">
                             <div class="col">
-                                <button class="btn btn-primary btn-sm" id="btnAddRowGrave">
+                                <button class="btn btn-primary btn-sm" id="btnAddRowGrave" type="button">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
@@ -171,9 +171,11 @@
             modalTpu.modal('show');
             form.attr('method', 'POST');
             form.attr('action', "{{ route('tpu.grave.store') }}"); 
+            btnSave.attr('onclick', 'save()');
+            $('#modalTitleTPU').text('Tambah TPU');
         });
 
-        $('#btnAddRowGrave').on('click', function(e) {
+        $('#btnAddRowGrave').on('click', function(e) {            
             e.preventDefault();
             let countRow = $('.rowGrave').length;
             let form = `<div class="form-group mb-5 mt-5 row rowGrave" id="rowGrave${countRow + 1}">
@@ -201,56 +203,35 @@
         }
 
         function save() {
-            // validation
-            if ($('#roleName').val() == "") {
-                iziToast['error']({
-                    message: `Nama Role harus terisi`,
-                    position: "topRight"
-                });
-            } else {
-                let data = $('#formTpu').serialize();
-                let url = form.attr('action');
-                let method = form.attr('method');
-    
-                $.ajax({
-                    type: method,
-                    url: url,
-                    data: data,
-                    dataType: "json",
-                    beforeSend: function() {
-                        elem.attr('disabled', true);
-                        elem.text('Menyimpan data ...');
-                    },
-                    success: function(res) {
-                        elem.attr('disabled', false);
-                        elem.text('Simpan');
-                        iziToast['success']({
-                            message: 'Role berhasil di simpan',
-                            position: "topRight"
-                        });
-    
-                        modal.modal("hide");
-                        dataTables.ajax.reload();
-                        document.getElementById('formTpu').reset();
-                    },
-                    error: function(err) {
-                        elem.attr('disabled', false);
-                        elem.text('Simpan');
-                        let message = err.responseJSON.message;
-                        if (message == 'FAILED') {
-                            iziToast['error']({
-                                message: err.responseJSON.data.error,
-                                position: "topRight"
-                            });
-                        } else {
-                            iziToast['error']({
-                                message: message,
-                                position: "topRight"
-                            });
-                        }
-                    }
-                })
-            }
+            let data = form.serialize();
+            let url = form.attr('action');
+            let method = form.attr('method');
+
+            $.ajax({
+                type: method,
+                url: url,
+                data: data,
+                dataType: "json",
+                beforeSend: function() {
+                    btnSave.attr('disabled', true);
+                    btnSave.text('Menyimpan data ...');
+                },
+                success: function(res) {
+                    btnSave.attr('disabled', false);
+                    btnSave.text('Simpan');
+                    iziToast['success']({
+                        message: 'Role berhasil di simpan',
+                        position: "topRight"
+                    });
+
+                    modalTpu.modal("hide");
+                    dataTables.ajax.reload();
+                    document.getElementById('formTpu').reset();
+                },
+                error: function(err) {
+                    handleError(err, btnSave)
+                }
+            });
         }
 
         function detailGrave(id) {
@@ -271,15 +252,15 @@
         }
 
         function edit(id) {
-            let url = '{{ url('/tpu/') }}' + '/' + id;
+            let url = '{{ url("/tpu/") }}' + '/' + id;
 
             $.ajax({
                 type: "GET",
-                url: "{{ url("/tpu/") }}" + "/" + id,
+                url: "{{ url('/tpu/') }}" + "/" + id,
                 dataType: 'json',
                 success: function(res) {
-                    elem.attr('disabled', false);
-                    elem.text('Simpan');
+                    btnSave.attr('disabled', false);
+                    btnSave.text('Simpan');
                     form.attr('action', url);
                     form.attr('method', 'POST');
                     modal.modal('show');
@@ -288,8 +269,8 @@
                 },
                 error: function(err) {
                     console.log(err);
-                    elem.attr('disabled', false);
-                    elem.text('Simpan');
+                    btnSave.attr('disabled', false);
+                    btnSave.text('Simpan');
                     let message = err.responseJSON.message;
                     if (message == 'FAILED') {
                         iziToast['error']({

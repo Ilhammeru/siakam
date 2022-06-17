@@ -7,6 +7,7 @@ use App\Models\TpuGrave;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -66,7 +67,7 @@ class TpuController extends Controller
             ->addColumn('quota', function($data) {
                 $graves = collect($data->graves);
                 $sum = $graves->sum('quota');
-                return '<span style="color: #009ef7;" onclick="detailGrave('. $data->id .')">'. $sum .'</span>';
+                return '<span style="color: #009ef7; cursor: pointer;" onclick="detailGrave('. $data->id .')">'. $sum .'</span>';
             })
             ->addColumn('action', function($data) {
                 return '<span class="text-info me-3" style="cursor:pointer;" onclick="edit('. $data->id .')"><i class="fa fa-edit"></i></span>
@@ -83,21 +84,73 @@ class TpuController extends Controller
      */
     public function storeGrave(Request $request) 
     {
-        $block = $request->grave_block;
-        $quota = $request->quota;
-        $tpuId = Auth::user()->tpu_id;
-        try {
-            $data = [
-                'tpu_id' => $tpuId,
-                'quota' => $quota,
-                'created_at' => Carbon::now()
+        $name = $request->name;
+        $address = $request->address;
+        $phone = $request->phone;
+        $blocks = array_values(array_filter($request->grave_block));
+        $quotas = array_values(array_filter($request->quota));
+
+        // validation
+        if (Auth::user()->role != 'tpu') {
+            $rules = [
+                'name' => 'required|unique:tpu,name',
+                'address' => 'required',
+                'phone' => 'required'
             ];
-            $grave = TpuGrave::updateOrCreate(
-                ['grave_block' => $block],
-                $data
+            $messageRules = [
+                'name.required' => 'Nama TPU Harus Diisi',
+                'address.required' => 'Alamat TPU Harus Diisi',
+                'phone.required' => 'No. Telfon TPU Harus Diisi',
+            ];
+            $validation = Validator::make(
+                $request->all(),
+                $rules,
+                $messageRules
             );
-            return sendResponse($grave);
+            if ($validation->fails()) {
+                $error = $validation->errors()->all();
+                return sendResponse(
+                    ['error' => $error],
+                    'VALIDATION_FAILED',
+                    500
+                );
+            }
+        }
+
+        if (count($blocks) != count($quotas)) {
+            return sendResponse(
+                ['error' => ['Pastikan Blok Makam dan Quota semua terisi']],
+                'VALIDATION_FAILED',
+                500
+            );
+        }
+
+        DB::beginTransaction();
+        try {
+            $tpuId = Auth::user()->tpu_id;
+            if (Auth::user()->role != 'tpu') {
+                $dataTpu = [
+                    'name' => $name,
+                    'address' => $address,
+                    'phone' => $phone,
+                    'created_at' => Carbon::now()
+                ];
+                $tpuId = Tpu::insertGetId($dataTpu);
+            }
+
+            $dataGrave = [];
+            for ($a = 0; $a < count($blocks); $a++) {
+                $dataGrave[] = [
+                    'tpu_id' => $tpuId,
+                    'grave_block' => $blocks[$a],
+                    'quota' => $quotas[$a]
+                ];
+            }
+            TpuGrave::insert($dataGrave);
+            DB::commit();
+            return sendResponse([]);
         } catch (\Throwable $th) {
+            DB::rollBack();
             return sendResponse(
                 ['error' => $th->getMessage()],
                 'FAILED',
@@ -120,9 +173,7 @@ class TpuController extends Controller
             $tpuGrave->grave_block = $block;
             $tpuGrave->quota = $quota;
             $tpuGrave->updated_at = Carbon::now();
-            if (Auth::user()->role == 'tpu') {
-                $tpuGrave->tpu_id = $request->tpu_id;
-            }
+            $tpuGrave->tpu_id = $request->tpu_id ?? Auth::user()->tpu_id;
             $tpuGrave->save();
             return sendResponse($tpuGrave);
         } catch (\Throwable $th) {
