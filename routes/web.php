@@ -72,6 +72,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/tpu/json', [TpuController::class, 'json'])->name('tpu.json');
     Route::get('/tpu/detail-grave/{id}', [TpuController::class, 'detailGrave'])->name('tpu.detailGrave');
     Route::get('/tpu/grave/{id}', [TpuController::class, 'detailTpuGrave'])->name("tpu.detailTpuGrave");
+    Route::get('/tpu/detail/{id}', [TpuController::class, 'show'])->name("tpu.show");
     Route::post('/tpu/grave', [TpuController::class, 'storeGrave'])->name('tpu.grave.store');
     Route::put('/tpu/grave/{id}', [TpuController::class, 'editGrave'])->name('tpu.grave.edit');
     Route::delete('/tpu/grave/{id}', [TpuController::class, 'deleteGrave'])->name('tpu.grave.delete');

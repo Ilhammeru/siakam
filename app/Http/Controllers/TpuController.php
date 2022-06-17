@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tpu;
 use App\Models\TpuGrave;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -239,7 +240,7 @@ class TpuController extends Controller
 
     public function showTpu($id)
     {
-        $tpu = Tpu::find($id);
+        $tpu = Tpu::with('graves')->find($id);
 
         return sendResponse($tpu);
     }
@@ -375,7 +376,117 @@ class TpuController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $name = $request->name;
+        $address = $request->address;
+        $phone = $request->phone;
+        $blocks = array_values(array_filter($request->grave_block));
+        $quotas = array_values(array_filter($request->quota));
+        $currentTpu = Tpu::with('graves')->find($id);
+
+        // begin::validation
+        if (Auth::user()->role != 'tpu') {
+            $rules = [
+                'name' => 'required',
+                'address' => 'required',
+                'phone' => 'required'
+            ];
+            if (strtolower($name) != strtolower($currentTpu->name)) {
+                $rules['name'] = 'unique:tpu,name';
+            }
+            $messageRules = [
+                'name.required' => 'Nama TPU Harus Diisi',
+                'address.required' => 'Alamat TPU Harus Diisi',
+                'phone.required' => 'No. Telfon TPU Harus Diisi',
+                'name.unique' => 'Nama sudah terdaftar di database'
+            ];
+            $validation = Validator::make(
+                $request->all(),
+                $rules,
+                $messageRules
+            );
+            if ($validation->fails()) {
+                $error = $validation->errors()->all();
+                return sendResponse(
+                    ['error' => $error],
+                    'VALIDATION_FAILED',
+                    500
+                );
+            }
+        } 
+
+        // validation empty field in grave section
+        if (count($blocks) != count($quotas)) {
+            return sendResponse(
+                ['error' => ['Pastikan Blok Makam dan Quota semua terisi']],
+                'VALIDATION_FAILED',
+                500
+            );
+        }
+
+        // validation for same block name
+        if (Auth::user()->role == 'tpu') {
+            $tpuId = Auth::user()->tpu_id;
+            for ($b = 0; $b < count($blocks); $b++) {
+                $check = TpuGrave::where(["grave_block" => $blocks[$b], 'tpu_id' => $tpuId])->first();
+                if ($check) {
+                    return sendResponse(
+                        ['error' => ['Nama sudah terdaftar di database']],
+                        'VALIDATION_FAILED',
+                        500
+                    );
+                }
+            }
+        }
+
+        $collectGrave = collect($blocks); // set to laravel's collection
+        $blocks = $collectGrave->map(function($item, $key) {
+            return strtolower($item);
+        })->toArray();
+        $counts = array_values(array_count_values($blocks));
+        for ($c = 0; $c < count($counts); $c++) {
+            if ($counts[$c] > 1) {
+                return sendResponse(
+                    ['error' => ['Pastikan tidak ada nama blok yang sama']],
+                    'VALIDATION_FAILED',
+                    500
+                );
+            }
+        }
+        // end::validation
+
+        DB::beginTransaction();
+        try {
+            $tpuId = Auth::user()->tpu_id;
+            if (Auth::user()->role != 'tpu') {
+                $currentTpu->name = $name;
+                $currentTpu->address = $address;
+                $currentTpu->phone = $phone;
+                $currentTpu->updated_at = Carbon::now();
+                $currentTpu->save();
+                $tpuId = $currentTpu->id;
+            }
+
+            $dataGrave = [];
+            for ($a = 0; $a < count($blocks); $a++) {
+                $dataGrave[] = [
+                    'tpu_id' => $tpuId, 
+                    'grave_block' => $blocks[$a],
+                    'quota' => $quotas[$a],
+                    'created_at' => Carbon::now()
+                ];
+            }
+            TpuGrave::where("tpu_id", $tpuId)->delete();
+            TpuGrave::insert($dataGrave);
+            DB::commit();
+            return sendResponse([]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return sendResponse(
+                ['error' => $th->getMessage()],
+                'FAILED',
+                500
+            );
+        }
     }
 
     /**
@@ -386,6 +497,26 @@ class TpuController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            // delete all grave data
+            TpuGrave::where("tpu_id", $id)->delete();
+            // delete tpu data
+            $delete = Tpu::where("id", $id)->delete();
+            // delete tpu_id in users table
+            User::where("tpu_id", $id)->update(
+                ['tpu_id' => NULL, 'updated_at' => Carbon::now()]
+            );
+            DB::commit();
+            return sendResponse(['delete' => $delete, 'id' => $id]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            //throw $th;
+            return sendResponse(
+                ['error' => $th->getMessage()],
+                'FAILED',
+                500
+            );
+        }
     }
 }

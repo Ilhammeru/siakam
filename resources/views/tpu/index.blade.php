@@ -171,6 +171,7 @@
         _modalTpu.addEventListener('hidden.bs.modal', event => {
             document.getElementById('formTpu').reset();
             $('.targetFieldGrave').html('');
+            $('#rowGrave1').prop("hidden", false);
         });
         // end::modal-event
 
@@ -238,6 +239,7 @@
                     document.getElementById('formTpu').reset();
                 },
                 error: function(err) {
+                    console.log(err)
                     handleError(err, btnSave)
                 }
             });
@@ -261,19 +263,49 @@
         }
 
         function edit(id) {
-            let url = '{{ url("/tpu/") }}' + '/' + id;
+            let url = '{{ url("/tpu") }}' + '/' + id;
 
             $.ajax({
                 type: "GET",
-                url: "{{ url('/tpu/') }}" + "/" + id,
+                url: "{{ url('/tpu/show') }}" + "/" + id,
                 dataType: 'json',
                 success: function(res) {
                     btnSave.attr('disabled', false);
                     btnSave.text('Simpan');
+                    btnSave.attr('onclick', 'save()');
                     form.attr('action', url);
-                    form.attr('method', 'POST');
-                    modal.modal('show');
-                    $('#roleName').val(res.data.name);
+                    form.attr('method', 'PUT');
+                    modalTpu.modal('show');
+                    $('#tpuName').val(res.data.name);
+                    $('#tpuAddress').val(res.data.address);
+                    $('#tpuPhone').val(res.data.phone);
+                    // begin::handle-grave
+                    let graves = res.data.graves;
+                    if (graves.length) {
+                        $('#rowGrave1').prop("hidden", true);
+                        let row = "";
+                        for (let a = 0; a < graves.length; a++) {
+                            row += `<div class="form-group mb-5 mt-5 row rowGrave" id="editableGrave${graves[a].id}">
+                                        <div class="col-md-6">
+                                            <label for="tpuGraveBlock" class="col-form-label">Nama Blok</label>
+                                            <input type="text" name="grave_block[]" value="${graves[a].grave_block}" class="form-control" id="tpuGraveBlock" placeholder="Nama Block">
+                                        </div>
+                                        <div class="col-md-5">
+                                            <label for="tpuGraveQuota" class="col-form-label">Kuota</label>
+                                            <input type="text" name="quota[]" class="form-control" value="${graves[a].quota}" id="tpuGraveQuota" placeholder="Kuota Block">
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="text-center">
+                                                <label for="tpuGraveQuota" class="col-form-label" style="color: transparent;">data</label>
+                                                <i class="fas fa-times text-danger" style="cursor: pointer;" onclick="deleteGrave(${graves[a].id})"></i>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                        }
+                        $('.targetFieldGrave').html(row);
+                    }
+                    // end::handle-grave
+
                     $('#modalTitle').text('Edit TPU');
                 },
                 error: function(err) {
@@ -399,9 +431,9 @@
             })
         }
 
-        function deleteRole(id) {
+        function deleteTpu(id) {
             Swal.fire({
-                title: 'Apakah anda yakin ingin menghapus role ini?',
+                title: 'Apakah anda yakin ingin menghapus tpu ini?',
                 showDenyButton: true,
                 showCancelButton: false,
                 confirmButtonText: 'Ya! Hapus',
@@ -411,28 +443,18 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         type: "DELETE",
-                        url: "{{ url('/role/') }}" + "/" + id,
+                        url: "{{ url('/tpu/') }}" + "/" + id,
                         success: function(res) {
+                            console.log(res);
                             iziToast['success']({
-                                message: 'Role berhasil di hapus',
+                                message: 'TPU berhasil di hapus',
                                 position: "topRight"
                             });
 
                             dataTables.ajax.reload();
                         },
                         error: function(err) {
-                            let message = err.responseJSON.message;
-                            if (message == 'FAILED') {
-                                iziToast['error']({
-                                    message: err.responseJSON.data.error,
-                                    position: "topRight"
-                                });
-                            } else {
-                                iziToast['error']({
-                                    message: message,
-                                    position: "topRight"
-                                });
-                            }
+                            handleError(err);
                         }
                     })
                 }

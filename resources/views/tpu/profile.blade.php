@@ -15,10 +15,6 @@
 {{-- end::style --}}
 @section('content')
 
-@php
-    $userImage = true;
-@endphp
-
 <div class="row" id="targetTpuGrave">
     <div class="col-md-4">
         <div class="card card-flush">
@@ -204,8 +200,7 @@
             $('#rowGrave' + idRow).remove();
         }
 
-        function editTpu() {
-            let tpuId = "{{ $tpu->id }}";
+        function editTpu(tpuId) {
             let urlSave = "{{ url('/tpu/identity') }}" + "/" + tpuId;
             let urlShow = "{{ url('/tpu/show') }}" + "/" + tpuId;
             $.ajax({
