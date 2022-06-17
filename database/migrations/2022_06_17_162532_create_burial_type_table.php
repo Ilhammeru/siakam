@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('burial_type', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
             $table->string('name')->nullable();
             $table->timestamps();
         });
