@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BurialTypeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TpuController;
 use App\Http\Controllers\UserController;
@@ -67,6 +68,10 @@ Route::middleware(['auth'])->group(function(){
         Route::post('/user/{id}', [UserController::class, 'update'])->name('user.update');
         // end::user
 
+        // begin::burial-type
+        Route::get('/burial-type/json', [BurialTypeController::class, 'json'])->name('burial-type.json');
+        Route::resource('burial-type', BurialTypeController::class);
+        // end::burial-type
     });
     // begin::tpu
     Route::get('/tpu/json', [TpuController::class, 'json'])->name('tpu.json');

@@ -132,6 +132,16 @@
                 </div>
                 {{-- end::tpu-master --}}
                 @if (Auth::user()->role == 'admin' || Auth::user()->role == 'superadmin')
+                    <div class="menu-item">
+                        <a class="menu-link {{ menuActive('burial-type.index') }}" href="{{ route('burial-type.index') }}">
+                            <span class="menu-icon">
+                                <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
+                                <i class="fas fa-building"></i>
+                                <!--end::Svg Icon-->
+                            </span>
+                            <span class="menu-title">Jenis Pemakaman</span>
+                        </a>
+                    </div>
                     <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ menuShow(['role.index', 'user.*']) }}">
                         <span class="menu-link">
                             <span class="menu-icon">
