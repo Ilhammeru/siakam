@@ -142,7 +142,7 @@ class BurialDataController extends Controller
         if (Auth::user()->role != 'tpu') {
             $burialData = BurialData::count();
         }
-        $number = "TPU0$tpuId-00" . $burialData + 1;
+        $number = "TPU0$tpuId-00" . $burialData;
         return view('burial-data.create', compact('pageTitle', 'city', 'burialTypes', 'graveBlocks', 'number', 'tpus'));
     }
 
