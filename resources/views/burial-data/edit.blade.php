@@ -324,8 +324,11 @@
 
         // condition block grave
         let selectedTpu = "{{ $burialData->tpu_id }}";
-        if (selectedTpu != "") {
-            getGrave();
+        let role = "{{ Auth::user()->role }}";
+        if (role != 'tpu') {
+            if (selectedTpu != "") {
+                getGrave();
+            }
         }
 
         // begin::variable
@@ -355,6 +358,7 @@
                 url: "{{ url('/tpu/show') }}" + "/" + val,
                 dataType: "json",
                 success: function(res) {
+                    
                     let option = "<option value=''>- Pilih Blok -</option>";
                     let data = res.data.graves;
                     let selected;

@@ -213,7 +213,7 @@ class BurialDataController extends Controller
             if ($burial) {
                 // upload photo
                 if ($request->has('photo')) {
-                    $uploaded = $this->upload($request->photo, $this->staticKeyPhoto);
+                    $uploaded = $this->upload(array_values($request->photo), $this->staticKeyPhoto);
                     for ($a = 0; $a < count($uploaded); $a++) {
                         $dataFile[$uploaded[$a]['key']] = $uploaded[$a]['file'];
                     }
@@ -266,10 +266,11 @@ class BurialDataController extends Controller
                         $fileName = $photos[$a][$val]->getClientOriginalName();
                         if ($fileName != 'blob') {
                             $fileName = 'TPU' . Auth::user()->tpu_id . '-' . date('ymdHis') . '-' . $fileName;
-                            $pathPhoto = Storage::putFileAs("public/buried-data/$key", $photos[$a][$val], $fileName);
+                            // $pathPhoto = Storage::putFileAs("public/buried-data/$key", $photos[$a][$val], $fileName);
+                            $pathPhoto = $photos[$a][$val]->storeAs("buried-data/$key", $fileName, 'public');
                             if ($pathPhoto) {
                                 $linkToPhoto[$a] = [
-                                    'file' => 'storage/buried-data/' . $key . '/' . $fileName,
+                                    'file' => 'buried-data/' . $key . '/' . $fileName,
                                     'key' => $val
                                 ];
                             }
@@ -438,7 +439,7 @@ class BurialDataController extends Controller
             if ($burial) {
                 // upload photo
                 if ($request->has('photo')) {
-                    $uploaded = $this->upload($request->photo, $this->staticKeyPhoto);
+                    $uploaded = $this->upload(array_values($request->photo), $this->staticKeyPhoto);
                     $uploaded = array_values($uploaded);
                     if (count($uploaded) > 0) {
                         for ($a = 0; $a < count($uploaded); $a++) {
