@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BurialDataController;
 use App\Http\Controllers\BurialTypeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TpuController;
@@ -85,4 +86,9 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/tpu/identity/{id}', [TpuController::class, 'storeTpu'])->name('tpu.identity.store');
     Route::resource('tpu', TpuController::class);
     // end::tpu
+
+    Route::get('/burial-data/json/{filter}', [BurialDataController::class, 'json'])->name('burial-data.json');
+    Route::post('/burial-data/{id}', [BurialDataController::class, 'update'])->name('burial-data.update');
+    Route::delete('/burial-data/{id}', [BurialDataController::class, 'destroy'])->name('burial-data.destroy');
+    Route::resource('burial-data', BurialDataController::class);
 });

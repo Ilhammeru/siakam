@@ -15,23 +15,37 @@ return new class extends Migration
     {
         Schema::create('burial_data', function (Blueprint $table) {
             $table->id()->autoIncrement();
+            $table->string('burial_data_id');
             $table->string('name');
-            $table->integer('nik');
+            $table->string('nik');
+            $table->date('birth_date')->nullable();
+            $table->integer('regency_of_birth')->nullable();
             $table->text('address');
             $table->integer('village_id');
             $table->tinyInteger('rt');
             $table->tinyInteger('rw');
-            $table->date('birth_date')->nullable();
-            $table->integer('regency_of_birth')->nullable();
+            $table->string('reporters_name')->nullable();
+            $table->string('reporters_nik')->nullable();
+            $table->string('place_of_death')->nullable();
             $table->date('date_of_death')->nullable();
             $table->integer('regency_of_death')->nullable();
             $table->date('buried_date')->nullable();
-            $table->string('reporters_name')->nullable();
-            $table->integer('reporters_nik')->nullable();
+            $table->integer('burial_type_id')->nullable();
+            $table->integer('grave_block')->nullable();
+            $table->string('grave_number')->nullable();
+            $table->text('notes')->nullable();
+            $table->string('longitude')->nullable();
+            $table->string('latitude')->nullable();
+            $table->text('grave_photo')->nullable();
+            $table->text('application_letter_photo')->nullable();
+            $table->text('ktp_corpse_photo')->nullable();
+            $table->text('cover_letter_photo')->nullable();
+            $table->text('reporter_ktp_photo')->nullable();
+            $table->text('reporter_kk_photo')->nullable();
+            $table->text('letter_of_hospital_statement_photo')->nullable();
             $table->string('guardian_name')->nullable();
             $table->integer('guardian_phone')->nullable();
             $table->integer('tpu_id')->nullable();
-            $table->integer('grave_block')->nullable();
             $table->timestamps();
         });
     }

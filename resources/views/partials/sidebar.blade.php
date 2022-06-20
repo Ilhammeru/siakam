@@ -124,13 +124,25 @@
                     <a class="menu-link {{ menuActive('tpu.index') }}" href="{{ route('tpu.index') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
-                            <i class="fas fa-building"></i>
+                            <i class="fas fa-landmark"></i>
                             <!--end::Svg Icon-->
                         </span>
                         <span class="menu-title">TPU</span>
                     </a>
                 </div>
                 {{-- end::tpu-master --}}
+
+                <div class="menu-item">
+                    <a class="menu-link {{ menuActive(['burial-data.index', 'burial-data.create', 'burial-data.edit']) }}" href="{{ route('burial-data.index') }}">
+                        <span class="menu-icon">
+                            <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
+                            <i class="fas fa-database"></i>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-title">Data Pemakaman</span>
+                    </a>
+                </div>
+
                 @if (Auth::user()->role == 'admin' || Auth::user()->role == 'superadmin')
                     <div class="menu-item">
                         <a class="menu-link {{ menuActive('burial-type.index') }}" href="{{ route('burial-type.index') }}">
@@ -164,7 +176,7 @@
                         </div>
                         <div class="menu-sub menu-sub-accordion">
                             <div class="menu-item">
-                                <a class="menu-link {{ menuActive('user.index') }}" href="{{ route('user.index') }}">
+                                <a class="menu-link {{ menuActive(['user.index']) }}" href="{{ route('user.index') }}">
                                     <span class="menu-bullet">
                                         <span class="bullet bullet-dot"></span>
                                     </span>

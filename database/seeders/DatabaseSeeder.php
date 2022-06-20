@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             UsersSeeder::class,
             TpuSeeder::class,
             TpuGraveSeeder::class,
-            BurialTypeSeeder::class
+            BurialTypeSeeder::class,
+            IndoRegionSeeder::class
         ]);
     }
 }
