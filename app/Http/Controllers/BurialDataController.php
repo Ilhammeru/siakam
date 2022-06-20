@@ -10,6 +10,7 @@ use App\Models\TpuGrave;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
@@ -76,7 +77,7 @@ class BurialDataController extends Controller
         }
         return DataTables::of($data)
             ->editColumn('name', function($data) {
-                return ucwords($data->name);
+                return '<a href="'. route('burial-data.show', $data->id) .'">'. ucwords($data->name) .'</a>';
             })
             ->editColumn('address', function($data) {
                 $city = Regency::where('id', $data->village_id)->first()->name;
@@ -238,6 +239,24 @@ class BurialDataController extends Controller
         }
     }
 
+    public function funeralLetterStatus($data) {
+        if (
+            $data->grave_photo != NULL &&
+            $data->application_letter_photo != NULL &&
+            $data->ktp_corpse_photo != NULL &&
+            $data->cover_letter_photo != NULL &&
+            $data->reporter_ktp_photo != NULL &&
+            $data->reporter_kk_photo != NULL &&
+            $data->letter_of_hospital_statement_photo != NULL &&
+            $data->reporters_name != NULL &&
+            $data->reporters_nik != NULL
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function updateQuota($idBlock, $type) {
         try {
             $grave = TpuGrave::find($idBlock);
@@ -327,7 +346,9 @@ class BurialDataController extends Controller
                 500
             );
         }
-
+    // application_letter_photo, ktp_corpse_photo,
+    // cover_letter_photo, reporter_ktp_photo, reporter_kk_photo,
+    // letter_of_hospital_statement_photo
         return;
     }
 
@@ -337,9 +358,25 @@ class BurialDataController extends Controller
      * @param  \App\Models\BurialData  $burialData
      * @return \Illuminate\Http\Response
      */
-    public function show(BurialData $burialData)
+    public function show($burial_datum)
     {
-        //
+        $data = BurialData::with(['graveBlock', 'tpu'])->find($burial_datum);
+        $city = Regency::where('id', $data->village_id)->first()->name;
+        $address = $data->address . ' , RT ' . $data->rt . ' RW ' . $data->rw . ' , ' . $city;
+        $regencyOfBirth = Regency::where('id', $data->regency_of_birth)->first()->name;
+        $pageTitle = 'Detail Data Pemakaman #' . $data->burial_data_id;
+        $tpuBlock = '-';
+        if ($data->grave_block != NULL) {
+            $tpuBlock = $data->tpu->name . ' / ' . $data->graveBlock->grave_block . ' - ' . $data->grave_number;
+        }
+        $dateOfDeath = $data->date_of_death != NULL ? date('d F Y', strtotime($data->date_of_death)) : '-';
+        $buriedDate = $data->buried_date != NULL ? date('d F Y', strtotime($data->buried_date)) : '-';
+        $latLong = $data->longitude != NULL ? $data->latitude . ',' . $data->longitude : '-';
+        $funeralStatus = $this->funeralLetterStatus($data);
+        return view('burial-data.detail', compact(
+            'data', 'pageTitle', 'address', 'regencyOfBirth', 'tpuBlock',
+            'buriedDate', 'dateOfDeath', 'latLong', 'funeralStatus'
+        ));
     }
 
     /**
@@ -396,7 +433,7 @@ class BurialDataController extends Controller
         $currentData = BurialData::find($id);
         // Validation
         $this->validation($request);
-
+        
         DB::beginTransaction();
         try {
             $splitCoor = explode(',', $latLong);
@@ -442,20 +479,30 @@ class BurialDataController extends Controller
                     $uploaded = $this->upload(array_values($request->photo), $this->staticKeyPhoto);
                     $uploaded = array_values($uploaded);
                     if (count($uploaded) > 0) {
+                        // File::delete([
+                        //     $currentData->grave_photo,
+                        //     $currentData->application_letter_photo,
+                        //     $currentData->ktp_corpse_photo,
+                        //     $currentData->cover_letter_photo,
+                        //     $currentData->reporter_ktp_photo,
+                        //     $currentData->reporter_kk_photo,
+                        //     $currentData->letter_of_hospital_statement_photo,
+                        // ]);
+
                         for ($a = 0; $a < count($uploaded); $a++) {
                             $dataFile[$uploaded[$a]['key']] = $uploaded[$a]['file'];
                         }
                         // delete current file
-                        Storage::delete([
-                            'public/' . $currentData->grave_photo,
-                            'public/' . $currentData->application_letter_photo,
-                            'public/' . $currentData->ktp_corpse_photo,
-                            'public/' . $currentData->cover_letter_photo,
-                            'public/' . $currentData->reporter_ktp_photo,
-                            'public/' . $currentData->reporter_kk_photo,
-                            'public/' . $currentData->letter_of_hospital_statement_photo,
-                        ]);
-        
+                        // Storage::delete([
+                        //     'public/' . $currentData->grave_photo,
+                        //     'public/' . $currentData->application_letter_photo,
+                        //     'public/' . $currentData->ktp_corpse_photo,
+                        //     'public/' . $currentData->cover_letter_photo,
+                        //     'public/' . $currentData->reporter_ktp_photo,
+                        //     'public/' . $currentData->reporter_kk_photo,
+                        //     'public/' . $currentData->letter_of_hospital_statement_photo,
+                        // ]);
+                        
                         BurialData::where('id', $id)->update($dataFile);
                     }
                 }
@@ -467,6 +514,28 @@ class BurialDataController extends Controller
             );
         } catch (\Throwable $th) {
             DB::rollBack();
+            return sendResponse(
+                ['error' => $th->getMessage()],
+                'FAILED',
+                500
+            );
+        }
+    }
+
+    public function deletePhoto($id, $type) {
+        try {
+            // buried-data/ktp-corpse/TPU1-220620130409-150-3.jpg
+            $data = BurialData::find($id);
+            $currentFile = $data->$type;
+            $data->$type = NULL;
+            $data->save();
+            if ($data) {
+                File::delete($currentFile);
+            }
+            return sendResponse([
+                'delete' => $data
+            ]);
+        } catch (\Throwable $th) {
             return sendResponse(
                 ['error' => $th->getMessage()],
                 'FAILED',
@@ -501,5 +570,75 @@ class BurialDataController extends Controller
                 500
             );
         }
+    }
+
+    public function downloadFuneralLetter($id) {
+        $data = BurialData::with('tpu')->find($id);
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+        
+        // begin::section-title
+        $section = $phpWord->addSection();
+        // end::section-title
+        
+        // begin::header
+        $header = $section->addHeader();
+        // $header->addImage(
+        //     'logo_dinas.png',
+        //     array(
+        //         'wrappingStyle' => 'square',
+        //         'positioning' => 'relative',
+        //         'posHorizontal'    => \PhpOffice\PhpWord\Style\Image::POSITION_HORIZONTAL_LEFT,
+        //         'posHorizontalRel' => 'margin',
+        //         'posVerticalRel' => 'line',
+        //         'width'         => 58.32,
+        //         'height'        => 75.6,
+        //         'marginLeft'    => 200
+        //     )
+        // );
+        $header->addText(
+            'pemerintah kota batam',
+            ['size' => 14, 'name' => 'Arial', 'bold' => true, 'allCaps' => true],
+            ['align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,'spaceBefore' => 0, 'spaceAfter' => 0, 'indentation' => array('left' => 710, 'right' => 0.02)]
+        );
+        $header->addText(
+            'dinas perumahan rakyat, permukiman, dan pertamanan',
+            ['size' => 12, 'name' => 'Arial', 'bold' => true, 'allCaps' => true],
+            ['align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,'spaceBefore' => 0, 'spaceAfter' => 0, 'indentation' => array('left' => 710, 'right' => 0.02)]
+        );
+        $header->addText(
+            $data->tpu->name,
+            ['size' => 12, 'name' => 'Arial', 'bold' => true, 'allCaps' => true],
+            ['align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,'spaceBefore' => 0, 'spaceAfter' => 0, 'indentation' => array('left' => 710, 'right' => 0.02)]
+        );
+        $header->addText(
+            $data->tpu->address,
+            ['size' => 12, 'name' => 'Arial', 'bold' => true, 'allCaps' => true],
+            ['align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER, 'indentation' => array('left' => 710, 'right' => 0.02), 'spaceAfter' => 400]
+        );
+        // end::header
+
+        // begin::paragraph-style
+        $phpWord->addParagraphStyle('paragraph', [ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER ]);
+        // end::paragraph-style
+
+        $section->addText(
+            'surat keterangan pemakaman',
+            ['size' => 14, 'name' => 'Arial', 'bold' => true, 'allCaps' => true, 'underline' => 'single'], 
+            ['spaceAfter' => 300, 'align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER]
+        );
+
+        $section->addText(
+            'Berdasarkan permohonan Ahli Waris/ Pelapor,',
+            ['size' => 12, 'name' => 'Arial']
+        );
+
+        $tableStyle = array(
+            'borderColor' => '006699',
+            'borderSize'  => 6,
+            'cellMargin'  => 50
+        );
+        // Saving the document as OOXML file...
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+        $objWriter->save('helloWorld.docx');
     }
 }

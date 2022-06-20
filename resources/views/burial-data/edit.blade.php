@@ -92,12 +92,12 @@
                 </div>
                 <div class="form-group mb-5 row">
                     <div class="col-md-6">
-                        <label for="reporterName" class="col-form-label">Nama Pelapor</label>
-                        <input name="reporter_name" value="{{ $burialData->reporters_name }}" class="form-control" id="reporterName" placeholder="Nama Pelapor" type="text" />
+                        <label for="reporterName" class="col-form-label">Nama Ahli Waris</label>
+                        <input name="reporter_name" value="{{ $burialData->reporters_name }}" class="form-control" id="reporterName" placeholder="Nama Ahli Waris" type="text" />
                     </div>
                     <div class="col-md-6">
-                        <label for="reporterNik" class="col-form-label">NIK Pelapor</label>
-                        <input name="reporter_nik" value="{{ $burialData->reporters_nik }}" class="form-control" id="reporterNik" placeholder="NIK Pelapor" type="text" />
+                        <label for="reporterNik" class="col-form-label">NIK Ahli Waris</label>
+                        <input name="reporter_nik" value="{{ $burialData->reporters_nik }}" class="form-control" id="reporterNik" placeholder="NIK Ahli Waris" type="text" />
                     </div>
                 </div>
                 <div class="form-group mb-5 row">
@@ -314,6 +314,66 @@
         let fileHos = "{{ $burialData->letter_of_hospital_statement_photo }}";
         if (fileHos != "") {
             pondHospitalStatement.addFile("{{ asset($burialData->letter_of_hospital_statement_photo) }}")
+        }
+
+        const listId = [
+            'gravePhoto', 'applicationLetter', 'ktpCorpse', 'coverLetter',
+            'reporterKtpPhoto', 'reporterKkPhoto', 'hospitalStatement'
+        ];
+
+        for (let x = 0; x < listId.length; x++) {
+            let check = document.getElementById(listId[x]);
+            check.addEventListener('FilePond:removefile', (e) => {
+                console.log(e);
+                let ids = e.path[0].attributes[1].nodeValue;
+                let typePond;
+                let eachPond;
+                if (ids == 'ktpCorpse') {
+                    typePond = 'ktp_corpse_photo';
+                    eachPond = pondKtpCorpse;
+                } else if (ids == 'applicationLetter') {
+                    typePond = 'application_letter_photo';
+                } else if (ids == 'coverLetter') {
+                    typePond = 'cover_letter_photo';
+                } else if (ids == 'reporterKtpPhoto') {
+                    typePond = 'reporter_ktp_photo';
+                } else if (ids == 'reporterKkPhoto') {
+                    typePond = 'reporter_kk_photo';
+                } else if (ids == 'hospitalStatement') {
+                    typePond = 'letter_of_hospital_statement_photo';
+                } else {
+                    typePond = "";
+                }
+    
+                Swal.fire({
+                    title: 'Apakah anda yakin ingin menghapus foto ini?',
+                    showDenyButton: true,
+                    showCancelButton: false,
+                    confirmButtonText: 'Ya! Hapus',
+                    denyButtonText: `Batalkan`,
+                }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        let idBurial = "{{ $burialData->id }}";
+                        $.ajax({
+                            type: "DELETE",
+                            url: "{{ url('/burial-data/delete-photo') }}" + "/" + idBurial + "/" + typePond,
+                            success: function(res) {
+                                console.log(res);
+                                iziToast['success']({
+                                    message: 'Data Pemakaman berhasil di hapus',
+                                    position: "topRight"
+                                });
+                                window.location.href = "{{ url('/burial-data/') }}" + "/" + idBurial + '/edit';
+                            },
+                            error: function(err) {
+                                console.error(err);
+                                handleError(err);
+                            }
+                        })
+                    }
+                })
+            });
         }
 
         $('#regencyOfBirth').select2();

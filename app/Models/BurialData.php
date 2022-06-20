@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BurialData extends Model
 {
@@ -54,4 +55,19 @@ class BurialData extends Model
         'guardian_phone',
         'tpu_id'
     ];
+
+    public function graveBlock():BelongsTo
+    {
+        return $this->belongsTo(TpuGrave::class, 'grave_block', 'id');
+    }
+
+    public function tpu():BelongsTo
+    {
+        return $this->belongsTo(Tpu::class, 'tpu_id', 'id');
+    }
+
+    public function burialType():BelongsTo
+    {
+        return $this->belongsTo(BurialType::class, 'burial_type_id', 'id');
+    }
 }

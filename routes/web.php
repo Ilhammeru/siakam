@@ -87,8 +87,10 @@ Route::middleware(['auth'])->group(function(){
     Route::resource('tpu', TpuController::class);
     // end::tpu
 
+    Route::delete('/burial-data/delete-photo/{id}/{type}', [BurialDataController::class, 'deletePhoto'])->name('burial-data.deletePhoto');
     Route::get('/burial-data/json/{filter}', [BurialDataController::class, 'json'])->name('burial-data.json');
     Route::post('/burial-data/{id}', [BurialDataController::class, 'update'])->name('burial-data.update');
     Route::delete('/burial-data/{id}', [BurialDataController::class, 'destroy'])->name('burial-data.destroy');
+    Route::get('/burial-data/download/funeral-letter/{id}', [BurialDataController::class, 'downloadFuneralLetter'])->name('burial-data.downloadFuneralLetter');
     Route::resource('burial-data', BurialDataController::class);
 });

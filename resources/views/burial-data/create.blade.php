@@ -84,12 +84,12 @@
                 </div>
                 <div class="form-group mb-5 row">
                     <div class="col-md-6">
-                        <label for="reporterName" class="col-form-label">Nama Pelapor</label>
-                        <input name="reporter_name" class="form-control" id="reporterName" placeholder="Nama Pelapor" type="text" />
+                        <label for="reporterName" class="col-form-label">Nama Ahli Waris</label>
+                        <input name="reporter_name" class="form-control" id="reporterName" placeholder="Nama Ahli Waris" type="text" />
                     </div>
                     <div class="col-md-6">
-                        <label for="reporterNik" class="col-form-label">NIK Pelapor</label>
-                        <input name="reporter_nik" class="form-control" id="reporterNik" placeholder="NIK Pelapor" type="text" />
+                        <label for="reporterNik" class="col-form-label">NIK Ahli Waris</label>
+                        <input name="reporter_nik" class="form-control" id="reporterNik" placeholder="NIK Ahli Waris" type="text" />
                     </div>
                 </div>
                 <div class="form-group mb-5 row">

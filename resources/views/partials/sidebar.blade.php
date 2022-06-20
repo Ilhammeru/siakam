@@ -133,7 +133,7 @@
                 {{-- end::tpu-master --}}
 
                 <div class="menu-item">
-                    <a class="menu-link {{ menuActive(['burial-data.index', 'burial-data.create', 'burial-data.edit']) }}" href="{{ route('burial-data.index') }}">
+                    <a class="menu-link {{ menuActive(['burial-data.index', 'burial-data.create', 'burial-data.show', 'burial-data.edit']) }}" href="{{ route('burial-data.index') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
                             <i class="fas fa-database"></i>
