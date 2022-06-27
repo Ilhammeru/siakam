@@ -723,7 +723,7 @@ class BurialDataController extends Controller
             ->where('tpu_id', $tpuId)
             ->get();
         $pdf = PDF::loadView('burial-data.pdf', compact('data', 'tpu'))->setPaper('a4', 'landscape');
-        return $pdf->download('LaporanPemakaman_' . $tpu->name . '.pdf');
+        return $pdf->download('LaporanPemakaman_' . implode('', explode(' ', $tpu->name)) . '.pdf');
     }
 
     public function viewPdf() {
