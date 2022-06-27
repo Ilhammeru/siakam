@@ -16,12 +16,14 @@
       padding: 2px;
       border: 1px solid #000;
       font-size: 10px;
+      text-transform: uppercase;
     }
     
     .table > tbody > tr > td {
         padding: 7px;
         border: 1px solid #000;
         font-size: 10px;
+        text-transform: uppercase;
     }
      
     p {
@@ -106,6 +108,11 @@
         font-weight: bold;
     }
 
+    .header-3 {
+        text-transform: uppercase;
+        margin-bottom: 5px !important;
+    }
+
     .empty-data {
         font-weight: bold;
         text-transform: uppercase;
@@ -118,6 +125,7 @@
         <div class="section-header">
             <p class="header-1">NAMA TEMPAT PEMAKAMAN : {{ strtoupper($tpu->name) }}</p>
             <p class="header-2">ALAMAT : {{ strtoupper($tpu->address) }}</p>
+            <p class="header-3">PERIODE {{ formatIndonesiaDate($startDate) }} S.D {{ formatIndonesiaDate($endDate) }}</p>
         </div>
         <table class="table table-bordered">
           <thead>

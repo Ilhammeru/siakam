@@ -111,11 +111,11 @@
                         <div class="form-group row mb-2">
                             <div class="col-md-6">
                                 <label for="pdfDate" class="col-form-label">Tanggal Awal</label>
-                                <input type="date" name="start_date" value="{{ date('Y-m-d') }}" class="form-control" id="pdfDate">
+                                <input type="date" name="start_date" value="{{ date('Y-m-d') }}" data-value="{{ date('Y-m-d') }}" class="form-control" id="pdfDate">
                             </div>
                             <div class="col-md-6">
                                 <label for="pdfEndDate" class="col-form-label">Tanggal Akhir</label>
-                                <input type="date" name="end_date" value="{{ date('Y-m-d') }}" class="form-control" id="pdfEndDate">
+                                <input type="date" name="end_date" value="{{ date('Y-m-d') }}" data-value="{{ date('Y-m-d') }}" class="form-control" id="pdfEndDate">
                             </div>
                         </div>
                         @if (Auth::user()->role == 'admin')
@@ -147,6 +147,12 @@
         $('#tpuPdf').select2({
             dropdownParent: $('#modalDownloadPdf')
         });
+
+        const myModalEl = document.getElementById('modalDownloadPdf')
+        myModalEl.addEventListener('hidden.bs.modal', event => {
+            $('#pdfDate').val($('#pdfDate').data('value'));
+            $('#pdfEndDate').val($('#pdfEndDate').data('value'));
+        })
 
         var _columns = [{
             data: "id",

@@ -722,7 +722,7 @@ class BurialDataController extends Controller
             ->whereBetween('buried_date', [$startDate, $endDate])
             ->where('tpu_id', $tpuId)
             ->get();
-        $pdf = PDF::loadView('burial-data.pdf', compact('data', 'tpu'))->setPaper('a4', 'landscape');
+        $pdf = PDF::loadView('burial-data.pdf', compact('data', 'tpu', 'startDate', 'endDate'))->setPaper('a4', 'landscape');
         return $pdf->download('LaporanPemakaman_' . implode('', explode(' ', $tpu->name)) . '.pdf');
     }
 
