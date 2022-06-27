@@ -165,7 +165,7 @@ if (!function_exists('formatIndonesiaMonth')) {
             case '11':
                 $newMonth = 'November';
                 break;
-            case '10':
+            case '12':
                 $newMonth = 'Desember';
                 break;
             default:

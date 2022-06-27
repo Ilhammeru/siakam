@@ -34,6 +34,7 @@ return new class extends Migration
             $table->date('date_of_death')->nullable();
             $table->integer('regency_of_death')->nullable();
             $table->date('buried_date')->nullable();
+            $table->tinyInteger('buried_month')->nullable();
             $table->integer('burial_type_id')->nullable();
             $table->integer('grave_block')->nullable();
             $table->string('grave_number')->nullable();

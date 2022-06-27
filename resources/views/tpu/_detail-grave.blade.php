@@ -6,6 +6,7 @@
                     <th class="text-center">No.</th>
                     <th class="text-center" style="width: 150px;">Blok Makam</th>
                     <th class="text-center" style="width: 150px;">Kuota</th>
+                    <th class="text-center" style="width: 150px;">Sisa Kuota</th>
                     <th class="text-center"></th>
                 </tr>
             </thead>

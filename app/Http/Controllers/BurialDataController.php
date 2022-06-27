@@ -188,6 +188,7 @@ class BurialDataController extends Controller
         $dateOfDeath = $request->date_of_death;
         $regencyOfDeath = $request->regency_of_death;
         $buriedDate = $request->burial_date;
+        $buriedMonth = date('m', strtotime($buriedDate));
         $burialTypeId = $request->burial_type_id;
         $graveBlock = $request->grave_block;
         $graveNumber = $request->grave_number;
@@ -232,6 +233,7 @@ class BurialDataController extends Controller
                 'date_of_death' => $dateOfDeath,
                 'regency_of_death' => $regencyOfDeath,
                 'buried_date' => $buriedDate,
+                'buried_month' => $buriedMonth,
                 'burial_type_id' => $burialTypeId,
                 'grave_block' => $graveBlock,
                 'grave_number' => $graveNumber,
@@ -255,7 +257,7 @@ class BurialDataController extends Controller
             }
 
             // update quota
-            $this->updateQuota($graveBlock, 'decrement');
+            // $this->updateQuota($graveBlock, 'decrement');
 
             DB::commit();
             return sendResponse(
@@ -483,6 +485,7 @@ class BurialDataController extends Controller
         $dateOfDeath = $request->date_of_death;
         $regencyOfDeath = $request->regency_of_death;
         $buriedDate = $request->burial_date;
+        $buriedMonth = date('m', strtotime($buriedDate));
         $burialTypeId = $request->burial_type_id;
         $graveBlock = $request->grave_block;
         $graveNumber = $request->grave_number;
@@ -518,6 +521,7 @@ class BurialDataController extends Controller
                 'date_of_death' => $dateOfDeath,
                 'regency_of_death' => $regencyOfDeath,
                 'buried_date' => $buriedDate,
+                'buried_month' => $buriedMonth,
                 'burial_type_id' => $burialTypeId,
                 'grave_block' => $graveBlock,
                 'grave_number' => $graveNumber,
@@ -527,14 +531,14 @@ class BurialDataController extends Controller
                 'tpu_id' => $tpuId
             ];
             // update quota
-            if ($currentData->grave_block == NULL && $graveBlock != NULL) {
-                $this->updateQuota($graveBlock, 'decrement');
-            } else if ($currentData->grave_block != NULL && $graveBlock == NULL) {
-                $this->updateQuota($currentData->grave_block, 'increment');
-            } else if ($currentData->grave_block != NULL && $graveBlock != NULL && ($currentData->grave_block != $graveBlock)) {
-                $this->updateQuota($currentData->grave_block, 'increment');
-                $this->updateQuota($graveBlock, 'decrement');
-            }
+            // if ($currentData->grave_block == NULL && $graveBlock != NULL) {
+            //     $this->updateQuota($graveBlock, 'decrement');
+            // } else if ($currentData->grave_block != NULL && $graveBlock == NULL) {
+            //     $this->updateQuota($currentData->grave_block, 'increment');
+            // } else if ($currentData->grave_block != NULL && $graveBlock != NULL && ($currentData->grave_block != $graveBlock)) {
+            //     $this->updateQuota($currentData->grave_block, 'increment');
+            //     $this->updateQuota($graveBlock, 'decrement');
+            // }
 
             $burial = BurialData::where('id', $id)->update($data);
 

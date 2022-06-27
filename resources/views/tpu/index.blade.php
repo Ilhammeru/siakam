@@ -28,6 +28,7 @@
                         <th>Alamat</th>
                         <th>No. Telfon</th>
                         <th>Jumlah Makam</th>
+                        <th>Sisa Makam</th>
                         <th></th>
                     </tr>
                     <!--end::Table row-->
@@ -148,6 +149,8 @@
             data: "phone"
         },{
             data: "quota"
+        },{
+            data: "quota_left"
         },{
             data: 'action'
         }];
@@ -276,11 +279,11 @@
                     form.attr('action', url);
                     form.attr('method', 'PUT');
                     modalTpu.modal('show');
-                    $('#tpuName').val(res.data.name);
-                    $('#tpuAddress').val(res.data.address);
-                    $('#tpuPhone').val(res.data.phone);
+                    $('#tpuName').val(res.data.tpu.name);
+                    $('#tpuAddress').val(res.data.tpu.address);
+                    $('#tpuPhone').val(res.data.tpu.phone);
                     // begin::handle-grave
-                    let graves = res.data.graves;
+                    let graves = res.data.tpu.graves;
                     if (graves.length) {
                         $('#rowGrave1').prop("hidden", true);
                         let row = "";

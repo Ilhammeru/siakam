@@ -71,11 +71,18 @@ class TpuController extends Controller
                 $sum = $graves->sum('quota');
                 return '<span style="color: #009ef7; cursor: pointer;" onclick="detailGrave('. $data->id .')">'. $sum .'</span>';
             })
+            ->addColumn('quota_left', function($data) {
+                $graves = collect($data->graves);
+                $sum = $graves->sum('quota');
+                $burialData = BurialData::where('tpu_id', $data->id)->count();
+                $left = $sum - $burialData;
+                return '<span>'. $left .'</span>';
+            })
             ->addColumn('action', function($data) {
                 return '<span class="text-info me-3" style="cursor:pointer;" onclick="edit('. $data->id .')"><i class="fa fa-edit"></i></span>
                 <span class="text-info me-3" style="cursor:pointer;" onclick="deleteTpu('. $data->id .')"><i class="fa fa-trash"></i></span>';
             })
-            ->rawColumns(['action', 'grave', 'quota'])
+            ->rawColumns(['action', 'grave', 'quota', 'quota_left'])
             ->make(true);
     }
 

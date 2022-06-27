@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BurialDataController;
 use App\Http\Controllers\BurialTypeController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TpuController;
 use App\Http\Controllers\UserController;
@@ -34,10 +35,6 @@ Route::get('/template/profile', function() {
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('/login', 'Auth\LoginController@login')->name('login');
-Route::get('/dashboard', function() {
-    $pageTitle = "Dashboard";
-    return view('dashboard', compact('pageTitle'));
-})->name('dashboard');
 
 Route::get('/register', function() {
     return view('register');
@@ -54,6 +51,8 @@ Route::get('/password-request', function() {
 })->name('password.request');
 
 Route::middleware(['auth'])->group(function(){
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/{tpuId}', [DashboardController::class, 'json'])->name('dashboard.json');
     Route::middleware(['role:admin:superadmin'])->group(function() {
         // begin::role
         Route::get('/role/json', [RoleController::class, 'json'])->name('role.json');
