@@ -74,4 +74,9 @@ class BurialData extends Model
     {
         return $this->belongsTo(BurialType::class, 'burial_type_id', 'id');
     }
+
+    public function birthPlace():BelongsTo
+    {
+        return $this->belongsTo(Regency::class, 'village_id', 'id');
+    }
 }

@@ -170,6 +170,7 @@ return [
          * Package Service Providers...
          */
         Laravolt\Indonesia\ServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -197,7 +198,8 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Image' => Intervention\Image\Facades\Image::class,
-        'Indonesia' => Laravolt\Indonesia\Facade::class
+        'Indonesia' => Laravolt\Indonesia\Facade::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ])->toArray(),
 
 ];

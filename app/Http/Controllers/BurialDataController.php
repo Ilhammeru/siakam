@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use PDF;
 
 class BurialDataController extends Controller
 {
@@ -704,5 +705,30 @@ class BurialDataController extends Controller
         // Saving the document as OOXML file...
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
         $objWriter->save('helloWorld.docx');
+    }
+
+    public function downloadPdf(Request $request) {
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+        if ($request->tpu_id == NULl || $request->tpu_id == "") {
+            $tpuId = Auth::user()->tpu_id;
+        } else {
+            $tpuId = $request->tpu_id;
+        }
+
+        $tpu = Tpu::find($tpuId);
+
+        $data = BurialData::with(['birthPlace', 'graveBlock', 'tpu'])
+            ->whereBetween('buried_date', [$startDate, $endDate])
+            ->where('tpu_id', $tpuId)
+            ->get();
+        $pdf = PDF::loadView('burial-data.pdf', compact('data', 'tpu'))->setPaper('a4', 'landscape');
+        return $pdf->download('data.pdf');
+    }
+
+    public function viewPdf() {
+        $data = BurialData::with(['birthPlace', 'graveBlock', 'tpu'])->get();
+        $tpu = Tpu::find(1);
+        return view('burial-data.pdf', compact('data', 'tpu'));
     }
 }

@@ -92,5 +92,7 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/burial-data/{id}', [BurialDataController::class, 'update'])->name('burial-data.update');
     Route::delete('/burial-data/{id}', [BurialDataController::class, 'destroy'])->name('burial-data.destroy');
     Route::get('/burial-data/download/funeral-letter/{id}', [BurialDataController::class, 'downloadFuneralLetter'])->name('burial-data.downloadFuneralLetter');
+    Route::post('/burial-data/download/pdf', [BurialDataController::class, 'downloadPdf'])->name("burial-data.download.pdf");
+    Route::get('/burial-data/download/pdf', [BurialDataController::class, 'viewPdf'])->name("burial-data.view.pdf");
     Route::resource('burial-data', BurialDataController::class);
 });

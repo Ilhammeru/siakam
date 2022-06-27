@@ -57,6 +57,15 @@
     {{-- begin::card-list --}}
     <div class="card card-flush">
         <div class="card-body">
+            {{-- begin::action export --}}
+            <div class="row mb-5">
+                <div class="col">
+                    <div class="text-end">
+                        <button type="button" class="btn btn-info btn-sm" href="{{ route('burial-data.download.pdf') }}" onclick="downloadPdf()">Export PDF</button>
+                    </div>
+                </div>
+            </div>
+            {{-- end::action export --}}
             {{-- begin::table --}}
             <table class="table align-middle table-striped fs-6 gy-5 mb-0" id="tableBurialData">
                 <!--begin::Table head-->
@@ -87,11 +96,58 @@
         </div>
     </div>
     {{-- end::card-list --}}
+
+    {{-- begin::modal --}}
+    <div class="modal fade" tabindex="-1" id="modalDownloadPdf">
+        <div class="modal-dialog">
+          <div class="modal-content">
+                <form action="{{ route('burial-data.download.pdf') }}" method="POST" id="formDownload">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title">Download</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row mb-2">
+                            <div class="col-md-6">
+                                <label for="pdfDate" class="col-form-label">Tanggal Awal</label>
+                                <input type="date" name="start_date" value="{{ date('Y-m-d') }}" class="form-control" id="pdfDate">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="pdfEndDate" class="col-form-label">Tanggal Akhir</label>
+                                <input type="date" name="end_date" value="{{ date('Y-m-d') }}" class="form-control" id="pdfEndDate">
+                            </div>
+                        </div>
+                        @if (Auth::user()->role == 'admin')
+                        <div class="form-group row mb-2">
+                            <div class="col">
+                                <label for="tpuPdf" class="col-form-label">TPU</label>
+                                <select name="tpu_id" id="tpuPdf" class="form-select form-control">
+                                    @foreach ($tpus as $tpu)
+                                        <option value="{{ $tpu->id }}">{{ $tpu->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Download PDF</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{-- end::modal --}}
 @endsection
 {{-- begin::end --}}
 
 @push('scripts')
     <script>
+        $('#tpuPdf').select2({
+            dropdownParent: $('#modalDownloadPdf')
+        });
+
         var _columns = [{
             data: "id",
             visible: false,
@@ -171,6 +227,10 @@
                     })
                 }
             })
+        }
+
+        function downloadPdf() {
+            $('#modalDownloadPdf').modal('show');
         }
     </script>
 @endpush
