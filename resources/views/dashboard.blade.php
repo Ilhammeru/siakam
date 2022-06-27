@@ -3,27 +3,12 @@
 @section('content')
 
 <!--begin::Card-->
-<div class="card">
-
+<div class="card" style="height: 100%;">
     <div class="card-body">
-        {{-- @if (session('status'))
-            <div class="alert alert-success" role="alert">
-                {{ session('status') }}
-            </div>
-        @endif --}}
-
         <div class="row">
             <div class="col">
-                <div class="button-section">
-                    <button class="btn btn-primary" id="btnGeo" type="button" onclick="getLocation()">Dapatkan Lokasi</button>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <div class="target-geo">
-                    <p class="lat"></p>
-                    <p class="long"></p>
+                <div class="chart-container" style="position: relative; height:10vh; width:20vw">
+                    <canvas id="myChart"></canvas>
                 </div>
             </div>
         </div>
@@ -35,22 +20,48 @@
 
 {{-- begin::scripts --}}
 @push('scripts')
+    <script src="{{ asset('plugins/custom/chartjs/chart.js') }}"></script>
     <script>
-
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
-            } else { 
-                x.innerHTML = "Geolocation is not supported by this browser.";
+        const data = {
+            labels: [
+                'Red',
+                'Blue',
+                'Yellow'
+            ],
+            datasets: [{
+                label: 'My First Dataset',
+                data: [300, 50, 100],
+                backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)'
+                ],
+                hoverOffset: 4
+            }]
+        };
+        const ctx = document.getElementById('myChart');
+        const myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May'],
+                datasets: [{
+                data: [50, 60, 70, 180, 190]
+                }]
+            },
+            options: {
+                plugins: {
+                datalabels: {
+                    display: true,
+                    align: 'bottom',
+                    backgroundColor: '#ccc',
+                    borderRadius: 3,
+                    font: {
+                    size: 18,
+                    }
+                },
+                }
             }
-        }
-
-        function showPosition(position) {
-            let lat = position.coords.latitude;
-            let long = position.coords.longitude;
-            $('.lat').text(lat);
-            $('.long').text(long);
-        }
+        });
     </script>
 @endpush
 {{-- end::scripts --}}

@@ -107,3 +107,72 @@ if (!function_exists('sendResponse')) {
         return response()->json($format, $status);
     }
 }
+
+if (!function_exists('formatIndonesiaDate')) {
+    function formatIndonesiaDate($dateFormat) {
+        $month = date('m', strtotime($dateFormat));
+        $monthInd = formatIndonesiaMonth($month);
+        $date = date('d', strtotime($dateFormat));
+        $year = date('Y', strtotime($dateFormat));
+        $new = $date . ' ' . $monthInd . ' ' . $year;
+
+        return $new;
+    }
+}
+
+if (!function_exists('formatIndonesiaMonth')) {
+    function formatIndonesiaMonth($month) {
+        $newMonth = "";
+        $split = str_split($month);
+        if (count($split) > 1) {
+            if ($split[0] == 0) {
+                $month = $split[1];
+            } else {
+                $month = implode('', $split);
+            }
+        }
+        switch ($month) {
+            case '1':
+                $newMonth = 'Januari';
+                break;
+            case '2':
+                $newMonth = 'Febuari';
+                break;
+            case '3':
+                $newMonth = 'Maret';
+                break;
+            case '4':
+                $newMonth = 'April';
+                break;
+            case '5':
+                $newMonth = 'Mei';
+                break;
+            case '6':
+                $newMonth = 'Juni';
+                break;
+            case '7':
+                $newMonth = 'Juli';
+                break;
+            case '8':
+                $newMonth = 'Agustus';
+                break;
+            case '9':
+                $newMonth = 'September';
+                break;
+            case '10':
+                $newMonth = 'Oktober';
+                break;
+            case '11':
+                $newMonth = 'November';
+                break;
+            case '10':
+                $newMonth = 'Desember';
+                break;
+            default:
+                $newMonth = 'Tidak Ter Generate';
+                break;
+        }
+
+        return $newMonth;
+    }
+}

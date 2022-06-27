@@ -56,7 +56,7 @@
 
     .tdBirthPlace,
     .tdBirthDate {
-        width: 12% !important;
+        width: 9% !important;
     }
 
     .thBuriedDate {
@@ -68,11 +68,11 @@
     }
 
     .thRepName {
-        width: 7%;
+        width: 10%;
     }
 
     .thRepNik {
-        width: 7%;
+        width: 10%;
     }
 
     .thBlock {
@@ -129,11 +129,11 @@
               <th rowspan="2" colspan="2">tempat tanggal lahir</th>
               <th class="thDateDeath" rowspan="2">Tanggal Wafat</th>
               <th class="thBuriedDate" rowspan="2">Tanggal dimakamkan</th>
-              <th class="thRepName" rowspan="2">Nama Pelapor</th>
-              <th class="thRepNik" rowspan="2">NIK Pelapor</th>
-              <th class="thRepAll" rowspan="2">Nama & No.HP Ahli Waris</th>
+              <th class="thRepName" rowspan="2">Nama Ahli Waris</th>
+              <th class="thRepNik" rowspan="2">NIK Ahli Waris</th>
+              <th class="thRepAll" rowspan="2">No.HP Ahli Waris</th>
               <th class="thBlock" rowspan="2">Blok</th>
-              <th class="thNotes" rowspan="2">Ket</th>
+              <th class="thNotes" rowspan="2">No. Makam</th>
             </tr>
             <tr>
                 <th class="thVillage">Jalan / Dukuh</th>
@@ -166,17 +166,16 @@
                         <td class="text-center">{{ $item->rt }}</td>
                         <td class="text-center">{{ $item->rw }}</td>
                         <td class="tdBirthPlace text-center">{{ $item->birthPlace->name }}</td>
-                        <td class="tdBirthDate text-center">{{ date('d.m.Y', strtotime($item->birth_date)) }}</td>
-                        <td class="text-center">{{ date('d.m.Y', strtotime($item->date_of_death)) }}</td>
-                        <td class="text-center">{{ date('d.m.Y', strtotime($item->buried_date)) }}</td>
+                        <td class="tdBirthDate text-center">{{ formatIndonesiaDate($item->birth_date) }}</td>
+                        <td class="text-center">{{ formatIndonesiaDate($item->date_of_death) }}</td>
+                        <td class="text-center">{{ formatIndonesiaDate($item->buried_date) }}</td>
                         <td>{{ $reportName == "" ? '-' : $reportName }}</td>
-                        <td>{{ $reportPhone == "" ? '-' : $reportPhone }}</td>
+                        <td>{{ $reportNik == "" ? '-' : $reportNik }}</td>
                         <td>
-                            <p>{{ $reportName }}</p>
                             <p>{{ $reportPhone }}</p>
                         </td>
                         <td>{{ $item->graveBlock == NULL ? '-' : $item->graveBlock->grave_block }}</td>
-                        <td>{{ $item->notes }}</td>
+                        <td>{{ $item->grave_number }}</td>
                     </tr>
                 @php
                     $a++;
