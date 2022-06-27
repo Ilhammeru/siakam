@@ -63,6 +63,7 @@
                 <thead class="table-primary">
                     <!--begin::Table row-->
                     <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                        <th></th>
                         <th>Nama</th>
                         <th>NIK</th>
                         <th>Alamat</th>
@@ -92,6 +93,9 @@
 @push('scripts')
     <script>
         var _columns = [{
+            data: "id",
+            visible: false,
+        },{
             data: "name"
         },{
             data: "nik"
@@ -118,7 +122,7 @@
             processing: true,
             serverSide: true,
             scrollX: true,
-            order: [ [0, 'asc'] ],
+            order: [ [0, 'desc'] ],
             ajax: "{{ url('/burial-data/json/00') }}",
             columns: _columns,
         });

@@ -145,7 +145,7 @@
                                 <td>:</td>
                                 <td>
                                     <b>{{ $buriedDate }}</b>
-                                </td>
+                                 </td>
                             </tr>
                             <tr>
                                 <td>Koordinat Makam</td>

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('burial_data_id');
             $table->string('name');
             $table->string('nik');
+            $table->string('gender')->nullable();
+            $table->string('religion')->nullable();
             $table->date('birth_date')->nullable();
             $table->integer('regency_of_birth')->nullable();
             $table->text('address');
@@ -26,7 +28,9 @@ return new class extends Migration
             $table->tinyInteger('rw');
             $table->string('reporters_name')->nullable();
             $table->string('reporters_nik')->nullable();
-            $table->string('place_of_death')->nullable();
+            $table->string('reporters_address')->nullable();
+            $table->string('reporters_relationship')->nullable();
+            $table->string('reporters_phone')->nullable();
             $table->date('date_of_death')->nullable();
             $table->integer('regency_of_death')->nullable();
             $table->date('buried_date')->nullable();

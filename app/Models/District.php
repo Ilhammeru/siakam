@@ -26,7 +26,7 @@ class District extends Model
      *
      * @var string
      */
-    protected $table = 'districts';
+    protected $table = 'indonesia_districts';
 
     /**
      * The attributes that should be hidden for arrays.
@@ -44,7 +44,7 @@ class District extends Model
      */
     public function regency()
     {
-        return $this->belongsTo(Regency::class);
+        return $this->belongsTo(Regency::class, 'city_code', 'id');
     }
 
     /**
@@ -54,6 +54,6 @@ class District extends Model
      */
     public function villages()
     {
-        return $this->hasMany(Village::class);
+        return $this->hasMany(Village::class, 'district_code', 'id');
     }
 }

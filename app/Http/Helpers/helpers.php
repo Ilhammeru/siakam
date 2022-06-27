@@ -9,6 +9,7 @@ use App\Models\BonusLog;
 use App\Models\Prospect;
 use App\Models\Serial;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use PHPMailer\PHPMailer\Exception;

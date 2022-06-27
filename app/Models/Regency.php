@@ -24,7 +24,7 @@ class Regency extends Model
      *
      * @var string
      */
-    protected $table = 'regencies';
+    protected $table = 'indonesia_cities';
 
     /**
      * The attributes that should be hidden for arrays.
@@ -42,7 +42,7 @@ class Regency extends Model
      */
     public function province()
     {
-        return $this->belongsTo(Province::class);
+        return $this->belongsTo(Province::class, 'province_code', 'id');
     }
 
     /**
@@ -52,6 +52,6 @@ class Regency extends Model
      */
     public function districts()
     {
-        return $this->hasMany(District::class);
+        return $this->hasMany(District::class, 'city_code', 'id');
     }
 }

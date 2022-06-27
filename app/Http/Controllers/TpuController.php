@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BurialData;
 use App\Models\Tpu;
 use App\Models\TpuGrave;
 use App\Models\User;
@@ -241,8 +242,17 @@ class TpuController extends Controller
     public function showTpu($id)
     {
         $tpu = Tpu::with('graves')->find($id);
+        $name = implode('', explode(' ', $tpu->name));
+        $burialData = BurialData::where('tpu_id', $id)->count();
+        $number = "";
+        if (Auth::user()->role != 'tpu') {
+            $number = $name . '-' . ($burialData + 1) . '-' . date('m') . '-' . date('Y');
+        }
 
-        return sendResponse($tpu);
+        return sendResponse([
+            'tpu' => $tpu,
+            'number' => $number
+        ]);
     }
 
     public function storeTpu(Request $request, $id)

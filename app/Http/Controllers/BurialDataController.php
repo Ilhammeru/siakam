@@ -142,9 +142,22 @@ class BurialDataController extends Controller
         $burialData = BurialData::where('tpu_id', $tpuId)->count() + 1;
         if (Auth::user()->role != 'tpu') {
             $burialData = BurialData::count();
+            $number = "";
         }
-        $number = "TPU0$tpuId-00" . $burialData;
-        return view('burial-data.create', compact('pageTitle', 'city', 'burialTypes', 'graveBlocks', 'number', 'tpus'));
+        if (Auth::user()->role == 'tpu') {
+            $tpu = Tpu::find($tpuId);
+            $name = implode('', explode(' ', $tpu->name));
+            $number = $name . '-' . $burialData . '-' . date('m') . '-' . date('Y');
+        }
+        $religion = [
+            ['name' => 'ISLAM'],
+            ['name' => 'KRISTEN'],
+            ['name' => 'KATOLIK'],
+            ['name' => 'BUDHA'],
+            ['name' => 'KONGHUCU'],
+            ['name' => 'HINDU'],
+        ];
+        return view('burial-data.create', compact('pageTitle', 'religion', 'city', 'burialTypes', 'graveBlocks', 'number', 'tpus'));
     }
 
     /**
@@ -158,6 +171,8 @@ class BurialDataController extends Controller
         $name = $request->name;
         $burialDataId = $request->burial_data_id;
         $nik = $request->nik;
+        $religion = $request->corpse_religion;
+        $gender = $request->corpse_gender;
         $birthDate = $request->date_of_birth;
         $regencyBirthDate = $request->regency_of_birth;
         $address = $request->address;
@@ -166,7 +181,9 @@ class BurialDataController extends Controller
         $rw = $request->rw;
         $reportersName = $request->reporter_name;
         $reportersNik = $request->reporter_nik;
-        $placeOfDeath = $request->place_of_death;
+        $reporterRelation = $request->reporter_relationship;
+        $reporterPhone = $request->reporter_phone;
+        $reporterAddress = $request->reporter_address;
         $dateOfDeath = $request->date_of_death;
         $regencyOfDeath = $request->regency_of_death;
         $buriedDate = $request->burial_date;
@@ -181,6 +198,16 @@ class BurialDataController extends Controller
         // Validation
         $this->validation($request);
 
+        if (Auth::user()->role == 'admin') {
+            if ($burialDataId == NULL) {
+                return sendResponse(
+                    ['error' => ['No Pemakaman Harus Diisi, Silahkan Pilih TPU']],
+                    'VALIDATION_FAILED',
+                    500
+                );
+            }
+        }
+
         DB::beginTransaction();
         try {
             $splitCoor = explode(',', $latLong);
@@ -188,6 +215,8 @@ class BurialDataController extends Controller
                 'name' => $name,
                 'burial_data_id' => $burialDataId,
                 'nik' => $nik,
+                'gender' => $gender,
+                'religion' => $religion,
                 'birth_date' => $birthDate,
                 'regency_of_birth' => $regencyBirthDate,
                 'address' => $address,
@@ -196,7 +225,9 @@ class BurialDataController extends Controller
                 'rw' => $rw,
                 'reporters_name' => $reportersName,
                 'reporters_nik' => $reportersNik,
-                'place_of_death' => $placeOfDeath,
+                'reporters_phone' => $reporterPhone,
+                'reporters_address' => $reporterAddress,
+                'reporters_relationship' => $reporterRelation,
                 'date_of_death' => $dateOfDeath,
                 'regency_of_death' => $regencyOfDeath,
                 'buried_date' => $buriedDate,
@@ -321,8 +352,13 @@ class BurialDataController extends Controller
             'rt' => 'required',
             'rw' => 'required',
             'reporter_name' => 'required',
-            'reporter_phone' => 'required'
+            'reporter_phone' => 'required',
+            'grave_block' => 'required_with:tpu_id'
         ];
+        if (Auth::user()->role == 'admin') {
+            $rules['burial_data_id'] = 'required';
+        }
+        return $rules;
         $messageRule = [
             'name.required' => 'Nama Jenazah Harus Diisi',
             'nik.required' => 'NIK Jenazah Harus Diisi',
@@ -332,6 +368,8 @@ class BurialDataController extends Controller
             'rw.required' => 'RW Jenazah Harus Diisi',
             'reporter_name.required' => 'Nama Pelapor Jenazah Harus Diisi',
             'reporter_phone.required' => 'No. Telfon Pelapor Jenazah Harus Diisi',
+            'grave_block.required_with' => 'Blok Makam Harus Diisi Bila TPU Sudah Dipilih',
+            'burial_data_id.required' => 'No Pemakaman Harus Diisi, Silahkan Pilih TPU Terlebih Dahulu'
         ];
         $validator = Validator::make(
             $request->all(),
@@ -395,7 +433,25 @@ class BurialDataController extends Controller
         $burialTypes = BurialType::all();
         $graveBlocks = TpuGrave::where('tpu_id', $tpuId)->get();
         $tpus = Tpu::all();
-        return view('burial-data.edit', compact('burialData', 'pageTitle', 'city', 'burialTypes', 'graveBlocks', 'tpus'));
+        $number = "";
+        if (Auth::user()->role == 'tpu') {
+            $tpu = Tpu::find($tpuId);
+            $name = implode('', explode(' ', $tpu->name));
+            $number = $name . '-' . $burialData . '-' . date('m') . '-' . date('Y');
+        }
+        $latLong = "";
+        if ($burialData->latitude != "") {
+            $latLong = $burialData->latitude . ',' . $burialData->longitude;
+        }
+        $religion = [
+            ['name' => 'ISLAM'],
+            ['name' => 'KRISTEN'],
+            ['name' => 'KATOLIK'],
+            ['name' => 'BUDHA'],
+            ['name' => 'KONGHUCU'],
+            ['name' => 'HINDU'],
+        ];
+        return view('burial-data.edit', compact('burialData', 'latLong', 'number', 'religion', 'pageTitle', 'city', 'burialTypes', 'graveBlocks', 'tpus'));
     }
 
     /**
@@ -410,6 +466,8 @@ class BurialDataController extends Controller
         $name = $request->input('name');
         $burialDataId = $request->burial_data_id;
         $nik = $request->nik;
+        $religion = $request->corpse_religion;
+        $gender = $request->corpse_gender;
         $birthDate = $request->date_of_birth;
         $regencyBirthDate = $request->regency_of_birth;
         $address = $request->address;
@@ -418,7 +476,9 @@ class BurialDataController extends Controller
         $rw = $request->rw;
         $reportersName = $request->reporter_name;
         $reportersNik = $request->reporter_nik;
-        $placeOfDeath = $request->place_of_death;
+        $reporterRelation = $request->reporter_relationship;
+        $reporterPhone = $request->reporter_phone;
+        $reporterAddress = $request->reporter_address;
         $dateOfDeath = $request->date_of_death;
         $regencyOfDeath = $request->regency_of_death;
         $buriedDate = $request->burial_date;
@@ -441,6 +501,8 @@ class BurialDataController extends Controller
                 'name' => $name,
                 'burial_data_id' => $burialDataId,
                 'nik' => $nik,
+                'gender' => $gender,
+                'religion' => $religion,
                 'birth_date' => $birthDate,
                 'regency_of_birth' => $regencyBirthDate,
                 'address' => $address,
@@ -449,7 +511,9 @@ class BurialDataController extends Controller
                 'rw' => $rw,
                 'reporters_name' => $reportersName,
                 'reporters_nik' => $reportersNik,
-                'place_of_death' => $placeOfDeath,
+                'reporters_phone' => $reporterPhone,
+                'reporters_address' => $reporterAddress,
+                'reporters_relationship' => $reporterRelation,
                 'date_of_death' => $dateOfDeath,
                 'regency_of_death' => $regencyOfDeath,
                 'buried_date' => $buriedDate,

@@ -25,7 +25,7 @@ class Village extends Model
      *
      * @var string
      */
-    protected $table = 'villages';
+    protected $table = 'indonesia_villages';
 
     /**
      * The attributes that should be hidden for arrays.
@@ -43,6 +43,6 @@ class Village extends Model
      */
     public function district()
     {
-        return $this->belongsTo(District::class);
+        return $this->belongsTo(District::class, 'district_code', 'id');
     }
 }
