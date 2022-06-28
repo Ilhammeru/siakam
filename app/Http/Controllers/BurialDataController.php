@@ -722,7 +722,7 @@ class BurialDataController extends Controller
         // header("Content-Disposition: attachment; filename=myFile.docx");
         // readfile($temp_file); // or echo file_get_contents($temp_file);
         // unlink($temp_file);  // remove temp file
-        $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor('Surat_Keterangan_Pemakaman.docx');
+        $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor('Format_Surat_Pemakaman.docx');
         $templateProcessor->setValue('tpu_name', $data->tpu->name);
         $templateProcessor->setValue('tpu_address', $data->tpu->address);
         $templateProcessor->setValue('reporters_name', ucwords($data->reporters_name));
@@ -736,7 +736,8 @@ class BurialDataController extends Controller
         $templateProcessor->setValue('gender', $data->gender == 'L' ? 'Laki-laki' : 'Perempuan');
         $templateProcessor->setValue('religion', ucwords($data->religion));
         $templateProcessor->setValue('address', $data->address);
-        $templateProcessor->setValue('date_of_death', formatIndonesiaDay($data->date_of_death) . '/' . formatIndonesiaDate(date('Y-m-d', strtotime($data->date_of_death))));
+        $templateProcessor->setValue('day_of_death', formatIndonesiaDay($data->date_of_death));
+        $templateProcessor->setValue('date_of_death', formatIndonesiaDate(date('Y-m-d', strtotime($data->date_of_death))));
         $templateProcessor->setValue('buried_date', formatIndonesiaDay($data->buried_date) . '/' . formatIndonesiaDate(date('Y-m-d', strtotime($data->buried_date))));
         $templateProcessor->setValue('tpu', $data->tpu->name);
         $templateProcessor->setValue('grave_block', ucwords($data->graveBlock->grave_block));
