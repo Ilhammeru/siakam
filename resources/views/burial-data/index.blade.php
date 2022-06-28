@@ -74,12 +74,12 @@
                         <th></th>
                         <th>Nama</th>
                         <th>NIK</th>
-                        <th>Alamat</th>
+                        @if (Auth::user()->role != 'tpu')
                         <th>TPU</th>
-                        <th>Tanggal Wafat</th>
+                        @endif
                         <th>Tanggal Pemakaman</th>
-                        <th>Nama Pelapor</th>
                         <th>Blok Makam</th>
+                        <th>No Makam</th>
                         <th></th>
                     </tr>
                     <!--end::Table row-->
@@ -153,30 +153,47 @@
             $('#pdfEndDate').val($('#pdfEndDate').data('value'));
         })
 
-        var _columns = [{
-            data: "id",
-            visible: false,
-        },{
-            data: "name"
-        },{
-            data: "nik"
-        },{
-            data: "address",
-            width: "15%"
-        },{
-            data: 'tpu_id'
-        },{
-            data: "date_of_death"
-        },{
-            data: "buried_date"
-        },{
-            data: "reporters_name"
-        },{
-            data: "grave_block"
-        },{
-            data: 'action',
-            width: "10%"
-        }];
+        let role = "{{ Auth::user()->role }}";
+
+        if (role == 'tpu') {
+            var _columns = [{
+                data: "id",
+                visible: false,
+            },{
+                data: "name"
+            },{
+                data: "nik"
+            },{
+                data: "buried_date"
+            },{
+                data: "grave_block"
+            },{
+                data: "grave_number"
+            },{
+                data: 'action',
+                width: "10%"
+            }];
+        } else {
+            var _columns = [{
+                data: "id",
+                visible: false,
+            },{
+                data: "name"
+            },{
+                data: "nik"
+            },{
+                data: 'tpu_id'
+            },{
+                data: "buried_date"
+            },{
+                data: "grave_block"
+            },{
+                data: "grave_number"
+            },{
+                data: 'action',
+                width: "10%"
+            }];
+        }
     
         let dataTables = $("#tableBurialData").DataTable({
             responsive: true,
