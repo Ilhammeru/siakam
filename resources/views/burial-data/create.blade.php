@@ -304,59 +304,59 @@
         const pondGrave = FilePond.create(
             document.getElementById('gravePhoto'),{
                 allowFileSizeValidation: true,
-                maxFileSize: '1MB',
+                maxFileSize: '5MB',
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB",
+                labelMaxFileSize: "Ukuran Maximal 5MB",
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB"
+                labelMaxFileSize: "Ukuran Maximal 5MB"
             }
         );
         const pondApplicationLetter = FilePond.create(
             document.getElementById('applicationLetter'), {
                 allowFileSizeValidation: true,
-                maxFileSize: '1MB',
+                maxFileSize: '5MB',
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB"
+                labelMaxFileSize: "Ukuran Maximal 5MB"
             }
         );
         const pondKtpCorpse = FilePond.create(
             document.getElementById('ktpCorpse'),{
                 allowFileSizeValidation: true,
-                maxFileSize: '1MB',
+                maxFileSize: '5MB',
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB"
+                labelMaxFileSize: "Ukuran Maximal 5MB"
             }
         );
         const pondCoverLetter = FilePond.create(
             document.getElementById('coverLetter'),{
                 allowFileSizeValidation: true,
-                maxFileSize: '1MB',
+                maxFileSize: '5MB',
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB"
+                labelMaxFileSize: "Ukuran Maximal 5MB"
             }
         );
         const pondReporterKtp = FilePond.create(
             document.getElementById('reporterKtpPhoto'),{
                 allowFileSizeValidation: true,
-                maxFileSize: '1MB',
+                maxFileSize: '5MB',
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB"
+                labelMaxFileSize: "Ukuran Maximal 5MB"
             }
         );
         const pondReporterKk = FilePond.create(
             document.getElementById('reporterKkPhoto'),{
                 allowFileSizeValidation: true,
-                maxFileSize: '1MB',
+                maxFileSize: '5MB',
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB"
+                labelMaxFileSize: "Ukuran Maximal 5MB"
             }
         );
         const pondHospitalStatement = FilePond.create(
             document.getElementById('hospitalStatement'),{
                 allowFileSizeValidation: true,
-                maxFileSize: '1MB',
+                maxFileSize: '5MB',
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB"
+                labelMaxFileSize: "Ukuran Maximal 5MB"
             }
         );
 

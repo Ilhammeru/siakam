@@ -304,11 +304,11 @@
         const gravePhoto = FilePond.create(
             document.getElementById('gravePhoto'),{
                 allowFileSizeValidation: true,
-                maxFileSize: '1MB',
+                maxFileSize: '5MB',
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB",
+                labelMaxFileSize: "Ukuran Maximal 5MB",
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB"
+                labelMaxFileSize: "Ukuran Maximal 5MB"
             }
         );
         let fileGrave = "{{ $burialData->grave_photo }}";
@@ -318,11 +318,11 @@
         const applicationLetter = FilePond.create(
             document.getElementById('applicationLetter'),{
                 allowFileSizeValidation: true,
-                maxFileSize: '1MB',
+                maxFileSize: '5MB',
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB",
+                labelMaxFileSize: "Ukuran Maximal 5MB",
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB"
+                labelMaxFileSize: "Ukuran Maximal 5MB"
             }
         );
         let fileApp = "{{ $burialData->application_letter_photo }}";
@@ -332,11 +332,11 @@
         const ktpCorpse = FilePond.create(
             document.getElementById('ktpCorpse'),{
                 allowFileSizeValidation: true,
-                maxFileSize: '1MB',
+                maxFileSize: '5MB',
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB",
+                labelMaxFileSize: "Ukuran Maximal 5MB",
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB"
+                labelMaxFileSize: "Ukuran Maximal 5MB"
             }
         );
         let fileKtpCorpse = "{{ $burialData->ktp_corpse_photo }}";
@@ -346,11 +346,11 @@
         const coverLetter = FilePond.create(
             document.getElementById('coverLetter'),{
                 allowFileSizeValidation: true,
-                maxFileSize: '1MB',
+                maxFileSize: '5MB',
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB",
+                labelMaxFileSize: "Ukuran Maximal 5MB",
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB"
+                labelMaxFileSize: "Ukuran Maximal 5MB"
             }
         );
         let fileCover = "{{ $burialData->cover_letter_photo }}";
@@ -360,11 +360,11 @@
         const reporterKtpPhoto = FilePond.create(
             document.getElementById('reporterKtpPhoto'),{
                 allowFileSizeValidation: true,
-                maxFileSize: '1MB',
+                maxFileSize: '5MB',
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB",
+                labelMaxFileSize: "Ukuran Maximal 5MB",
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB"
+                labelMaxFileSize: "Ukuran Maximal 5MB"
             }
         );
         let fileRepKtp = "{{ $burialData->reporter_ktp_photo }}";
@@ -374,11 +374,11 @@
         const reporterKkPhoto = FilePond.create(
             document.getElementById('reporterKkPhoto'),{
                 allowFileSizeValidation: true,
-                maxFileSize: '1MB',
+                maxFileSize: '5MB',
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB",
+                labelMaxFileSize: "Ukuran Maximal 5MB",
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB"
+                labelMaxFileSize: "Ukuran Maximal 5MB"
             }
         );
         let fileRepKk = "{{ $burialData->reporter_kk_photo }}";
@@ -388,11 +388,11 @@
         const hospitalStatement = FilePond.create(
             document.getElementById('hospitalStatement'),{
                 allowFileSizeValidation: true,
-                maxFileSize: '1MB',
+                maxFileSize: '5MB',
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB",
+                labelMaxFileSize: "Ukuran Maximal 5MB",
                 labelMaxFileSizeExceeded: 'File Terlalu Besar',
-                labelMaxFileSize: "Ukuran Maximal 1MB"
+                labelMaxFileSize: "Ukuran Maximal 5MB"
             }
         );
         let fileHos = "{{ $burialData->letter_of_hospital_statement_photo }}";
