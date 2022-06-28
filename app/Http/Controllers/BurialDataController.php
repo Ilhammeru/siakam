@@ -72,9 +72,9 @@ class BurialDataController extends Controller
             $where = "tpu_id > 0";
         }
         if ($role == 'tpu') {
-            $data = BurialData::where('tpu_id', $tpuId)->whereRaw($where)->get();
+            $data = BurialData::with(['graveBlock'])->where('tpu_id', $tpuId)->whereRaw($where)->get();
         } else {
-            $data = BurialData::whereRaw($where)->get();
+            $data = BurialData::with(['graveBlock'])->whereRaw($where)->get();
         }
         return DataTables::of($data)
             ->editColumn('name', function($data) {
@@ -113,8 +113,8 @@ class BurialDataController extends Controller
             ->editColumn('grave_block', function($data) {
                 $number = $data->grave_number;
                 $numberText = $number == NULL ? '( Nomor makam belum dipilih )' : $number;
-                $block = 'Blok ' . $data->grave_block;
-                return $data->grave_block == NULL ? '-' : $block;
+                $block = 'Blok ' . ucwords($data->graveBlock->grave_block);
+                return $block;
             })
             ->addColumn('action', function($data) {
                 return '<a class="text-info me-3" style="cursor:pointer;" href="'. route('burial-data.edit', $data->id) .'"><i class="fa fa-edit"></i></a>
