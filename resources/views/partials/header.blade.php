@@ -4,7 +4,7 @@
     <div class="header-brand">
         <!--begin::Logo-->
         <a style="font-size: 24px; color: blue;">
-            SiAKAM
+            <img src="{{ asset("logo_dinas.png") }}" style="width: 40px; height: auto;" alt="">
         </a>
         <!--end::Logo-->
         <!--begin::Aside minimize-->

@@ -16,8 +16,8 @@ class DashboardController extends Controller
     }
     
     public function json($tpuId) {
-        if ($tpuId == 0) {
-            $tpuId = Tpu::all()[0]->id;
+        if (Auth::user()->role == 'tpu') {
+            $tpuId = Auth::user()->tpu_id;
         }
         $tpu = Tpu::with(['graves'])->find($tpuId);
         $tpus = Tpu::all();

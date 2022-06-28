@@ -5,7 +5,8 @@
 <div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
     <!--begin::Logo-->
     <a href="{{ route('dashboard') }}" class="mb-12">
-        <h1>SiAKAM</h1>
+        <img src="{{ asset('logo_dinas.png') }}" style="width: 100px; height: auto;" alt="">
+        <h1 class="text-center mt-4">SiAKAM</h1>
     </a>
     <!--end::Logo-->
     <!--begin::Wrapper-->

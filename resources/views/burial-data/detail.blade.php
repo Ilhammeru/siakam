@@ -5,7 +5,7 @@
 @push('styles')
     <style>
         .card-corpse {
-            height: 450px;
+            height: 550px;
         }
 
         .ribbon {
@@ -119,6 +119,16 @@
                                 <td> <b>{{ $data->nik }}</b> </td>
                             </tr>
                             <tr>
+                                <td>Jenis Kelamin</td>
+                                <td>:</td>
+                                <td> <b>{{ $data->gender == 'L' ? 'Laki-laki' : 'Perempuan' }}</b> </td>
+                            </tr>
+                            <tr>
+                                <td>Agama</td>
+                                <td>:</td>
+                                <td> <b>{{ $data->religion }}</b> </td>
+                            </tr>
+                            <tr>
                                 <td>Tanggal Wafat</td>
                                 <td>:</td>
                                 <td> <b>{{ $dateOfDeath }}</b> </td>
@@ -126,7 +136,7 @@
                             <tr>
                                 <td>Tempat, Tanggal Lahir</td>
                                 <td>:</td>
-                                <td> <b>{{ $regencyOfBirth . ', ' . date('d F Y', strtotime($data->birth_date)) }}</b> </td>
+                                <td> <b>{{ $regencyOfBirth . ', ' . formatIndonesiaDate(date('Y-m-d', strtotime($data->birth_date))) }}</b> </td>
                             </tr>
                             <tr>
                                 <td>TPU / Blok</td>
@@ -145,6 +155,13 @@
                                 <td>:</td>
                                 <td>
                                     <b>{{ $buriedDate }}</b>
+                                 </td>
+                            </tr>
+                            <tr>
+                                <td>Keterangan</td>
+                                <td>:</td>
+                                <td>
+                                    <b>{{ $data->notes ?? '-' }}</b>
                                  </td>
                             </tr>
                             <tr>
@@ -192,9 +209,24 @@
                                 <td>{{ $data->reporters_name ?? '-' }}</td>
                             </tr>
                             <tr>
+                                <td>No Telfon</td>
+                                <td>:</td>
+                                <td>{{ $data->reporters_phone ?? '-' }}</td>
+                            </tr>
+                            <tr>
                                 <td>NIK</td>
                                 <td>:</td>
                                 <td>{{ $data->reporters_nik ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Hubungan</td>
+                                <td>:</td>
+                                <td>{{ $data->reporters_relationship ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Alamat</td>
+                                <td>:</td>
+                                <td>{{ $data->reporters_address ?? '-' }}</td>
                             </tr>
                         </tbody>
                     </table>

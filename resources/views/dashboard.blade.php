@@ -6,6 +6,7 @@
 
 @section('content')
 
+@if (Auth::user()->role != 'tpu')
 {{-- begin::card-filter --}}
 <div class="card card-flush mb-5">
     <div class="card-body">
@@ -30,6 +31,7 @@
     </div>
 </div>
 {{-- end::card-filter --}}
+@endif
 
 <!--begin::Card-->
 <div class="card" style="height: 100%;">

@@ -412,8 +412,8 @@ class BurialDataController extends Controller
         if ($data->grave_block != NULL) {
             $tpuBlock = $data->tpu->name . ' / ' . $data->graveBlock->grave_block . ' - ' . $data->grave_number;
         }
-        $dateOfDeath = $data->date_of_death != NULL ? date('d F Y', strtotime($data->date_of_death)) : '-';
-        $buriedDate = $data->buried_date != NULL ? date('d F Y', strtotime($data->buried_date)) : '-';
+        $dateOfDeath = $data->date_of_death != NULL ? formatIndonesiaDate(date('Y-m-d', strtotime($data->date_of_death))) : '-';
+        $buriedDate = $data->buried_date != NULL ? formatIndonesiaDate(date('Y-m-d', strtotime($data->buried_date))) : '-';
         $latLong = $data->longitude != NULL ? $data->latitude . ',' . $data->longitude : '-';
         $funeralStatus = $this->funeralLetterStatus($data);
         return view('burial-data.detail', compact(
@@ -702,6 +702,11 @@ class BurialDataController extends Controller
             'Berdasarkan permohonan Ahli Waris/ Pelapor,',
             ['size' => 12, 'name' => 'Arial']
         );
+        
+        $section->addText(
+            'Nama',
+            ['size' => 12, 'name' => 'Arial']
+        );
 
         $tableStyle = array(
             'borderColor' => '006699',
@@ -710,7 +715,13 @@ class BurialDataController extends Controller
         );
         // Saving the document as OOXML file...
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
-        $objWriter->save('helloWorld.docx');
+        // $objWriter->save('helloWorld.docx');
+        $temp_file = tempnam(sys_get_temp_dir(), 'PHPWord');
+        $objWriter->save($temp_file);
+
+        header("Content-Disposition: attachment; filename=myFile.docx");
+        readfile($temp_file); // or echo file_get_contents($temp_file);
+        unlink($temp_file);  // remove temp file
     }
 
     public function downloadPdf(Request $request) {
