@@ -39,7 +39,7 @@ class DashboardController extends Controller
         foreach($graves as $gr) {
             $burialData = BurialData::where('grave_block', $gr->id)->count();
             $format[] = [
-                'y' => $gr->quota,
+                'y' => $burialData,
                 'legendText' => ucwords($gr->grave_block)
             ];
             $left[] = [

@@ -81,7 +81,8 @@
 
                     var chart = new CanvasJS.Chart("chartContainer1", {
                         title: {
-                            text: "Jumlah Petak Makam"
+                            text: "Jumlah Petak Makam",
+                            padding: 10
                         },
                         animationEnabled: true,
                         legend: {
@@ -108,7 +109,8 @@
                     chart.render();
                     var chart = new CanvasJS.Chart("chartContainer2", {
                         title: {
-                            text: "Sisa Petak Makam"
+                            text: "Sisa Petak Makam",
+                            padding: 10
                         },
                         animationEnabled: true,
                         legend: {
@@ -135,7 +137,8 @@
                     chart.render();
                     var chart = new CanvasJS.Chart("chartContainer3", {
                         title: {
-                            text: "Jumlah Pemakaman Per Bulan"
+                            text: "Jumlah Pemakaman Per Bulan",
+                            padding: 10
                         },
                         animationEnabled: true,
                         legend: {
