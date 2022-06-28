@@ -231,7 +231,6 @@
                     btnSave.text('Menyimpan data ...');
                 },
                 success: function(res) {
-                    console.log(res);
                     btnSave.attr('disabled', false);
                     btnSave.text('Simpan');
                     iziToast['success']({
@@ -243,7 +242,6 @@
                     document.getElementById('formTpu').reset();
                 },
                 error: function(err) {
-                    console.log(err)
                     handleError(err, btnSave)
                 }
             });
@@ -255,7 +253,6 @@
                 url: "{{ url('/tpu/detail-grave') }}" + "/" + id,
                 dataType: "json",
                 success: function(res) {
-                    console.log(res);
                     $('#modalTitle').text('Detail Makam');
                     $('#targetDetail').html(res.data.view);
                     $('#modalDetailTpu').modal('show');
@@ -314,7 +311,6 @@
                     $('#modalTitle').text('Edit TPU');
                 },
                 error: function(err) {
-                    console.log(err);
                     btnSave.attr('disabled', false);
                     btnSave.text('Simpan');
                     let message = err.responseJSON.message;
@@ -423,7 +419,6 @@
                     handleError(err);
                 },
                 success: function(res) {
-                    console.log(res);
                     iziToast['success']({
                         message: 'Berhasil edit data',
                         position: "topRight"
@@ -450,7 +445,6 @@
                         type: "DELETE",
                         url: "{{ url('/tpu/') }}" + "/" + id,
                         success: function(res) {
-                            console.log(res);
                             iziToast['success']({
                                 message: 'TPU berhasil di hapus',
                                 position: "topRight"

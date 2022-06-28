@@ -210,7 +210,6 @@
                         elem.text('Menyimpan data ...');
                     },
                     success: function(res) {
-                        console.log(res);
                         elem.attr('disabled', false);
                         elem.text('Simpan');
                         iziToast['success']({
@@ -292,7 +291,6 @@
                     $('#modalTitle').text('Edit User');
                 },
                 error: function(err) {
-                    console.log(err);
                     elem.attr('disabled', false);
                     elem.text('Simpan');
                     let message = err.responseJSON.message;

@@ -111,9 +111,7 @@ class BurialDataController extends Controller
                 return ucwords($data->reporters_name) ?? '-';
             })
             ->editColumn('grave_block', function($data) {
-                $number = $data->grave_number;
-                $numberText = $number == NULL ? '( Nomor makam belum dipilih )' : $number;
-                $block = 'Blok ' . ucwords($data->graveBlock->grave_block);
+                $block = $data->graveBlock == NULL ? '-' : 'Blok ' . ucwords($data->graveBlock->grave_block);
                 return $block;
             })
             ->addColumn('action', function($data) {
@@ -746,11 +744,9 @@ class BurialDataController extends Controller
         $temp_file = tempnam(sys_get_temp_dir(), 'PHPWord');
         $templateProcessor->saveAs($temp_file);
 
-        // Your browser will name the file "myFile.docx"
-        // regardless of what it's named on the server 
         header("Content-Disposition: attachment; filename=SuratKeteranganPemakaman.docx");
-        readfile($temp_file); // or echo file_get_contents($temp_file);
-        unlink($temp_file);  // remove temp file
+        readfile($temp_file);
+        unlink($temp_file);
     }
 
     public function downloadPdf(Request $request) {

@@ -362,7 +362,6 @@
                 url: "{{ url('/tpu/show') }}" + "/" + val,
                 dataType: "json",
                 success: function(res) {
-                    console.log(res);
                     let block = res.data.graveBlock;
                     let option = "<option value=''>- Pilih Blok -</option>";
                     let data = res.data.tpu.graves;
@@ -449,7 +448,6 @@
                     btnSave.text('Menyimpan Data ...');
                 },
                 success: function(res) {
-                    console.log(res);
                     btnSave.attr('disabled', false);
                     btnSave.text('Simpan');
                     window.location.href = "{{ route('burial-data.create') }}";
@@ -459,7 +457,6 @@
                     });
                 },
                 error: function(err){
-                    console.log(err);
                     btnSave.attr('disabled', false);
                     btnSave.text('Simpan');
                     handleError(err);
