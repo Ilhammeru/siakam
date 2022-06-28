@@ -193,13 +193,13 @@ if (!function_exists('formatIndonesiaDay')) {
             case 'wed':
                 $day = 'Rabu';
                 break;
-            case 'Thu':
+            case 'thu':
                 $day = 'Kamis';
                 break;
-            case 'Fri':
+            case 'fri':
                 $day = 'Jumat';
                 break;
-            case 'Sat':
+            case 'sat':
                 $day = 'Sabtu';
                 break;
             
