@@ -290,36 +290,74 @@
 @push('scripts')
     <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
     <script>
         FilePond.registerPlugin(
             FilePondPluginImagePreview,
+            FilePondPluginFileValidateSize,
             // FilePondPluginImageExifOrientation,
-            // FilePondPluginFileValidateSize,
             // FilePondPluginImageEdit
         );
 
         // Select the file input and use 
         // create() to turn it into a pond
         const pondGrave = FilePond.create(
-            document.getElementById('gravePhoto')
+            document.getElementById('gravePhoto'),{
+                allowFileSizeValidation: true,
+                maxFileSize: '1MB',
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB",
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB"
+            }
         );
         const pondApplicationLetter = FilePond.create(
-            document.getElementById('applicationLetter')
+            document.getElementById('applicationLetter'), {
+                allowFileSizeValidation: true,
+                maxFileSize: '1MB',
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB"
+            }
         );
         const pondKtpCorpse = FilePond.create(
-            document.getElementById('ktpCorpse')
+            document.getElementById('ktpCorpse'),{
+                allowFileSizeValidation: true,
+                maxFileSize: '1MB',
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB"
+            }
         );
         const pondCoverLetter = FilePond.create(
-            document.getElementById('coverLetter')
+            document.getElementById('coverLetter'),{
+                allowFileSizeValidation: true,
+                maxFileSize: '1MB',
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB"
+            }
         );
         const pondReporterKtp = FilePond.create(
-            document.getElementById('reporterKtpPhoto')
+            document.getElementById('reporterKtpPhoto'),{
+                allowFileSizeValidation: true,
+                maxFileSize: '1MB',
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB"
+            }
         );
         const pondReporterKk = FilePond.create(
-            document.getElementById('reporterKkPhoto')
+            document.getElementById('reporterKkPhoto'),{
+                allowFileSizeValidation: true,
+                maxFileSize: '1MB',
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB"
+            }
         );
         const pondHospitalStatement = FilePond.create(
-            document.getElementById('hospitalStatement')
+            document.getElementById('hospitalStatement'),{
+                allowFileSizeValidation: true,
+                maxFileSize: '1MB',
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB"
+            }
         );
 
         $('#regencyOfBirth').select2();
@@ -448,6 +486,7 @@
                     btnSave.text('Menyimpan Data ...');
                 },
                 success: function(res) {
+                    console.log(res);
                     btnSave.attr('disabled', false);
                     btnSave.text('Simpan');
                     window.location.href = "{{ route('burial-data.create') }}";
@@ -457,6 +496,7 @@
                     });
                 },
                 error: function(err){
+                    console.log(err);
                     btnSave.attr('disabled', false);
                     btnSave.text('Simpan');
                     handleError(err);

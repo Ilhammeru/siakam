@@ -292,57 +292,108 @@
 @push('scripts')
     <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
     <script>
         FilePond.registerPlugin(
-            FilePondPluginImagePreview
+            FilePondPluginImagePreview,
+            FilePondPluginFileValidateSize
         );
 
         // Select the file input and use 
         // create() to turn it into a pond
         const gravePhoto = FilePond.create(
-            document.getElementById('gravePhoto')
+            document.getElementById('gravePhoto'),{
+                allowFileSizeValidation: true,
+                maxFileSize: '1MB',
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB",
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB"
+            }
         );
         let fileGrave = "{{ $burialData->grave_photo }}";
         if (fileGrave != "") {
             gravePhoto.addFile("{{ asset($burialData->grave_photo) }}")
         }
         const applicationLetter = FilePond.create(
-            document.getElementById('applicationLetter')
+            document.getElementById('applicationLetter'),{
+                allowFileSizeValidation: true,
+                maxFileSize: '1MB',
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB",
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB"
+            }
         );
         let fileApp = "{{ $burialData->application_letter_photo }}";
         if (fileApp != "") {
             applicationLetter.addFile("{{ asset($burialData->application_letter_photo) }}");
         }
         const ktpCorpse = FilePond.create(
-            document.getElementById('ktpCorpse')
+            document.getElementById('ktpCorpse'),{
+                allowFileSizeValidation: true,
+                maxFileSize: '1MB',
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB",
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB"
+            }
         );
         let fileKtpCorpse = "{{ $burialData->ktp_corpse_photo }}";
         if (fileKtpCorpse != "") {
             ktpCorpse.addFile("{{ asset($burialData->ktp_corpse_photo) }}")
         }
         const coverLetter = FilePond.create(
-            document.getElementById('coverLetter')
+            document.getElementById('coverLetter'),{
+                allowFileSizeValidation: true,
+                maxFileSize: '1MB',
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB",
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB"
+            }
         );
         let fileCover = "{{ $burialData->cover_letter_photo }}";
         if (fileCover != "") {
             coverLetter.addFile("{{ asset($burialData->cover_letter_photo) }}")
         }
         const reporterKtpPhoto = FilePond.create(
-            document.getElementById('reporterKtpPhoto')
+            document.getElementById('reporterKtpPhoto'),{
+                allowFileSizeValidation: true,
+                maxFileSize: '1MB',
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB",
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB"
+            }
         );
         let fileRepKtp = "{{ $burialData->reporter_ktp_photo }}";
         if (fileRepKtp != "") {
             reporterKtpPhoto.addFile("{{ asset($burialData->reporter_ktp_photo) }}")
         }
         const reporterKkPhoto = FilePond.create(
-            document.getElementById('reporterKkPhoto')
+            document.getElementById('reporterKkPhoto'),{
+                allowFileSizeValidation: true,
+                maxFileSize: '1MB',
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB",
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB"
+            }
         );
         let fileRepKk = "{{ $burialData->reporter_kk_photo }}";
         if (fileRepKk != "") {
             reporterKkPhoto.addFile("{{ asset($burialData->reporter_kk_photo) }}")
         }
         const hospitalStatement = FilePond.create(
-            document.getElementById('hospitalStatement')
+            document.getElementById('hospitalStatement'),{
+                allowFileSizeValidation: true,
+                maxFileSize: '1MB',
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB",
+                labelMaxFileSizeExceeded: 'File Terlalu Besar',
+                labelMaxFileSize: "Ukuran Maximal 1MB"
+            }
         );
         let fileHos = "{{ $burialData->letter_of_hospital_statement_photo }}";
         if (fileHos != "") {
@@ -371,6 +422,7 @@
                 let check = document.getElementById(listId[x]);
                 check.addEventListener('FilePond:removefile', (e) => {
                     let ids = e.path[0].attributes[1].nodeValue;
+                    console.log(ids);
                     let typePond;
                     let eachPond;
                     if (ids == 'ktpCorpse') {
@@ -386,6 +438,8 @@
                         typePond = 'reporter_kk_photo';
                     } else if (ids == 'hospitalStatement') {
                         typePond = 'letter_of_hospital_statement_photo';
+                    } else if (ids == 'gravePhoto') {
+                        typePond = "grave_photo";
                     } else {
                         typePond = "";
                     }

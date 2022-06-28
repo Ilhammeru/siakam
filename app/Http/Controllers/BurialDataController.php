@@ -194,8 +194,6 @@ class BurialDataController extends Controller
         $graveNumber = $request->grave_number;
         $notes = $request->notes;
         $latLong = $request->lat_long;
-        $guardianName = $request->guardian_name;
-        $guardianPhone = $request->guardian_phone;
         $tpuId = $request->tpu_id ?? Auth::user()->tpu_id;
         // Validation
         $this->validation($request);
