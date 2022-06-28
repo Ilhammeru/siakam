@@ -41,7 +41,6 @@
                 <div class="col-md-1"></div>
                 <div class="col-md-4">
                     <select name="filter_tpu" id="filterTpu" class="form-select form-control">
-                        <option value="">- Pilih TPU -</option>
                         <option value="0">Semua TPU</option>
                         @foreach ($tpus as $tpu)
                             <option value="{{ $tpu->id }}">{{ $tpu->name }}</option>

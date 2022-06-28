@@ -90,7 +90,7 @@ class BurialDataController extends Controller
                 if ($date == NULL) {
                     $format = '-';
                 } else {
-                    $format = date('d F Y', strtotime($data->date_of_death)) ?? '-';
+                    $format = formatIndonesiaDate(date('Y-m-d', strtotime($data->date_of_death)));
                 }
                 return $format;
             })
@@ -103,7 +103,7 @@ class BurialDataController extends Controller
                 if ($date == NULL) {
                     $format = '-';
                 } else {
-                    $format = date('d F Y', strtotime($data->buried_date)) ?? '-';
+                    $format = formatIndonesiaDate(date('Y-m-d', strtotime($data->buried_date)));
                 }
                 return $format;
             })

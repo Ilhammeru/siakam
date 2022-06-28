@@ -17,18 +17,11 @@
                             <label for="filterTpu" class="col-form-label">Pilih Tpu</label>
                         </div>
                         <div class="col-md-4">
-                            <select name="filter_tpu" id="filterTpu" class="form-select form-control">
+                            <select name="filter_tpu" id="filterTpu" class="form-select form-control" onchange="filter()">
                                 @foreach ($tpus as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col">
-                            <div class="text-start">
-                                <button class="btn btn-primary btn-sm" type="button" onclick="filter()">Filter</button>
-                            </div>
                         </div>
                     </div>
                 </form>
@@ -78,7 +71,6 @@
                 success: function(res) {
                     let view = res.data.view;
                     $('#targetChart').html(view);
-
                     var chart = new CanvasJS.Chart("chartContainer1", {
                         title: {
                             text: "Jumlah Petak Makam",
