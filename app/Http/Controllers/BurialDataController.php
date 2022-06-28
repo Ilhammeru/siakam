@@ -113,7 +113,7 @@ class BurialDataController extends Controller
             ->editColumn('grave_block', function($data) {
                 $number = $data->grave_number;
                 $numberText = $number == NULL ? '( Nomor makam belum dipilih )' : $number;
-                $block = 'Blok ' . $data->grave_block . ' - ' . $numberText;
+                $block = 'Blok ' . $data->grave_block;
                 return $data->grave_block == NULL ? '-' : $block;
             })
             ->addColumn('action', function($data) {
