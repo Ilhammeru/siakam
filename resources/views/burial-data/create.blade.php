@@ -362,11 +362,21 @@
                 url: "{{ url('/tpu/show') }}" + "/" + val,
                 dataType: "json",
                 success: function(res) {
+                    console.log(res);
+                    let block = res.data.graveBlock;
                     let option = "<option value=''>- Pilih Blok -</option>";
                     let data = res.data.tpu.graves;
                     let registrationNumber = res.data.number;
                     for (let a = 0; a < data.length; a++) {
-                        option += `<option value="${data[a].id}">${data[a].grave_block}</option>`;
+                        let disabled, text;
+                        if (block[a] == data[a].quota) {
+                            disabled = 'disabled';
+                            text = data[a].grave_block + " (Penuh)";
+                        }  else {
+                            disabled = "";
+                            text = data[a].grave_block;
+                        }
+                        option += `<option ${disabled} value="${data[a].id}">${text}</option>`;
                     }
 
                     if (registrationNumber != "") {

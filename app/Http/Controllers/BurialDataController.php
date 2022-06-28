@@ -153,10 +153,12 @@ class BurialDataController extends Controller
         $religion = [
             ['name' => 'ISLAM'],
             ['name' => 'KRISTEN'],
+            ['name' => 'PROTESTAN'],
             ['name' => 'KATOLIK'],
             ['name' => 'BUDHA'],
             ['name' => 'KONGHUCU'],
             ['name' => 'HINDU'],
+            ['name' => 'PENGHAYAT KEPERCAYAAN'],
         ];
         return view('burial-data.create', compact('pageTitle', 'religion', 'city', 'burialTypes', 'graveBlocks', 'number', 'tpus'));
     }

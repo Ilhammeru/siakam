@@ -251,6 +251,10 @@ class TpuController extends Controller
         $tpu = Tpu::with('graves')->find($id);
         $name = implode('', explode(' ', $tpu->name));
         $burialData = BurialData::where('tpu_id', $id)->count();
+        $graveBlock = [];
+        foreach ($tpu->graves as $tg) {
+            $graveBlock[] = BurialData::where('grave_block', $tg->id)->count();
+        }
         $number = "";
         if (Auth::user()->role != 'tpu') {
             $number = $name . '-' . ($burialData + 1) . '-' . date('m') . '-' . date('Y');
@@ -258,7 +262,8 @@ class TpuController extends Controller
 
         return sendResponse([
             'tpu' => $tpu,
-            'number' => $number
+            'number' => $number,
+            'graveBlock' => $graveBlock
         ]);
     }
 
@@ -326,7 +331,13 @@ class TpuController extends Controller
     public function detailGrave($id) {
         $tpu = Tpu::with(['graves'])->find($id);
         $graves = $tpu->graves;
-        $view = view('tpu._detail-grave', compact('graves'))->render();
+
+        $burialData = [];
+        foreach($graves as $g) {
+            $burialData[] = BurialData::where('grave_block', $g->id)->count();
+        }
+        
+        $view = view('tpu._detail-grave', compact('graves', 'burialData'))->render();
         return sendResponse(['view' => $view]);
     }
 
