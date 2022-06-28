@@ -202,7 +202,7 @@ class BurialDataController extends Controller
         // Validation
         $this->validation($request);
 
-        if (Auth::user()->role == 'admin') {
+        if (Auth::user()->role == 'admin' || Auth::user()->role == 'superadmin') {
             if ($burialDataId == NULL) {
                 return sendResponse(
                     ['error' => ['No Pemakaman Harus Diisi, Silahkan Pilih TPU']],
@@ -360,7 +360,7 @@ class BurialDataController extends Controller
             'reporter_phone' => 'required',
             'grave_block' => 'required_with:tpu_id'
         ];
-        if (Auth::user()->role == 'admin') {
+        if (Auth::user()->role == 'admin' || Auth::user()->role == 'superadmin') {
             $rules['burial_data_id'] = 'required';
         }
         return $rules;

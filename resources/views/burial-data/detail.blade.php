@@ -5,7 +5,12 @@
 @push('styles')
     <style>
         .card-corpse {
-            height: 550px;
+            height: 420px;
+        }
+
+        .card-burial {
+            height: 270px;
+            margin-bottom: 20px;
         }
 
         .ribbon {
@@ -139,37 +144,11 @@
                                 <td> <b>{{ $regencyOfBirth . ', ' . formatIndonesiaDate(date('Y-m-d', strtotime($data->birth_date))) }}</b> </td>
                             </tr>
                             <tr>
-                                <td>TPU / Blok</td>
-                                <td>:</td>
-                                <td>
-                                    <b>{{ $tpuBlock }}</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Tipe Pemakaman</td>
-                                <td>:</td>
-                                <td> <b>{{ $data->burialType ? $data->burialType->name : '-' }}</b> </td>
-                            </tr>
-                            <tr>
-                                <td>Tanggal Pemakaman</td>
-                                <td>:</td>
-                                <td>
-                                    <b>{{ $buriedDate }}</b>
-                                 </td>
-                            </tr>
-                            <tr>
                                 <td>Keterangan</td>
                                 <td>:</td>
                                 <td>
                                     <b>{{ $data->notes ?? '-' }}</b>
                                  </td>
-                            </tr>
-                            <tr>
-                                <td>Koordinat Makam</td>
-                                <td>:</td>
-                                <td>
-                                    <b>{{ $latLong }}</b>
-                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -179,10 +158,10 @@
         <div class="col-md-4 mb-5">
             <div class="card card-flush card-corpse">
                 <div class="card-body">
-                    <h3 class="mb-5">Foto Makam</h3>
+                    <h3 class="mb-1">Foto Makam</h3>
                     <div class="gravePhoto d-flex align-items-center justify-content-center h-100">
                         @if ($data->grave_photo != NULL)
-                        <img src="{{ asset($data->grave_photo) }}" style="width: 100%; height: auto; border-radius: 10px;" alt="">
+                        <img src="{{ asset($data->grave_photo) }}" style="width: 300px; height: auto; border-radius: 10px;" alt="">
                         @else 
                         <div class="text-center">
                             <p>Foto Makam Belum di Upload</p>
@@ -193,12 +172,9 @@
             </div>
         </div>
     </div>
-    {{-- end::corpse-data --}}
-
-    {{-- begin::additional-info --}}
     <div class="row">
-        <div class="col-md-4">
-            <div class="card card-flush">
+        <div class="col-md-6">
+            <div class="card card-flush card-burial">
                 <div class="card-body">
                     <h3 class="mb-5">Data Ahli Waris</h3>
                     <table class="table mt-5">
@@ -233,98 +209,144 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-8">
-            <div class="card card-flush">
+        <div class="col-md-6">
+            <div class="card card-flush card-burial">
                 <div class="card-body">
-                    <h3 class="mb-5">Data Persyaratan</h3>
-                    <table class="table mb-5">
+                    <h3 class="mb-5">Data Pemakaman</h3>
+                    <table class="table mt-5">
                         <tbody>
                             <tr>
-                                <td>Surat Permohonan</td>
+                                <td>TPU / Blok</td>
                                 <td>:</td>
                                 <td>
-                                    @if ($data->application_letter_photo == NULL)
-                                        <span>Belum Di Upload</span>                                        
-                                    @else
-                                        <span style="color: #009ef7; cursor: pointer;" onclick="detailPhoto('{{ asset($data->application_letter_photo) }}', 'Surat Permohonan')">
-                                            <i class="fas fa-link me-4" style="color: #009ef7;"></i>
-                                            Lihat
-                                        </span>
-                                    @endif
+                                    <b>{{ $tpuBlock }}</b>
                                 </td>
                             </tr>
                             <tr>
-                                <td>KTP Jenazah</td>
+                                <td>Tipe Pemakaman</td>
                                 <td>:</td>
-                                <td>
-                                    @if ($data->ktp_corpse_photo == NULL)
-                                        <span>Belum Di Upload</span>                                        
-                                    @else
-                                        <span style="color: #009ef7; cursor: pointer;" onclick="detailPhoto('{{ asset($data->ktp_corpse_photo) }}', 'KTP Jenazah')">
-                                            <i class="fas fa-link me-4" style="color: #009ef7;"></i>
-                                            Lihat
-                                        </span>
-                                    @endif
-                                </td>
+                                <td> <b>{{ $data->burialType ? $data->burialType->name : '-' }}</b> </td>
                             </tr>
                             <tr>
-                                <td>Surat Pengantar</td>
+                                <td>Tanggal Pemakaman</td>
                                 <td>:</td>
                                 <td>
-                                    @if ($data->cover_letter_photo == NULL)
-                                        <span>Belum Di Upload</span>                                        
-                                    @else
-                                        <span style="color: #009ef7; cursor: pointer;" onclick="detailPhoto('{{ asset($data->cover_letter_photo) }}', 'Surat Pengantar')">
-                                            <i class="fas fa-link me-4" style="color: #009ef7;"></i>
-                                            Lihat
-                                        </span>
-                                    @endif
-                                </td>
+                                    <b>{{ $buriedDate }}</b>
+                                 </td>
                             </tr>
                             <tr>
-                                <td>KTP Ahli Waris</td>
+                                <td>Koordinat Makam</td>
                                 <td>:</td>
                                 <td>
-                                    @if ($data->reporter_ktp_photo == NULL)
-                                        <span>Belum Di Upload</span>                                        
-                                    @else
-                                        <span style="color: #009ef7; cursor: pointer;" onclick="detailPhoto('{{ asset($data->reporter_ktp_photo) }}', 'KTP Ahli Waris')">
-                                            <i class="fas fa-link me-4" style="color: #009ef7;"></i>
-                                            Lihat
-                                        </span>
-                                    @endif
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>KK Ahli Waris</td>
-                                <td>:</td>
-                                <td>
-                                    @if ($data->reporter_kk_photo == NULL)
-                                        <span>Belum Di Upload</span>                                        
-                                    @else
-                                        <span style="color: #009ef7; cursor: pointer;" onclick="detailPhoto('{{ asset($data->reporter_kk_photo) }}', 'KK Ahli Waris')">
-                                            <i class="fas fa-link me-4" style="color: #009ef7;"></i>
-                                            Lihat
-                                        </span>
-                                    @endif
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Surat Keterangan RS</td>
-                                <td>:</td>
-                                <td>
-                                    @if ($data->letter_of_hospital_statement_photo == NULL)
-                                        <span>Belum Di Upload</span>                                        
-                                    @else
-                                        <span style="color: #009ef7; cursor: pointer;" onclick="detailPhoto('{{ asset($data->letter_of_hospital_statement_photo) }}', 'Surat Keterangan RS')">
-                                            <i class="fas fa-link me-4" style="color: #009ef7;"></i>
-                                            Lihat
-                                        </span>
-                                    @endif
+                                    <b>{{ $latLong }}</b>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- end::corpse-data --}}
+
+    {{-- begin::additional-info --}}
+    <div class="row">
+        <div class="col">
+            <div class="card card-flush">
+                <div class="card-body">
+                    <h3 class="mb-5">Data Persyaratan</h3>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <table class="table mb-5">
+                                <tbody>
+                                    <tr>
+                                        <td>Surat Permohonan</td>
+                                        <td>:</td>
+                                        <td>
+                                            @if ($data->application_letter_photo == NULL)
+                                                <span>Belum Di Upload</span>                                        
+                                            @else
+                                                <span style="color: #009ef7; cursor: pointer;" onclick="detailPhoto('{{ asset($data->application_letter_photo) }}', 'Surat Permohonan')">
+                                                    <i class="fas fa-link me-4" style="color: #009ef7;"></i>
+                                                    Lihat
+                                                </span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>KTP Jenazah</td>
+                                        <td>:</td>
+                                        <td>
+                                            @if ($data->ktp_corpse_photo == NULL)
+                                                <span>Belum Di Upload</span>                                        
+                                            @else
+                                                <span style="color: #009ef7; cursor: pointer;" onclick="detailPhoto('{{ asset($data->ktp_corpse_photo) }}', 'KTP Jenazah')">
+                                                    <i class="fas fa-link me-4" style="color: #009ef7;"></i>
+                                                    Lihat
+                                                </span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Surat Pengantar</td>
+                                        <td>:</td>
+                                        <td>
+                                            @if ($data->cover_letter_photo == NULL)
+                                                <span>Belum Di Upload</span>                                        
+                                            @else
+                                                <span style="color: #009ef7; cursor: pointer;" onclick="detailPhoto('{{ asset($data->cover_letter_photo) }}', 'Surat Pengantar')">
+                                                    <i class="fas fa-link me-4" style="color: #009ef7;"></i>
+                                                    Lihat
+                                                </span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>KTP Ahli Waris</td>
+                                        <td>:</td>
+                                        <td>
+                                            @if ($data->reporter_ktp_photo == NULL)
+                                                <span>Belum Di Upload</span>                                        
+                                            @else
+                                                <span style="color: #009ef7; cursor: pointer;" onclick="detailPhoto('{{ asset($data->reporter_ktp_photo) }}', 'KTP Ahli Waris')">
+                                                    <i class="fas fa-link me-4" style="color: #009ef7;"></i>
+                                                    Lihat
+                                                </span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>KK Ahli Waris</td>
+                                        <td>:</td>
+                                        <td>
+                                            @if ($data->reporter_kk_photo == NULL)
+                                                <span>Belum Di Upload</span>                                        
+                                            @else
+                                                <span style="color: #009ef7; cursor: pointer;" onclick="detailPhoto('{{ asset($data->reporter_kk_photo) }}', 'KK Ahli Waris')">
+                                                    <i class="fas fa-link me-4" style="color: #009ef7;"></i>
+                                                    Lihat
+                                                </span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Surat Keterangan Medis</td>
+                                        <td>:</td>
+                                        <td>
+                                            @if ($data->letter_of_hospital_statement_photo == NULL)
+                                                <span>Belum Di Upload</span>                                        
+                                            @else
+                                                <span style="color: #009ef7; cursor: pointer;" onclick="detailPhoto('{{ asset($data->letter_of_hospital_statement_photo) }}', 'Surat Keterangan Medis')">
+                                                    <i class="fas fa-link me-4" style="color: #009ef7;"></i>
+                                                    Lihat
+                                                </span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

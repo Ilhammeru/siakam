@@ -117,7 +117,7 @@
                                 <input type="date" name="end_date" value="{{ date('Y-m-d') }}" data-value="{{ date('Y-m-d') }}" class="form-control" id="pdfEndDate">
                             </div>
                         </div>
-                        @if (Auth::user()->role == 'admin')
+                        @if (Auth::user()->role == 'admin' || Auth::user()->role == 'superadmin')
                         <div class="form-group row mb-2">
                             <div class="col">
                                 <label for="tpuPdf" class="col-form-label">TPU</label>

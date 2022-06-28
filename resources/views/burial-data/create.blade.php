@@ -166,7 +166,7 @@
 
                         <div class="form-group row mb-2">
                             <div class="col-md-12">
-                                <label for="burialId" class="col-form-label {{ Auth::user()->role == 'admin' ? 'required' : '' }}">No Pemakaman</label>
+                            <label for="burialId" class="col-form-label {{ Auth::user()->role == 'admin' ? 'required' : (Auth::user()->role == 'superadmin' ? 'required' : '') }}">No Pemakaman</label>
                                 <input type="text" name="burial_data_id" placeholder="{{ $number == "" ? 'Akan otomatis terisi bila TPU sudah terisi' : '' }}" readonly class="form-control" id="burialId" value="{{ $number }}">
                             </div>
                         </div>
@@ -265,7 +265,7 @@
                         </div>
                         <div class="form-group mb-2 row">
                             <div class="col-md-12">
-                                <label for="hospitalStatement" class="col-form-label">Foto Surat Keterangan RS</label>
+                                <label for="hospitalStatement" class="col-form-label">Foto Surat Keterangan Medis</label>
                                 <input type="file" name="letter_of_hospital_statement" class="form-control" id="hospitalStatement">
                             </div>
                         </div>

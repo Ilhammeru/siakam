@@ -266,7 +266,7 @@
                         </div>
                         <div class="form-group mb-2 row">
                             <div class="col-md-12">
-                                <label for="hospitalStatement" class="col-form-label">Foto Surat Keterangan RS</label>
+                                <label for="hospitalStatement" class="col-form-label">Foto Surat Keterangan Medis</label>
                                 <input type="file" name="letter_of_hospital_statement" class="form-control" id="hospitalStatement">
                             </div>
                         </div>
