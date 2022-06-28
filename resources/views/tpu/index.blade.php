@@ -101,11 +101,12 @@
                             <h3 class="text-center">Data Makam</h3>
                             <div class="col-md-6">
                                 <label for="tpuGraveBlock" class="col-form-label">Nama Blok</label>
-                                <input type="text" name="grave_block[]" class="form-control" id="tpuGraveBlock" placeholder="Nama Block">
+                                <input type="text" name="graves[0][grave_block]" class="form-control" id="tpuGraveBlock" placeholder="Nama Block">
+                                <input type="text" hidden name="graves[0][id]" class="form-control" id="tpuGraveBlock" placeholder="Nama Block">
                             </div>
                             <div class="col-md-6">
                                 <label for="tpuGraveQuota" class="col-form-label">Kuota</label>
-                                <input type="text" name="quota[]" class="form-control" id="tpuGraveQuota" placeholder="Kuota Block">
+                                <input type="text" name="graves[0][quota]" class="form-control" id="tpuGraveQuota" placeholder="Kuota Block">
                             </div>
                         </div>
                         <div class="targetFieldGrave"></div>
@@ -193,11 +194,12 @@
             let form = `<div class="form-group mb-5 mt-5 row rowGrave" id="rowGrave${countRow + 1}">
                             <div class="col-md-6">
                                 <label for="tpuGraveBlock" class="col-form-label">Nama Blok</label>
-                                <input type="text" name="grave_block[]" class="form-control" id="tpuGraveBlock" placeholder="Nama Block">
+                                <input type="text" name="graves[${countRow}][grave_block]" class="form-control" id="tpuGraveBlock" placeholder="Nama Block">
+                                <input type="text" hidden name="graves[${countRow}][id]" class="form-control" id="tpuGraveBlock" placeholder="Nama Block">
                             </div>
                             <div class="col-md-5">
                                 <label for="tpuGraveQuota" class="col-form-label">Kuota</label>
-                                <input type="text" name="quota[]" class="form-control" id="tpuGraveQuota" placeholder="Kuota Block">
+                                <input type="text" name="graves[${countRow}][quota]" class="form-control" id="tpuGraveQuota" placeholder="Kuota Block">
                             </div>
                             <div class="col-md-1">
                                 <div class="text-center">
@@ -236,7 +238,6 @@
                         message: 'Role berhasil di simpan',
                         position: "topRight"
                     });
-
                     modalTpu.modal("hide");
                     dataTables.ajax.reload();
                     document.getElementById('formTpu').reset();
@@ -291,11 +292,12 @@
                             row += `<div class="form-group mb-5 mt-5 row rowGrave" id="editableGrave${graves[a].id}">
                                         <div class="col-md-6">
                                             <label for="tpuGraveBlock" class="col-form-label">Nama Blok</label>
-                                            <input type="text" name="grave_block[]" value="${graves[a].grave_block}" class="form-control" id="tpuGraveBlock" placeholder="Nama Block">
+                                            <input type="text" name="graves[${a}][grave_block]" value="${graves[a].grave_block}" class="form-control" id="tpuGraveBlock" placeholder="Nama Block">
+                                            <input type="text" hidden name="graves[${a}][id]" value="${graves[a].id}" class="form-control" id="tpuGraveBlockId" placeholder="Nama Block">
                                         </div>
                                         <div class="col-md-5">
                                             <label for="tpuGraveQuota" class="col-form-label">Kuota</label>
-                                            <input type="text" name="quota[]" class="form-control" value="${graves[a].quota}" id="tpuGraveQuota" placeholder="Kuota Block">
+                                            <input type="text" name="graves[${a}][quota]" class="form-control" value="${graves[a].quota}" id="tpuGraveQuota" placeholder="Kuota Block">
                                         </div>
                                         <div class="col-md-1">
                                             <div class="text-center">

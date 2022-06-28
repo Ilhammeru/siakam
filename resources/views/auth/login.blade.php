@@ -5,7 +5,7 @@
 <div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
     <!--begin::Logo-->
     <a href="{{ route('dashboard') }}" class="mb-12">
-        <img src="{{ asset('logo_dinas.png') }}" style="width: 100px; height: auto;" alt="">
+        <img src="{{ asset('Logo_SiAKAM.png') }}" style="width: 200px; height: auto;" alt="">
         <h1 class="text-center mt-4">SiAKAM</h1>
     </a>
     <!--end::Logo-->
@@ -19,10 +19,6 @@
                 <!--begin::Title-->
                 <h1 class="text-dark mb-3">Login</h1>
                 <!--end::Title-->
-                <!--begin::Link-->
-                <div class="text-gray-400 fw-bold fs-4">Belum punya akun?
-                <a href="{{ route('register') }}" class="link-primary fw-bolder">Daftar</a></div>
-                <!--end::Link-->
             </div>
             <!--begin::Heading-->
             <!--begin::Input group-->
@@ -42,9 +38,6 @@
                     <!--begin::Label-->
                     <label class="form-label fw-bolder text-dark fs-6 mb-0">Password</label>
                     <!--end::Label-->
-                    <!--begin::Link-->
-                    <a href="{{ route('password.request') }}" class="link-primary fs-6 fw-bolder">Lupa Password ?</a>
-                    <!--end::Link-->
                 </div>
                 <!--end::Wrapper-->
                 <!--begin::Input-->

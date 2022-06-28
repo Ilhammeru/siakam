@@ -176,3 +176,38 @@ if (!function_exists('formatIndonesiaMonth')) {
         return $newMonth;
     }
 }
+
+if (!function_exists('formatIndonesiaDay')) {
+    function formatIndonesiaDay($date) {
+        $days = date('D', strtotime($date));
+        switch (strtolower($days)) {
+            case 'sun':
+                $day = 'Minggu';
+                break;
+            case 'mon':
+                $day = 'Senin';
+                break;
+            case 'tue':
+                $day = 'Selasa';
+                break;
+            case 'wed':
+                $day = 'Rabu';
+                break;
+            case 'Thu':
+                $day = 'Kamis';
+                break;
+            case 'Fri':
+                $day = 'Jumat';
+                break;
+            case 'Sat':
+                $day = 'Sabtu';
+                break;
+            
+            default:
+                $day = 'Belum Ter Generate';
+                break;
+        }
+
+        return $day;
+    }
+}

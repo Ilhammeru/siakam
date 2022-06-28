@@ -96,16 +96,16 @@
                     @endif
                     {{-- end::ribbon --}}
                     
-                    <h3 class="mb-5">Data Jenazah</h3>
-                    {{-- <div class="row">
+                    <div class="row">
                         <div class="col">
                             <div class="d-flex justify-content-between align-items-center">
+                                <h3 class="mb-5">Data Jenazah</h3>
                                 @if ($funeralStatus)
                                     <a class="btn btn-light-info" href="{{ route('burial-data.downloadFuneralLetter', $data->id) }}">Download Surat Keterangan Pemakaman</a>
                                 @endif
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
                     <table class="table mt-5">
                         <tbody>
                             <tr>

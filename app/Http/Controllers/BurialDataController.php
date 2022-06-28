@@ -644,82 +644,110 @@ class BurialDataController extends Controller
     }
 
     public function downloadFuneralLetter($id) {
-        $data = BurialData::with('tpu')->find($id);
-        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+        $data = BurialData::with(['tpu', 'birthPlace', 'graveBlock'])->find($id);
+        // $phpWord = new \PhpOffice\PhpWord\PhpWord();
         
-        // begin::section-title
-        $section = $phpWord->addSection();
-        // end::section-title
+        // // begin::section-title
+        // $section = $phpWord->addSection();
+        // // end::section-title
         
-        // begin::header
-        $header = $section->addHeader();
-        // $header->addImage(
-        //     'logo_dinas.png',
-        //     array(
-        //         'wrappingStyle' => 'square',
-        //         'positioning' => 'relative',
-        //         'posHorizontal'    => \PhpOffice\PhpWord\Style\Image::POSITION_HORIZONTAL_LEFT,
-        //         'posHorizontalRel' => 'margin',
-        //         'posVerticalRel' => 'line',
-        //         'width'         => 58.32,
-        //         'height'        => 75.6,
-        //         'marginLeft'    => 200
-        //     )
+        // // begin::header
+        // $header = $section->addHeader();
+        // // $header->addImage(
+        // //     'logo_dinas.png',
+        // //     array(
+        // //         'wrappingStyle' => 'square',
+        // //         'positioning' => 'relative',
+        // //         'posHorizontal'    => \PhpOffice\PhpWord\Style\Image::POSITION_HORIZONTAL_LEFT,
+        // //         'posHorizontalRel' => 'margin',
+        // //         'posVerticalRel' => 'line',
+        // //         'width'         => 58.32,
+        // //         'height'        => 75.6,
+        // //         'marginLeft'    => 200
+        // //     )
+        // // );
+        // $header->addText(
+        //     'pemerintah kota batam',
+        //     ['size' => 14, 'name' => 'Arial', 'bold' => true, 'allCaps' => true],
+        //     ['align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,'spaceBefore' => 0, 'spaceAfter' => 0, 'indentation' => array('left' => 710, 'right' => 0.02)]
         // );
-        $header->addText(
-            'pemerintah kota batam',
-            ['size' => 14, 'name' => 'Arial', 'bold' => true, 'allCaps' => true],
-            ['align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,'spaceBefore' => 0, 'spaceAfter' => 0, 'indentation' => array('left' => 710, 'right' => 0.02)]
-        );
-        $header->addText(
-            'dinas perumahan rakyat, permukiman, dan pertamanan',
-            ['size' => 12, 'name' => 'Arial', 'bold' => true, 'allCaps' => true],
-            ['align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,'spaceBefore' => 0, 'spaceAfter' => 0, 'indentation' => array('left' => 710, 'right' => 0.02)]
-        );
-        $header->addText(
-            $data->tpu->name,
-            ['size' => 12, 'name' => 'Arial', 'bold' => true, 'allCaps' => true],
-            ['align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,'spaceBefore' => 0, 'spaceAfter' => 0, 'indentation' => array('left' => 710, 'right' => 0.02)]
-        );
-        $header->addText(
-            $data->tpu->address,
-            ['size' => 12, 'name' => 'Arial', 'bold' => true, 'allCaps' => true],
-            ['align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER, 'indentation' => array('left' => 710, 'right' => 0.02), 'spaceAfter' => 400]
-        );
-        // end::header
+        // $header->addText(
+        //     'dinas perumahan rakyat, permukiman, dan pertamanan',
+        //     ['size' => 12, 'name' => 'Arial', 'bold' => true, 'allCaps' => true],
+        //     ['align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,'spaceBefore' => 0, 'spaceAfter' => 0, 'indentation' => array('left' => 710, 'right' => 0.02)]
+        // );
+        // $header->addText(
+        //     $data->tpu->name,
+        //     ['size' => 12, 'name' => 'Arial', 'bold' => true, 'allCaps' => true],
+        //     ['align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,'spaceBefore' => 0, 'spaceAfter' => 0, 'indentation' => array('left' => 710, 'right' => 0.02)]
+        // );
+        // $header->addText(
+        //     $data->tpu->address,
+        //     ['size' => 12, 'name' => 'Arial', 'bold' => true, 'allCaps' => true],
+        //     ['align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER, 'indentation' => array('left' => 710, 'right' => 0.02), 'spaceAfter' => 400]
+        // );
+        // // end::header
 
-        // begin::paragraph-style
-        $phpWord->addParagraphStyle('paragraph', [ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER ]);
-        // end::paragraph-style
+        // // begin::paragraph-style
+        // $phpWord->addParagraphStyle('paragraph', [ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER ]);
+        // // end::paragraph-style
 
-        $section->addText(
-            'surat keterangan pemakaman',
-            ['size' => 14, 'name' => 'Arial', 'bold' => true, 'allCaps' => true, 'underline' => 'single'], 
-            ['spaceAfter' => 300, 'align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER]
-        );
+        // $section->addText(
+        //     'surat keterangan pemakaman',
+        //     ['size' => 14, 'name' => 'Arial', 'bold' => true, 'allCaps' => true, 'underline' => 'single'], 
+        //     ['spaceAfter' => 300, 'align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER]
+        // );
 
-        $section->addText(
-            'Berdasarkan permohonan Ahli Waris/ Pelapor,',
-            ['size' => 12, 'name' => 'Arial']
-        );
+        // $section->addText(
+        //     'Berdasarkan permohonan Ahli Waris/ Pelapor,',
+        //     ['size' => 12, 'name' => 'Arial']
+        // );
         
-        $section->addText(
-            'Nama',
-            ['size' => 12, 'name' => 'Arial']
-        );
+        // $section->addText(
+        //     'Nama',
+        //     ['size' => 12, 'name' => 'Arial']
+        // );
 
-        $tableStyle = array(
-            'borderColor' => '006699',
-            'borderSize'  => 6,
-            'cellMargin'  => 50
-        );
-        // Saving the document as OOXML file...
-        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
-        // $objWriter->save('helloWorld.docx');
+        // $tableStyle = array(
+        //     'borderColor' => '006699',
+        //     'borderSize'  => 6,
+        //     'cellMargin'  => 50
+        // );
+        // // Saving the document as OOXML file...
+        // $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+        // // $objWriter->save('helloWorld.docx');
+        // $temp_file = tempnam(sys_get_temp_dir(), 'PHPWord');
+        // $objWriter->save($temp_file);
+
+        // header("Content-Disposition: attachment; filename=myFile.docx");
+        // readfile($temp_file); // or echo file_get_contents($temp_file);
+        // unlink($temp_file);  // remove temp file
+        $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor('Surat_Keterangan_Pemakaman.docx');
+        $templateProcessor->setValue('tpu_name', $data->tpu->name);
+        $templateProcessor->setValue('tpu_address', $data->tpu->address);
+        $templateProcessor->setValue('reporters_name', ucwords($data->reporters_name));
+        $templateProcessor->setValue('reporters_nik', $data->reporters_nik);
+        $templateProcessor->setValue('reporters_relationship', ucwords($data->reporters_relationship));
+        $templateProcessor->setValue('reporters_address', $data->reporters_address);
+        $templateProcessor->setValue('reporters_phone', $data->reporters_phone);
+        $templateProcessor->setValue('name', ucwords($data->name));
+        $templateProcessor->setValue('nik', $data->nik);
+        $templateProcessor->setValue('birth', ucwords($data->birthPlace->name) . '/' . formatIndonesiaDate(date('Y-m-d', strtotime($data->birth_date))));
+        $templateProcessor->setValue('gender', $data->gender == 'L' ? 'Laki-laki' : 'Perempuan');
+        $templateProcessor->setValue('religion', ucwords($data->religion));
+        $templateProcessor->setValue('address', $data->address);
+        $templateProcessor->setValue('date_of_death', formatIndonesiaDay($data->date_of_death) . '/' . formatIndonesiaDate(date('Y-m-d', strtotime($data->date_of_death))));
+        $templateProcessor->setValue('buried_date', formatIndonesiaDay($data->buried_date) . '/' . formatIndonesiaDate(date('Y-m-d', strtotime($data->buried_date))));
+        $templateProcessor->setValue('tpu', $data->tpu->name);
+        $templateProcessor->setValue('grave_block', ucwords($data->graveBlock->grave_block));
+        $templateProcessor->setValue('grave_number', $data->grave_number);
+        $templateProcessor->setValue('timestamp', formatIndonesiaDate(date('Y-m-d')));
         $temp_file = tempnam(sys_get_temp_dir(), 'PHPWord');
-        $objWriter->save($temp_file);
+        $templateProcessor->saveAs($temp_file);
 
-        header("Content-Disposition: attachment; filename=myFile.docx");
+        // Your browser will name the file "myFile.docx"
+        // regardless of what it's named on the server 
+        header("Content-Disposition: attachment; filename=SuratKeteranganPemakaman.docx");
         readfile($temp_file); // or echo file_get_contents($temp_file);
         unlink($temp_file);  // remove temp file
     }

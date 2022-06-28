@@ -96,8 +96,7 @@ class TpuController extends Controller
         $name = $request->name;
         $address = $request->address;
         $phone = $request->phone;
-        $blocks = array_values(array_filter($request->grave_block));
-        $quotas = array_values(array_filter($request->quota));
+        $graves = array_values($request->graves);
 
         // begin::validation
         if (Auth::user()->role != 'tpu') {
@@ -128,36 +127,20 @@ class TpuController extends Controller
         } 
 
         // validation empty field in grave section
-        if (count($blocks) != count($quotas)) {
-            return sendResponse(
-                ['error' => ['Pastikan Blok Makam dan Quota semua terisi']],
-                'VALIDATION_FAILED',
-                500
-            );
-        }
-
-        // validation for same block name
-        if (Auth::user()->role == 'tpu') {
-            $tpuId = Auth::user()->tpu_id;
-            for ($b = 0; $b < count($blocks); $b++) {
-                $check = TpuGrave::where(["grave_block" => $blocks[$b], 'tpu_id' => $tpuId])->first();
-                if ($check) {
-                    return sendResponse(
-                        ['error' => ['Nama sudah terdaftar di database']],
-                        'VALIDATION_FAILED',
-                        500
-                    );
-                }
+        $blockNames = [];
+        foreach ($graves as $grave) {
+            $blockNames[] = $grave['grave_block'];
+            if ($grave['grave_block'] == "" || $grave['quota'] == "") {
+                return sendResponse(
+                    ['error' => ['Pastikan Blok Makam dan Quota semua terisi']],
+                    'VALIDATION_FAILED',
+                    500
+                );
             }
         }
-
-        $collectGrave = collect($blocks); // set to laravel's collection
-        $blocks = $collectGrave->map(function($item, $key) {
-            return strtolower($item);
-        })->toArray();
-        $counts = array_values(array_count_values($blocks));
-        for ($c = 0; $c < count($counts); $c++) {
-            if ($counts[$c] > 1) {
+        $blockNames = array_values(array_count_values($blockNames));
+        for ($v = 0; $v < count($blockNames); $v++) {
+            if ($blockNames[$v] > 1) {
                 return sendResponse(
                     ['error' => ['Pastikan tidak ada nama blok yang sama']],
                     'VALIDATION_FAILED',
@@ -180,15 +163,11 @@ class TpuController extends Controller
                 $tpuId = Tpu::insertGetId($dataTpu);
             }
 
-            $dataGrave = [];
-            for ($a = 0; $a < count($blocks); $a++) {
-                $dataGrave[] = [
-                    'tpu_id' => $tpuId,
-                    'grave_block' => $blocks[$a],
-                    'quota' => $quotas[$a]
-                ];
-            }
-            TpuGrave::insert($dataGrave);
+            $graves = collect($graves)->map(function($item) use($tpuId) {
+                $item['tpu_id'] = $tpuId;
+                return $item;
+            })->all();
+            TpuGrave::upsert($graves, ['id', 'tpu_id'], ['grave_block', 'quota']);
             DB::commit();
             return sendResponse([]);
         } catch (\Throwable $th) {
@@ -234,6 +213,14 @@ class TpuController extends Controller
     public function deleteGrave($id) 
     {
         try {
+            $check = BurialData::where('grave_block', $id)->count();
+            if ($check > 0) {
+                return sendResponse(
+                    ['error' => 'Tidak Bisa Menghapus Blok ini Dikarenakan Sudah Ada Data Pemakaman Di Blok Ini'],
+                    'FAILED',
+                    500
+                );
+            }
             $delete = TpuGrave::where('id', $id)
                 ->delete();
             return sendResponse($delete);
@@ -407,8 +394,7 @@ class TpuController extends Controller
         $name = $request->name;
         $address = $request->address;
         $phone = $request->phone;
-        $blocks = array_values(array_filter($request->grave_block));
-        $quotas = array_values(array_filter($request->quota));
+        $graves = array_values($request->graves);
         $currentTpu = Tpu::with('graves')->find($id);
 
         // begin::validation
@@ -442,37 +428,20 @@ class TpuController extends Controller
             }
         } 
 
-        // validation empty field in grave section
-        if (count($blocks) != count($quotas)) {
-            return sendResponse(
-                ['error' => ['Pastikan Blok Makam dan Quota semua terisi']],
-                'VALIDATION_FAILED',
-                500
-            );
-        }
-
-        // validation for same block name
-        if (Auth::user()->role == 'tpu') {
-            $tpuId = Auth::user()->tpu_id;
-            for ($b = 0; $b < count($blocks); $b++) {
-                $check = TpuGrave::where(["grave_block" => $blocks[$b], 'tpu_id' => $tpuId])->first();
-                if ($check) {
-                    return sendResponse(
-                        ['error' => ['Nama sudah terdaftar di database']],
-                        'VALIDATION_FAILED',
-                        500
-                    );
-                }
+        $blockNames = [];
+        foreach ($graves as $grave) {
+            $blockNames[] = $grave['grave_block'];
+            if ($grave['grave_block'] == "" || $grave['quota'] == "") {
+                return sendResponse(
+                    ['error' => ['Pastikan Blok Makam dan Quota semua terisi']],
+                    'VALIDATION_FAILED',
+                    500
+                );
             }
         }
-
-        $collectGrave = collect($blocks); // set to laravel's collection
-        $blocks = $collectGrave->map(function($item, $key) {
-            return strtolower($item);
-        })->toArray();
-        $counts = array_values(array_count_values($blocks));
-        for ($c = 0; $c < count($counts); $c++) {
-            if ($counts[$c] > 1) {
+        $blockNames = array_values(array_count_values($blockNames));
+        for ($v = 0; $v < count($blockNames); $v++) {
+            if ($blockNames[$v] > 1) {
                 return sendResponse(
                     ['error' => ['Pastikan tidak ada nama blok yang sama']],
                     'VALIDATION_FAILED',
@@ -494,17 +463,13 @@ class TpuController extends Controller
                 $tpuId = $currentTpu->id;
             }
 
-            $dataGrave = [];
-            for ($a = 0; $a < count($blocks); $a++) {
-                $dataGrave[] = [
-                    'tpu_id' => $tpuId, 
-                    'grave_block' => $blocks[$a],
-                    'quota' => $quotas[$a],
-                    'created_at' => Carbon::now()
-                ];
-            }
-            TpuGrave::where("tpu_id", $tpuId)->delete();
-            TpuGrave::insert($dataGrave);
+            $graves = collect($graves)->map(function($item) use($tpuId) {
+                $item['tpu_id'] = $tpuId;
+                return $item;
+            })->all();
+            TpuGrave::upsert($graves, ['id', 'tpu_id'], ['grave_block', 'quota']);
+            // TpuGrave::where("tpu_id", $tpuId)->delete();
+            // TpuGrave::insert($dataGrave);
             DB::commit();
             return sendResponse([]);
         } catch (\Throwable $th) {

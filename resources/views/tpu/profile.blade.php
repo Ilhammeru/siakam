@@ -82,11 +82,12 @@
                     <div class="form-group mb-5 mt-5 row rowGrave" id="rowGrave1">
                         <div class="col-md-6">
                             <label for="tpuGraveBlock" class="col-form-label">Nama Blok</label>
-                            <input type="text" name="grave_block[]" class="form-control" id="tpuGraveBlock" placeholder="Nama Block">
+                            <input type="text" name="graves[0][grave_block]" class="form-control" id="tpuGraveBlock" placeholder="Nama Block">
+                            <input type="text" name="graves[0][id]" hidden class="form-control" id="tpuGraveBlock" placeholder="Nama Block">
                         </div>
                         <div class="col-md-6">
                             <label for="tpuGraveQuota" class="col-form-label">Kuota</label>
-                            <input type="text" name="quota[]" class="form-control" id="tpuGraveQuota" placeholder="Kuota Block">
+                            <input type="text" name="graves[0][quota]" class="form-control" id="tpuGraveQuota" placeholder="Kuota Block">
                         </div>
                     </div>
                     <div class="targetFieldGrave"></div>
@@ -179,11 +180,12 @@
             let form = `<div class="form-group mb-5 mt-5 row rowGrave" id="rowGrave${countRow + 1}">
                             <div class="col-md-6">
                                 <label for="tpuGraveBlock" class="col-form-label">Nama Blok</label>
-                                <input type="text" name="grave_block[]" class="form-control" id="tpuGraveBlock" placeholder="Nama Block">
+                                <input type="text" name="graves[${countRow}][grave_block]" class="form-control" id="tpuGraveBlock" placeholder="Nama Block">
+                                <input type="text" name="graves[${countRow}][id]" hidden class="form-control" id="tpuGraveBlock" placeholder="Nama Block">
                             </div>
                             <div class="col-md-5">
                                 <label for="tpuGraveQuota" class="col-form-label">Kuota</label>
-                                <input type="text" name="quota[]" class="form-control" id="tpuGraveQuota" placeholder="Kuota Block">
+                                <input type="text" name="graves[${countRow}][quota]" class="form-control" id="tpuGraveQuota" placeholder="Kuota Block">
                             </div>
                             <div class="col-md-1">
                                 <div class="text-center">
@@ -323,7 +325,6 @@
             let data = formTpu.serialize();
             let url = formTpu.attr('action');
             let method = formTpu.attr('method');
-
             $.ajax({
                 type: method,
                 url: url,
