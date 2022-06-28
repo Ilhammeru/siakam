@@ -24,7 +24,7 @@
             <div class="text-start">
                 <a class="btn btn-light-primary" href="{{ route('burial-data.index') }}">
                     <i class="fas fa-chevron-left me-4"></i>
-                    Kembali                   
+                    Kembali                
                 </a>
             </div>
         </div>
@@ -151,7 +151,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="reporterNik" class="col-form-label">NIK Ahli Waris</label>
-                                <input name="reporter_nik" value="{{ $burialData->reporters_nik }}" class="form-control" id="reporterNik" placeholder="NIK Ahli Waris" type="text" />
+                                <input name="reporter_nik" value="{{ $burialData->reporters_nik }}" class="form-control" id="reporterNik" placeholder="NIK Ahli Waris" type="number" />
                             </div>
                         </div>
                         <div class="form-group row mb-2">
@@ -161,7 +161,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="reporterPhone" class="col-form-label">No. HP Ahli Waris</label>
-                                <input type="text" name="reporter_phone" value="{{ $burialData->reporters_phone }}" class="form-control" id="reporterPhone" placeholder="0875xxxxx">
+                                <input type="number" name="reporter_phone" value="{{ $burialData->reporters_phone }}" class="form-control" id="reporterPhone" placeholder="0875xxxxx">
                             </div>
                         </div>
                         <div class="form-group mb-2 row">
@@ -294,10 +294,7 @@
     <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
     <script>
         FilePond.registerPlugin(
-            FilePondPluginImagePreview,
-            // FilePondPluginImageExifOrientation,
-            // FilePondPluginFileValidateSize,
-            // FilePondPluginImageEdit
+            FilePondPluginImagePreview
         );
 
         // Select the file input and use 
@@ -362,62 +359,67 @@
             "{{ asset($burialData->reporter_ktp_photo) }}", "{{ asset($burialData->reporter_kk_photo) }}",
             "{{ asset($burialData->letter_of_hospital_statement_photo) }}"
         ];
-
+        const assets = [
+            "{{ $burialData->grave_photo }}", "{{ $burialData->application_letter_photo }}",
+            "{{ $burialData->ktp_corpse_photo }}", "{{ $burialData->cover_letter_photo }}",
+            "{{ $burialData->reporter_ktp_photo }}", "{{ $burialData->reporter_kk_photo }}",
+            "{{ $burialData->letter_of_hospital_statement_photo }}"
+        ];
+        
         for (let x = 0; x < listId.length; x++) {
-            let check = document.getElementById(listId[x]);
-            check.addEventListener('FilePond:removefile', (e) => {
-                console.log(e);
-                let ids = e.path[0].attributes[1].nodeValue;
-                let typePond;
-                let eachPond;
-                if (ids == 'ktpCorpse') {
-                    typePond = 'ktp_corpse_photo';
-                    // eachPond = pondKtpCorpse;
-                } else if (ids == 'applicationLetter') {
-                    typePond = 'application_letter_photo';
-                } else if (ids == 'coverLetter') {
-                    typePond = 'cover_letter_photo';
-                } else if (ids == 'reporterKtpPhoto') {
-                    typePond = 'reporter_ktp_photo';
-                } else if (ids == 'reporterKkPhoto') {
-                    typePond = 'reporter_kk_photo';
-                } else if (ids == 'hospitalStatement') {
-                    typePond = 'letter_of_hospital_statement_photo';
-                } else {
-                    typePond = "";
-                }
-    
-                Swal.fire({
-                    title: 'Apakah anda yakin ingin menghapus foto ini?',
-                    showDenyButton: true,
-                    showCancelButton: false,
-                    confirmButtonText: 'Ya! Hapus',
-                    denyButtonText: `Batalkan`,
-                }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                    if (result.isConfirmed) {
-                        let idBurial = "{{ $burialData->id }}";
-                        $.ajax({
-                            type: "DELETE",
-                            url: "{{ url('/burial-data/delete-photo') }}" + "/" + idBurial + "/" + typePond,
-                            success: function(res) {
-                                console.log(res);
-                                iziToast['success']({
-                                    message: 'Data Pemakaman berhasil di hapus',
-                                    position: "topRight"
-                                });
-                                window.location.href = "{{ url('/burial-data/') }}" + "/" + idBurial + '/edit';
-                            },
-                            error: function(err) {
-                                console.error(err);
-                                handleError(err);
-                            }
-                        })
+            if (assets[x] != "") {
+                let check = document.getElementById(listId[x]);
+                check.addEventListener('FilePond:removefile', (e) => {
+                    let ids = e.path[0].attributes[1].nodeValue;
+                    let typePond;
+                    let eachPond;
+                    if (ids == 'ktpCorpse') {
+                        typePond = 'ktp_corpse_photo';
+                        // eachPond = pondKtpCorpse;
+                    } else if (ids == 'applicationLetter') {
+                        typePond = 'application_letter_photo';
+                    } else if (ids == 'coverLetter') {
+                        typePond = 'cover_letter_photo';
+                    } else if (ids == 'reporterKtpPhoto') {
+                        typePond = 'reporter_ktp_photo';
+                    } else if (ids == 'reporterKkPhoto') {
+                        typePond = 'reporter_kk_photo';
+                    } else if (ids == 'hospitalStatement') {
+                        typePond = 'letter_of_hospital_statement_photo';
                     } else {
-                        eval(listId[x]).addFile(files[x]);
+                        typePond = "";
                     }
-                })
-            });
+        
+                    Swal.fire({
+                        title: 'Apakah anda yakin ingin menghapus foto ini?',
+                        showDenyButton: true,
+                        showCancelButton: false,
+                        confirmButtonText: 'Ya! Hapus',
+                        denyButtonText: `Batalkan`,
+                    }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+                            let idBurial = "{{ $burialData->id }}";
+                            $.ajax({
+                                type: "DELETE",
+                                url: "{{ url('/burial-data/delete-photo') }}" + "/" + idBurial + "/" + typePond,
+                                success: function(res) {
+                                    iziToast['success']({
+                                        message: 'Data Pemakaman berhasil di hapus',
+                                        position: "topRight"
+                                    });
+                                    window.location.href = "{{ url('/burial-data/') }}" + "/" + idBurial + '/edit';
+                                },
+                                error: function(err) {
+                                    handleError(err);
+                                }
+                            })
+                        } else {
+                            eval(listId[x]).addFile(files[x]);
+                        }
+                    })
+                });
+            }
         }
 
         $('#regencyOfBirth').select2();
@@ -551,7 +553,6 @@
                     btnSave.text('Menyimpan Data ...');
                 },
                 success: function(res) {
-                    console.log(res);
                     btnSave.attr('disabled', false);
                     btnSave.text('Simpan');
                     let dataId = "{{ $burialData->id }}"
@@ -562,7 +563,6 @@
                     });
                 },
                 error: function(err){
-                    console.log(err);
                     btnSave.attr('disabled', false);
                     btnSave.text('Simpan');
                     handleError(err);

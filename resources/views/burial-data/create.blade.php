@@ -142,7 +142,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="reporterNik" class="col-form-label">NIK Ahli Waris</label>
-                                <input name="reporter_nik" class="form-control" id="reporterNik" placeholder="NIK Ahli Waris" type="text" />
+                                <input name="reporter_nik" class="form-control" id="reporterNik" placeholder="NIK Ahli Waris" type="number" />
                             </div>
                         </div>
                         <div class="form-group row mb-2">
@@ -152,7 +152,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="reporterPhone" class="col-form-label">No. HP Ahli Waris</label>
-                                <input type="text" name="reporter_phone" class="form-control" id="reporterPhone" placeholder="0875xxxxx">
+                                <input type="number" name="reporter_phone" class="form-control" id="reporterPhone" placeholder="0875xxxxx">
                             </div>
                         </div>
                         <div class="form-group mb-2 row">
