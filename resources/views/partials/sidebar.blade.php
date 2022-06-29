@@ -65,11 +65,6 @@
                             <!--end::Menu separator-->
                             <!--begin::Menu item-->
                             <div class="menu-item px-5">
-                                <a href="{{ route('template.profile') }}" class="menu-link px-5">My Profile</a>
-                            </div>
-                            <!--end::Menu item-->
-                            <!--begin::Menu item-->
-                            <div class="menu-item px-5">
                                 <a href="{{ route('logout') }}" class="menu-link px-5" onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">Sign Out</a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
