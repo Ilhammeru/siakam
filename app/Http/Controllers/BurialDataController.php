@@ -73,16 +73,16 @@ class BurialDataController extends Controller
             $where = "tpu_id > 0";
         }
         if ($role == 'tpu') {
-            $data = BurialData::with(['graveBlock'])->where('tpu_id', $tpuId)->whereRaw($where)->get();
+            $data = BurialData::with(['graveBlock', 'addressPlace', 'tpu'])->where('tpu_id', $tpuId)->whereRaw($where)->get();
         } else {
-            $data = BurialData::with(['graveBlock'])->whereRaw($where)->get();
+            $data = BurialData::with(['graveBlock', 'addressPlace', 'tpu'])->whereRaw($where)->get();
         }
         return DataTables::of($data)
             ->editColumn('name', function($data) {
                 return '<a href="'. route('burial-data.show', $data->id) .'">'. ucwords($data->name) .'</a>';
             })
             ->editColumn('address', function($data) {
-                $city = Regency::where('id', $data->village_id)->first()->name;
+                $city = $data->addressPlace == NULL ? '-' : $data->addressPlace->name;
                 $address = $data->address . ' , RT ' . $data->rt . ' RW ' . $data->rw . ' , ' . $city;
                 return $address;
             })
@@ -96,8 +96,7 @@ class BurialDataController extends Controller
                 return $format;
             })
             ->editColumn('tpu_id', function($data) {
-                $tpu = Tpu::find($data->tpu_id);
-                return ucwords($tpu->name);
+                return ucwords($data->tpu->name);
             })
             ->editColumn('buried_date', function($data) {
                 $date = $data->buried_date;

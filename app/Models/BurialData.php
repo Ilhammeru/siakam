@@ -77,6 +77,11 @@ class BurialData extends Model
 
     public function birthPlace():BelongsTo
     {
+        return $this->belongsTo(Regency::class, 'regency_of_birth', 'id');
+    }
+
+    public function addressPlace():BelongsTo
+    {
         return $this->belongsTo(Regency::class, 'village_id', 'id');
     }
 }
