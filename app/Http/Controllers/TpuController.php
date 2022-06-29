@@ -492,6 +492,14 @@ class TpuController extends Controller
     {
         DB::beginTransaction();
         try {
+            $check = BurialData::where('tpu_id', $id)->count();
+            if ($check > 0) {
+                return sendResponse(
+                    ['error' => 'Tidak bisa menghapus TPU dikarenakan sudah ada data pemakaman'],
+                    'FAILED',
+                    500
+                );
+            }
             // delete all grave data
             TpuGrave::where("tpu_id", $id)->delete();
             // delete tpu data
