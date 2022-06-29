@@ -11,20 +11,23 @@
 {{-- end::styles --}}
 {{-- begin::section --}}
 @section('content')
-    {{-- begin::card-action --}}
-    <div class="card card-flush mb-4">
-        <div class="card-body p-3">
-            <div class="text-end">
-                {{-- begin::button-add --}}
-                <a class="btn btn-light-primary" href="{{route("burial-data.create")}}">
-                    <i class="fa fa-plus me-3"></i>
-                    Tambah
-                </a>
-                {{-- end::button-add --}}
+    @if (Auth::user()->role == 'tpu' || Auth::user()->role == 'admin' || Auth::user()->role == 'superadmin')
+        {{-- begin::card-action --}}
+        <div class="card card-flush mb-4">
+            <div class="card-body p-3">
+                <div class="text-end">
+                    {{-- begin::button-add --}}
+                    <a class="btn btn-light-primary" href="{{route("burial-data.create")}}">
+                        <i class="fa fa-plus me-3"></i>
+                        Tambah
+                    </a>
+                    {{-- end::button-add --}}
+                </div>
             </div>
         </div>
-    </div>
-    {{-- end::card-action --}}
+        {{-- end::card-action --}}
+    @endif
+
     @if (Auth::user()->role != 'tpu')
     {{-- begin::card-filter --}}
     <div class="card card-flush mb-4">
@@ -80,7 +83,9 @@
                         <th>Tanggal Pemakaman</th>
                         <th>Blok Makam</th>
                         <th>No Makam</th>
+                        @if (Auth::user()->role == 'tpu' || Auth::user()->role == 'admin' || Auth::user()->role == 'superadmin')
                         <th></th>
+                        @endif
                     </tr>
                     <!--end::Table row-->
                 </thead>
@@ -117,7 +122,7 @@
                                 <input type="date" name="end_date" value="{{ date('Y-m-d') }}" data-value="{{ date('Y-m-d') }}" class="form-control" id="pdfEndDate">
                             </div>
                         </div>
-                        @if (Auth::user()->role == 'admin' || Auth::user()->role == 'superadmin')
+                        @if (Auth::user()->role == 'admin' || Auth::user()->role == 'superadmin' || Auth::user()->role == 'dinas')
                         <div class="form-group row mb-2">
                             <div class="col">
                                 <label for="tpuPdf" class="col-form-label">TPU</label>
@@ -154,7 +159,7 @@
         })
 
         let role = "{{ Auth::user()->role }}";
-
+        console.log(role);
         if (role == 'tpu') {
             var _columns = [{
                 data: "id",
@@ -172,6 +177,23 @@
             },{
                 data: 'action',
                 width: "10%"
+            }];
+        } else if (role == 'dinas') {
+            var _columns = [{
+                data: "id",
+                visible: false,
+            },{
+                data: "name"
+            },{
+                data: "nik"
+            },{
+                data: 'tpu_id'
+            },{
+                data: "buried_date"
+            },{
+                data: "grave_block"
+            },{
+                data: "grave_number"
             }];
         } else {
             var _columns = [{

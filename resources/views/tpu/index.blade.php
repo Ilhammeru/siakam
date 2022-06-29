@@ -1,20 +1,22 @@
 @extends('layouts.master')
 {{-- begin::section --}}
 @section('content')
-    {{-- begin::card-action --}}
-    <div class="card card-flush mb-4">
-        <div class="card-body p-3">
-            <div class="text-end">
-                {{-- begin::button-add --}}
-                <button class="btn btn-light-primary" id="btnAdd">
-                    <i class="fa fa-plus me-3"></i>
-                    Tambah
-                </button>
-                {{-- end::button-add --}}
+    @if (Auth::user()->role == 'tpu' || Auth::user()->role == 'admin' || Auth::user()->role == 'superadmin')
+        {{-- begin::card-action --}}
+        <div class="card card-flush mb-4">
+            <div class="card-body p-3">
+                <div class="text-end">
+                    {{-- begin::button-add --}}
+                    <button class="btn btn-light-primary" id="btnAdd">
+                        <i class="fa fa-plus me-3"></i>
+                        Tambah
+                    </button>
+                    {{-- end::button-add --}}
+                </div>
             </div>
         </div>
-    </div>
-    {{-- end::card-action --}}
+        {{-- end::card-action --}}
+    @endif
     {{-- begin::card-list --}}
     <div class="card card-flush">
         <div class="card-body">
@@ -29,7 +31,9 @@
                         <th>No. Telfon</th>
                         <th>Jumlah Makam</th>
                         <th>Sisa Makam</th>
+                        @if (Auth::user()->role == 'tpu' || Auth::user()->role == 'admin' || Auth::user()->role == 'superadmin')
                         <th></th>
+                        @endif
                     </tr>
                     <!--end::Table row-->
                 </thead>
@@ -136,25 +140,35 @@
 
 @push('scripts')
     <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
+        const role = "{{ Auth::user()->role }}";
 
-        var _columns = [{
-            data: "name"
-        },{
-            data: "address"
-        },{
-            data: "phone"
-        },{
-            data: "quota"
-        },{
-            data: "quota_left"
-        },{
-            data: 'action'
-        }];
+        if (role == 'dinas') {
+            var _columns = [{
+                data: "name"
+            },{
+                data: "address"
+            },{
+                data: "phone"
+            },{
+                data: "quota"
+            },{
+                data: "quota_left"
+            }];
+        } else {
+            var _columns = [{
+                data: "name"
+            },{
+                data: "address"
+            },{
+                data: "phone"
+            },{
+                data: "quota"
+            },{
+                data: "quota_left"
+            },{
+                data: 'action'
+            }];
+        }
     
         let dataTables = $("#dt_table").DataTable({
             responsive: true,

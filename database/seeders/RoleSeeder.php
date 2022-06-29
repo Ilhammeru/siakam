@@ -31,6 +31,10 @@ class RoleSeeder extends Seeder
                 'name' => 'tpu',
                 'created_at' => Carbon::now()
             ],
+            [
+                'name' => 'dinas',
+                'created_at' => Carbon::now()
+            ],
         ];
 
         Role::insert($role);

@@ -55,6 +55,15 @@ class UsersSeeder extends Seeder
                 'role' => 'tpu',
                 'tpu_id' => 2,
                 'created_at' => Carbon::now(),
+            ],
+            [
+                'name' => 'Dinas',
+                'username' => 'dinas',
+                'email' => 'dinas@gmail.com',
+                'password' => Hash::make('dinas'),
+                'role' => 'dinas',
+                'tpu_id' => 0,
+                'created_at' => Carbon::now(),
             ]
         ];
 
