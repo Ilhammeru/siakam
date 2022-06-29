@@ -79,7 +79,7 @@ class BurialDataController extends Controller
         }
         return DataTables::of($data)
             ->editColumn('name', function($data) {
-                return '<a href="'. route('burial-data.show', $data->id) .'">'. ucwords($data->name) .'</a>';
+                return '<a href="'. route('burial-data.show', $data->id) .'">'. ucwords(strtolower($data->name)) .'</a>';
             })
             ->editColumn('address', function($data) {
                 $city = $data->addressPlace == NULL ? '-' : $data->addressPlace->name;
@@ -111,7 +111,7 @@ class BurialDataController extends Controller
                 return ucwords($data->reporters_name) ?? '-';
             })
             ->editColumn('grave_block', function($data) {
-                $block = $data->graveBlock == NULL ? '-' : 'Blok ' . ucwords($data->graveBlock->grave_block);
+                $block = $data->graveBlock == NULL ? '-' : 'Blok ' . ucwords(strtolower($data->graveBlock->grave_block));
                 return $block;
             })
             ->addColumn('action', function($data) {

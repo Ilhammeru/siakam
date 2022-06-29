@@ -30,7 +30,7 @@ class BurialTypeController extends Controller
         $data = BurialType::all();
         return DataTables::of($data)
             ->editColumn('name', function($data) {
-                return ucwords($data->name);
+                return ucwords(strtolower($data->name));
             })
             ->addColumn('action', function($data) {
                 return '<span class="text-info me-3" style="cursor:pointer;" onclick="edit('. $data->id .')"><i class="fa fa-edit"></i></span>
