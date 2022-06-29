@@ -121,7 +121,7 @@
                             <tr>
                                 <td>Nama</td>
                                 <td>:</td>
-                                <td> <b>{{ ucwords($data->name) }}</b> </td>
+                                <td> <b>{{ $data->name != NULL ? ucwords($data->name) : '-' }}</b> </td>
                             </tr>
                             <tr>
                                 <td>Alamat</td>
