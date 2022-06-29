@@ -233,7 +233,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <h3 class="text-center mb-5" style="margin-top: 25px;">Data Pemakaman</h3>
+                        <h3 class="text-center mb-5" style="margin-top: 25px;">Data Persyaratan</h3>
                         <div class="form-group mb-2 row">
                             <div class="col-md-12">
                                 <label for="applicationLetter" class="col-form-label">Surat Permohonan</label>
@@ -254,13 +254,13 @@
                         </div>
                         <div class="form-group mb-2 row">
                             <div class="col-md-12">
-                                <label for="reporterKtpPhoto" class="col-form-label">Foto KTP Pelapor</label>
+                                <label for="reporterKtpPhoto" class="col-form-label">Foto KTP Ahli Waris</label>
                                 <input type="file" name="rerporter_ktp" class="form-control" id="reporterKtpPhoto">
                             </div>
                         </div>
                         <div class="form-group mb-2 row">
                             <div class="col-md-12">
-                                <label for="reporterKkPhoto" class="col-form-label">Foto KK Pelapor</label>
+                                <label for="reporterKkPhoto" class="col-form-label">Foto KK Ahli Waris</label>
                                 <input type="file" name="rerporter_kk" class="form-control" id="reporterKkPhoto">
                             </div>
                         </div>
