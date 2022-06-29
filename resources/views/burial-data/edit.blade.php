@@ -422,7 +422,6 @@
                 let check = document.getElementById(listId[x]);
                 check.addEventListener('FilePond:removefile', (e) => {
                     let ids = e.path[0].attributes[1].nodeValue;
-                    console.log(ids);
                     let typePond;
                     let eachPond;
                     if (ids == 'ktpCorpse') {

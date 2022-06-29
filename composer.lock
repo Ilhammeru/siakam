@@ -4,8 +4,50 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d3f4ab2cb428d7128de746a976e79e32",
+    "content-hash": "643940d0644d71c6f9dfd5fc40c6f0a8",
     "packages": [
+        {
+            "name": "artisansweb/image-optimizer",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/artisansweb/image-optimizer.git",
+                "reference": "b42a3819a8c9ad291fd85ea4119dc2998f3e63f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/artisansweb/image-optimizer/zipball/b42a3819a8c9ad291fd85ea4119dc2998f3e63f5",
+                "reference": "b42a3819a8c9ad291fd85ea4119dc2998f3e63f5",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpro/grumphp": "^0.17.2",
+                "phpunit/phpunit": "8.5",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ArtisansWeb\\ImageOptimize\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sajid",
+                    "email": "sajid@artisansweb.net"
+                }
+            ],
+            "description": "Optimize the images on the fly.",
+            "support": {
+                "issues": "https://github.com/artisansweb/image-optimizer/issues",
+                "source": "https://github.com/artisansweb/image-optimizer/tree/master"
+            },
+            "time": "2020-03-12T11:21:45+00:00"
+        },
         {
             "name": "azishapidin/indoregion",
             "version": "3.0.3",

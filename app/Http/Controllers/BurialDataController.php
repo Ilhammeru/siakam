@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use PDF;
+use Optimizer;
 
 class BurialDataController extends Controller
 {
@@ -316,13 +317,27 @@ class BurialDataController extends Controller
                     if (isset($photos[$a][$val])) {
                         $fileName = $photos[$a][$val]->getClientOriginalName();
                         if ($fileName != 'blob') {
+                            $ext =$photos[$a][$val]->getClientOriginalExtension();
+                            $file = $photos[$a][$val];
                             $fileName = 'TPU' . Auth::user()->tpu_id . '-' . date('ymdHis') . '-' . $fileName;
                             // $pathPhoto = Storage::putFileAs("public/buried-data/$key", $photos[$a][$val], $fileName);
-                            $pathPhoto = $photos[$a][$val]->storeAs("buried-data/$key", $fileName, 'public');
-                            if ($pathPhoto) {
+                            if ($ext == 'jpg' || $ext == 'jpeg') {
+                                $file->storeAs("buried-data/$key", $fileName, 'public');
+                                $compress = imagejpeg(imagecreatefromjpeg($file), 'buried-data/' . $key . '/' . $fileName, 50);
+                            } else if ($ext == 'png') {
+                                $file->storeAs("buried-data/$key", $fileName, 'public');
+                                $compress = imagejpeg(imagecreatefrompng($file), 'buried-data/' . $key . '/' . $fileName, 50);
+                            } else if ($ext == 'pdf') {
+                                $compress =$file->storeAs("buried-data/$key", $fileName, 'public');
+                            } else {
+                                $compress =$file->storeAs("buried-data/$key", $fileName, 'public');
+                            }
+                            if ($compress) {
                                 $linkToPhoto[$a] = [
                                     'file' => 'buried-data/' . $key . '/' . $fileName,
-                                    'key' => $val
+                                    'ext' => $ext,
+                                    'key' => $val,
+                                    'compress' => $compress
                                 ];
                             }
                         }
@@ -544,6 +559,11 @@ class BurialDataController extends Controller
                 // upload photo
                 if ($request->has('photo')) {
                     $uploaded = $this->upload(array_values($request->photo), $this->staticKeyPhoto);
+                    $uploaded = array_values($uploaded);
+                    // compress image
+                    for ($x = 0; $x < count($uploaded); $x++) {
+                        imagejpeg(imagecreatefromjpeg($uploaded[$x]['file']), $uploaded[$x]['file'], 50);
+                    }
                     $uploaded = array_values($uploaded);
                     if (count($uploaded) > 0) {
                         // File::delete([

@@ -486,7 +486,6 @@
                     btnSave.text('Menyimpan Data ...');
                 },
                 success: function(res) {
-                    console.log(res);
                     btnSave.attr('disabled', false);
                     btnSave.text('Simpan');
                     window.location.href = "{{ route('burial-data.create') }}";
@@ -496,7 +495,6 @@
                     });
                 },
                 error: function(err){
-                    console.log(err);
                     btnSave.attr('disabled', false);
                     btnSave.text('Simpan');
                     handleError(err);
