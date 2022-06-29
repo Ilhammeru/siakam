@@ -1,6 +1,7 @@
 @extends('layouts.master')
 {{-- begin::styles --}}
 @push('styles')
+    <link rel="stylesheet" href="{{ asset('css/component.css') }}">
     <style>
         #tableBurialData > thead > tr > th,
         #tableBurialData > tbody > tr > td {
@@ -17,7 +18,7 @@
             <div class="card-body p-3">
                 <div class="text-end">
                     {{-- begin::button-add --}}
-                    <a class="btn btn-light-primary" href="{{route("burial-data.create")}}">
+                    <a class="btn-custom btn-custom-primary" href="{{route("burial-data.create")}}">
                         <i class="fa fa-plus me-3"></i>
                         Tambah
                     </a>

@@ -4,11 +4,6 @@
     <div class="aside-toolbar flex-column-auto" id="kt_aside_toolbar">
         <!--begin::User-->
         <div class="aside-user d-flex align-items-sm-center justify-content-center py-5">
-            <!--begin::Symbol-->
-            <div class="symbol symbol-50px">
-                <img src="{{ asset('images/blank.png') }}" alt="" />
-            </div>
-            <!--end::Symbol-->
             <!--begin::Wrapper-->
             <div class="aside-user-info flex-row-fluid flex-wrap ms-5">
                 <!--begin::Section-->
@@ -45,11 +40,6 @@
                             <!--begin::Menu item-->
                             <div class="menu-item px-3">
                                 <div class="menu-content d-flex align-items-center px-3">
-                                    <!--begin::Avatar-->
-                                    <div class="symbol symbol-50px me-5">
-                                        <img alt="Logo" src="{{ asset('images/blank.png') }}" />
-                                    </div>
-                                    <!--end::Avatar-->
                                     <!--begin::Username-->
                                     <div class="d-flex flex-column">
                                         <div class="fw-bolder d-flex align-items-center fs-5">{{ Auth::user()->username }}

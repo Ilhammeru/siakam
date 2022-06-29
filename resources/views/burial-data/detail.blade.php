@@ -5,11 +5,11 @@
 @push('styles')
     <style>
         .card-corpse {
-            height: 420px;
+            height: 450px;
         }
 
         .card-burial {
-            height: 270px;
+            height: 300px;
             margin-bottom: 20px;
         }
 
@@ -65,6 +65,16 @@
             top: 30px;
             transform: rotate(-45deg);
         }
+
+        @media screen and (min-width: 868px) {
+            .table-data > tbody > tr > td:first-child {
+                width: 250px;
+            }
+    
+            .table-data > tbody > tr > td:nth-child(2) {
+                width: 50px;
+            }
+        }
     </style>
 @endpush
 {{-- end::styles --}}
@@ -106,7 +116,7 @@
                             </div>
                         </div>
                     </div>
-                    <table class="table mt-5">
+                    <table class="table mt-5 table-data">
                         <tbody>
                             <tr>
                                 <td>Nama</td>
@@ -177,32 +187,42 @@
             <div class="card card-flush card-burial">
                 <div class="card-body">
                     <h3 class="mb-5">Data Ahli Waris</h3>
-                    <table class="table mt-5">
+                    <table class="table mt-5 table-data">
                         <tbody>
                             <tr>
                                 <td>Nama</td>
                                 <td>:</td>
-                                <td>{{ $data->reporters_name ?? '-' }}</td>
+                                <td>
+                                    <b>{{ $data->reporters_name != NULL ? ucwords($data->reporters_name) : '-' }}</b>
+                                </td>
                             </tr>
                             <tr>
                                 <td>No Telfon</td>
                                 <td>:</td>
-                                <td>{{ $data->reporters_phone ?? '-' }}</td>
+                                <td>
+                                    <b>{{ $data->reporters_phone != NULL ? ucwords($data->reporters_phone) : '-' }}</b>
+                                </td>
                             </tr>
                             <tr>
                                 <td>NIK</td>
                                 <td>:</td>
-                                <td>{{ $data->reporters_nik ?? '-' }}</td>
+                                <td>
+                                    <b>{{ $data->reporters_nik != NULL ? ucwords($data->reporters_nik) : '-' }}</b>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Hubungan</td>
                                 <td>:</td>
-                                <td>{{ $data->reporters_relationship ?? '-' }}</td>
+                                <td>
+                                    <b>{{ $data->reporters_relationship != NULL ? ucwords($data->reporters_relationship) : '-' }}</b>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Alamat</td>
                                 <td>:</td>
-                                <td>{{ $data->reporters_address ?? '-' }}</td>
+                                <td>
+                                    <b>{{ $data->reporters_address != NULL ? ucwords($data->reporters_address) : '-' }}</b>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -257,7 +277,7 @@
                     <h3 class="mb-5">Data Persyaratan</h3>
                     <div class="row">
                         <div class="col-md-8">
-                            <table class="table mb-5">
+                            <table class="table mb-5 table-data">
                                 <tbody>
                                     <tr>
                                         <td>Surat Permohonan</td>

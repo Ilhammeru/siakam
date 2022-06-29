@@ -39,8 +39,8 @@
         <div class="row">
             <div class="col">
                 <div id="targetChart" class="text-center">
-                    <div id="chartContainer1" style="width: 45%; height: 300px;display: inline-block; margin-bottom: 60px;"></div> 
-                    <div id="chartContainer2" style="width: 45%; height: 300px;display: inline-block; margin-bottom: 60px;"></div><br/>
+                    <div id="chartContainer1" style="width: 40%; height: 300px;display: inline-block; margin-bottom: 60px;"></div> 
+                    <div id="chartContainer2" style="width: 40%; height: 300px;display: inline-block; margin-bottom: 60px;"></div><br/>
                     <div id="chartContainer3" style="width: 100%; height: 300px;display: inline-block;"></div>
                 </div>
             </div>
@@ -83,7 +83,7 @@
                             verticalAlign: "bottom",
                             horizontalAlign: "center",
                             fontSize: 10,
-                            fontFamily: "Helvetica"
+                            fontFamily: "Helvetica",
                         },
                         theme: "light1",
                         data: [
@@ -104,7 +104,7 @@
                     var chart = new CanvasJS.Chart("chartContainer2", {
                         title: {
                             text: "Sisa Petak Makam",
-                            padding: 10
+                            padding: 10,
                         },
                         animationEnabled: true,
                         legend: {
@@ -132,7 +132,8 @@
                     var chart = new CanvasJS.Chart("chartContainer3", {
                         title: {
                             text: "Jumlah Pemakaman Per Bulan",
-                            padding: 10
+                            padding: 10,
+                            fontSize: 20
                         },
                         animationEnabled: true,
                         legend: {
