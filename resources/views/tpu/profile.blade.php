@@ -211,9 +211,9 @@
                 success: function(res) {
                     formIdentity.attr('action', urlSave);
                     formIdentity.attr('method', 'POST');
-                    $('#tpuName').val(res.data.name);
-                    $('#tpuAddress').val(res.data.address);
-                    $('#tpuPhone').val(res.data.phone);
+                    $('#tpuName').val(res.data.tpu.name);
+                    $('#tpuAddress').val(res.data.tpu.address);
+                    $('#tpuPhone').val(res.data.tpu.phone);
                     _modalIdentity.modal('show');
                 }
             });

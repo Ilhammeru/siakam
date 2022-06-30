@@ -47,7 +47,7 @@
                         <div class="form-group mb-2 row">
                             <div class="col-md-12 col-xl-12">
                                 <label for="nik" class="col-form-label required">NIK</label>
-                                <input type="number" value="{{ $burialData->nik }}" name="nik" placeholder="NIK Jenazah" class="form-control" id="name">
+                                <input type="number" value="{{ $burialData->nik }}" name="nik" maxlength="16" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" placeholder="NIK Jenazah" class="form-control" id="name">
                             </div>    
                         </div>
                         <div class="form-group row mb-3">
@@ -151,7 +151,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="reporterNik" class="col-form-label">NIK Ahli Waris</label>
-                                <input name="reporter_nik" value="{{ $burialData->reporters_nik }}" class="form-control" id="reporterNik" placeholder="NIK Ahli Waris" type="number" />
+                                <input name="reporter_nik" value="{{ $burialData->reporters_nik }}" maxlength="16" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control" id="reporterNik" placeholder="NIK Ahli Waris" type="number" />
                             </div>
                         </div>
                         <div class="form-group row mb-2">
@@ -233,7 +233,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <h3 class="text-center mb-5" style="margin-top: 25px;">Data Persyaratan</h3>
+                        <h3 class="text-center mb-5">Data Persyaratan</h3>
                         <div class="form-group mb-2 row">
                             <div class="col-md-12">
                                 <label for="applicationLetter" class="col-form-label">Surat Permohonan</label>
@@ -528,6 +528,7 @@
                     let option = "<option value=''>- Pilih Blok -</option>";
                     let data = res.data.tpu.graves;
                     let selected;
+                    let registrationNumber = res.data.number;
                     for (let a = 0; a < data.length; a++) {
                         if (selectedTpu != "") {
                             let selectedBlock = "{{ $burialData->grave_block }}";
@@ -538,6 +539,9 @@
                             }
                         }
                         option += `<option ${selected} value="${data[a].id}">${data[a].grave_block}</option>`;
+                    }
+                    if (registrationNumber != "") {
+                        $('#burialId').val(registrationNumber);
                     }
                     $('#graveBlock').html(option);
                 }

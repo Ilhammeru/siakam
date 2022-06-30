@@ -211,3 +211,72 @@ if (!function_exists('formatIndonesiaDay')) {
         return $day;
     }
 }
+
+if (!function_exists('romawiMonth')) {
+    function romawiMonth($date) {
+        $month = date('m', strtotime($date));
+        $split = str_split($month);
+        if (count($split) > 1) {
+            if ($split[0] == 0) {
+                $month = $split[1];
+            } else {
+                $month = implode('', $split);
+            }
+        }
+        switch ($month) {
+            case '1':
+                $ret = 'I';
+                break;
+
+            case '2':
+                $ret = 'II';
+                break;
+
+            case '3':
+                $ret = 'III';
+                break;
+
+            case '4':
+                $ret = 'IV';
+                break;
+
+            case '5':
+                $ret = 'V';
+                break;
+
+            case '6':
+                $ret = 'VI';
+                break;
+
+            case '7':
+                $ret = 'VII';
+                break;
+
+            case '8':
+                $ret = 'VIII';
+                break;
+
+            case '9':
+                $ret = 'IX';
+                break;
+
+            case '10':
+                $ret = 'X';
+                break;
+
+            case '11':
+                $ret = 'XI';
+                break;
+
+            case '12':
+                $ret = 'XII';
+                break;
+            
+            default:
+                $ret = "Belum ter generate";
+                break;
+        }
+
+        return $ret;
+    }
+}

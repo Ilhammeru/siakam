@@ -144,9 +144,10 @@ class BurialDataController extends Controller
             $number = "";
         }
         if (Auth::user()->role == 'tpu') {
+            $numberData = str_pad($burialData, 3, '0', STR_PAD_LEFT);    
             $tpu = Tpu::find($tpuId);
             $name = implode('', explode(' ', $tpu->name));
-            $number = $name . '-' . $burialData . '-' . date('m') . '-' . date('Y');
+            $number = $name . '/' . $numberData . '/' . romawiMonth(date('Y-m-d')) . '/' . date('Y');
         }
         $religion = [
             ['name' => 'ISLAM'],
@@ -219,14 +220,14 @@ class BurialDataController extends Controller
                 'religion' => $religion,
                 'birth_date' => $birthDate,
                 'regency_of_birth' => $regencyBirthDate,
-                'address' => $address,
+                'address' => strtolower($address),
                 'village_id' => $villageId,
                 'rt' => $rt,
                 'rw' => $rw,
                 'reporters_name' => $reportersName,
                 'reporters_nik' => $reportersNik,
                 'reporters_phone' => $reporterPhone,
-                'reporters_address' => $reporterAddress,
+                'reporters_address' => strtolower($reporterAddress),
                 'reporters_relationship' => $reporterRelation,
                 'date_of_death' => $dateOfDeath,
                 'regency_of_death' => $regencyOfDeath,
@@ -415,7 +416,7 @@ class BurialDataController extends Controller
     {
         $data = BurialData::with(['graveBlock', 'tpu'])->find($burial_datum);
         $city = Regency::where('id', $data->village_id)->first()->name;
-        $address = $data->address . ' , RT ' . $data->rt . ' RW ' . $data->rw . ' , ' . $city;
+        $address = ucwords($data->address) . ' , RT ' . $data->rt . ' RW ' . $data->rw . ' , ' . ucwords(strtolower($city));
         $regencyOfBirth = Regency::where('id', $data->regency_of_birth)->first()->name;
         $pageTitle = 'Detail Data Pemakaman #' . $data->burial_data_id;
         $tpuBlock = '-';
@@ -450,9 +451,10 @@ class BurialDataController extends Controller
         $tpus = Tpu::all();
         $number = "";
         if (Auth::user()->role == 'tpu') {
+            $numberData = str_pad($burialData, 3, '0', STR_PAD_LEFT); 
             $tpu = Tpu::find($tpuId);
             $name = implode('', explode(' ', $tpu->name));
-            $number = $name . '-' . $burialData . '-' . date('m') . '-' . date('Y');
+            $number = $name . '/' . $numberData . '/' . romawiMonth(date('Y-m-d')) . '/' . date('Y');
         }
         $latLong = "";
         if ($burialData->latitude != "") {
@@ -521,14 +523,14 @@ class BurialDataController extends Controller
                 'religion' => $religion,
                 'birth_date' => $birthDate,
                 'regency_of_birth' => $regencyBirthDate,
-                'address' => $address,
+                'address' => strtolower($address),
                 'village_id' => $villageId,
                 'rt' => $rt,
                 'rw' => $rw,
                 'reporters_name' => $reportersName,
                 'reporters_nik' => $reportersNik,
                 'reporters_phone' => $reporterPhone,
-                'reporters_address' => $reporterAddress,
+                'reporters_address' => strtolower($reporterAddress),
                 'reporters_relationship' => $reporterRelation,
                 'date_of_death' => $dateOfDeath,
                 'regency_of_death' => $regencyOfDeath,
@@ -660,20 +662,28 @@ class BurialDataController extends Controller
 
     public function downloadFuneralLetter($id) {
         $data = BurialData::with(['tpu', 'birthPlace', 'graveBlock'])->find($id);
+        $tpuNoSpace = implode('', explode(' ', $data->tpu->name));
+        $burialDataId = $data->burial_data_id;
+        $splitBurialDataId = explode('-', $burialDataId);
+        $splitBurialDataId[1] = str_pad($splitBurialDataId[1], 3, '0', STR_PAD_LEFT);
+        $splitBurialDataId[2] = romawiMonth($splitBurialDataId[2]);
+        $formatNumber = implode('/', $splitBurialDataId);
+
         $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor('Format_Surat_Pemakaman.docx');
+        $templateProcessor->setValue('format_number', $formatNumber);
         $templateProcessor->setValue('tpu_name', $data->tpu->name);
         $templateProcessor->setValue('tpu_address', $data->tpu->address);
         $templateProcessor->setValue('reporters_name', ucwords($data->reporters_name));
         $templateProcessor->setValue('reporters_nik', $data->reporters_nik);
         $templateProcessor->setValue('reporters_relationship', ucwords($data->reporters_relationship));
-        $templateProcessor->setValue('reporters_address', $data->reporters_address);
+        $templateProcessor->setValue('reporters_address', ucwords($data->reporters_address));
         $templateProcessor->setValue('reporters_phone', $data->reporters_phone);
         $templateProcessor->setValue('name', ucwords($data->name));
         $templateProcessor->setValue('nik', $data->nik);
-        $templateProcessor->setValue('birth', ucwords($data->birthPlace->name) . '/' . formatIndonesiaDate(date('Y-m-d', strtotime($data->birth_date))));
+        $templateProcessor->setValue('birth', ucwords(strtolower($data->birthPlace->name)) . '/' . formatIndonesiaDate(date('Y-m-d', strtotime($data->birth_date))));
         $templateProcessor->setValue('gender', $data->gender == 'L' ? 'Laki-laki' : 'Perempuan');
-        $templateProcessor->setValue('religion', ucwords($data->religion));
-        $templateProcessor->setValue('address', $data->address);
+        $templateProcessor->setValue('religion', ucwords(strtolower($data->religion)));
+        $templateProcessor->setValue('address', ucwords($data->address));
         $templateProcessor->setValue('day_of_death', formatIndonesiaDay($data->date_of_death));
         $templateProcessor->setValue('date_of_death', formatIndonesiaDate(date('Y-m-d', strtotime($data->date_of_death))));
         $templateProcessor->setValue('buried_date', formatIndonesiaDay($data->buried_date) . '/' . formatIndonesiaDate(date('Y-m-d', strtotime($data->buried_date))));

@@ -39,7 +39,7 @@
                         <div class="form-group mb-2 row">
                             <div class="col-md-12 col-xl-12">
                                 <label for="nik" class="col-form-label required">NIK</label>
-                                <input type="number" name="nik" placeholder="NIK Jenazah" class="form-control" id="name">
+                                <input type="number" name="nik" placeholder="NIK Jenazah" maxlength="16" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control" id="name">
                             </div>    
                         </div>
                         <div class="form-group row mb-3">
@@ -142,7 +142,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="reporterNik" class="col-form-label">NIK Ahli Waris</label>
-                                <input name="reporter_nik" class="form-control" id="reporterNik" placeholder="NIK Ahli Waris" type="number" />
+                                <input name="reporter_nik" class="form-control" id="reporterNik" placeholder="NIK Ahli Waris" type="number" maxlength="16" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
                             </div>
                         </div>
                         <div class="form-group row mb-2">
@@ -232,7 +232,7 @@
 
                     <div class="col-md-6">
                         {{-- begin::data-requirement --}}
-                        <h3 class="text-center mb-5" style="margin-top: 25px;">Data Persyaratan</h3>
+                        <h3 class="text-center mb-5">Data Persyaratan</h3>
                         <div class="form-group mb-2 row">
                             <div class="col-md-12">
                                 <label for="applicationLetter" class="col-form-label">Surat Permohonan</label>

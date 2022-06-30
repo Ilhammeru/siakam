@@ -44,7 +44,7 @@
     }
 
     .tdAddress {
-        width: 18%;
+        width: 15%;
     }
 
     .thAddress {
@@ -144,7 +144,7 @@
               <th class="thNotes" rowspan="2">No. Makam</th>
             </tr>
             <tr>
-                <th class="thVillage">Jalan / Dukuh</th>
+                <th class="thVillage">Jalan</th>
                 <th class="thRt">RT</th>
                 <th class="thRw">RW</th>
             </tr>

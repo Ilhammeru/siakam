@@ -18,7 +18,7 @@
             <div class="card-body p-3">
                 <div class="text-end">
                     {{-- begin::button-add --}}
-                    <a class="btn-custom btn-custom-primary" href="{{route("burial-data.create")}}">
+                    <a class="btn btn-primary" href="{{route("burial-data.create")}}">
                         <i class="fa fa-plus me-3"></i>
                         Tambah
                     </a>

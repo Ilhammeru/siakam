@@ -243,8 +243,10 @@ class TpuController extends Controller
             $graveBlock[] = BurialData::where('grave_block', $tg->id)->count();
         }
         $number = "";
+        $formatNumber = $burialData + 1;
+        $formatNumber = str_pad($formatNumber, 3, '0', STR_PAD_LEFT); 
         if (Auth::user()->role != 'tpu') {
-            $number = $name . '-' . ($burialData + 1) . '-' . date('m') . '-' . date('Y');
+            $number = $name . '/' . $formatNumber . '/' . romawiMonth(date('Y-m-d')) . '/' . date('Y');
         }
 
         return sendResponse([

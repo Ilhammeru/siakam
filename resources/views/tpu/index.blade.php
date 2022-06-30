@@ -285,6 +285,7 @@
                 url: "{{ url('/tpu/show') }}" + "/" + id,
                 dataType: 'json',
                 success: function(res) {
+                    console.log(res);
                     btnSave.attr('disabled', false);
                     btnSave.text('Simpan');
                     btnSave.attr('onclick', 'save()');
