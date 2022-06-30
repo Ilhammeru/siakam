@@ -664,13 +664,9 @@ class BurialDataController extends Controller
         $data = BurialData::with(['tpu', 'birthPlace', 'graveBlock'])->find($id);
         $tpuNoSpace = implode('', explode(' ', $data->tpu->name));
         $burialDataId = $data->burial_data_id;
-        $splitBurialDataId = explode('-', $burialDataId);
-        $splitBurialDataId[1] = str_pad($splitBurialDataId[1], 3, '0', STR_PAD_LEFT);
-        $splitBurialDataId[2] = romawiMonth($splitBurialDataId[2]);
-        $formatNumber = implode('/', $splitBurialDataId);
 
         $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor('Format_Surat_Pemakaman.docx');
-        $templateProcessor->setValue('format_number', $formatNumber);
+        $templateProcessor->setValue('format_number', $burialDataId);
         $templateProcessor->setValue('tpu_name', $data->tpu->name);
         $templateProcessor->setValue('tpu_address', $data->tpu->address);
         $templateProcessor->setValue('reporters_name', ucwords($data->reporters_name));
