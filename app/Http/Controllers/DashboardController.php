@@ -25,7 +25,7 @@ class DashboardController extends Controller
         
         $dataPerMonth = [];
         for ($a = 1; $a <= 12; $a++) {
-            $burialData = BurialData::where('buried_month', $a)->where('tpu_id', $tpuId)->count();
+            $burialData = BurialData::where('buried_month', $a)->where('tpu_id', $tpuId)->whereYear('buried_date', date('Y'))->count();
             $dataPerMonth[] = [
                 'label' => formatIndonesiaMonth($a),
                 'legendText' => formatIndonesiaMonth($a),
